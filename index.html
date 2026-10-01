@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thunders Live Scoreboard</title>
-    <!-- Import standard broadcast font -->
+    <title>Thunders Live Scoreboard Pro</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700;900&display=swap" rel="stylesheet">
     
     <style>
@@ -13,129 +12,69 @@
             --thunders-yellow: #f4d03f;
             --bg-color: #f4f6f9;
         }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: var(--bg-color);
-        }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; margin: 0; padding: 0; background-color: var(--bg-color); }
         body.transparent { background: transparent; }
-
+        
         /* =========================================
-           INTERNATIONAL BROADCAST OVERLAY (PRISM)
+           TV BROADCAST OVERLAY (PRISM)
            ========================================= */
-        #overlay-container {
-            display: none;
-            position: fixed;
-            bottom: 8%;
-            left: 50%;
-            transform: translateX(-50%);
-            font-family: 'Roboto Condensed', sans-serif;
-            text-transform: uppercase;
-        }
-        .tv-graphic-main {
-            display: flex;
-            height: 64px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
-            border-radius: 4px 4px 0 0;
-            overflow: hidden;
-        }
-        .tv-team {
-            background: var(--thunders-yellow);
-            color: var(--thunders-navy);
-            font-weight: 900;
-            font-size: 36px;
-            padding: 0 20px 0 25px;
-            line-height: 64px;
-            clip-path: polygon(0 0, 100% 0, 85% 100%, 0 100%);
-            margin-right: -15px;
-            z-index: 3;
-            min-width: 90px;
-            text-align: center;
-        }
-        .tv-score {
-            background: rgba(20, 24, 35, 0.95);
-            color: #ffffff;
-            font-weight: 700;
-            font-size: 46px;
-            padding: 0 35px 0 40px;
-            line-height: 64px;
-            z-index: 2;
-            display: flex;
-            align-items: baseline;
-            gap: 10px;
-        }
-        .tv-score-divider {
-            color: #555;
-            font-weight: 400;
-        }
-        .tv-score-wickets {
-            color: var(--thunders-yellow);
-        }
-        .tv-overs {
-            background: rgba(40, 50, 70, 0.9);
-            color: #d1d5db;
-            font-weight: 400;
-            font-size: 26px;
-            padding: 0 25px;
-            line-height: 64px;
-            z-index: 1;
-        }
+        #overlay-container { display: none; position: fixed; bottom: 8%; left: 50%; transform: translateX(-50%); font-family: 'Roboto Condensed', sans-serif; text-transform: uppercase; width: max-content; }
+        
+        /* Main Score Row */
+        .tv-graphic-main { display: flex; height: 64px; box-shadow: 0 10px 20px rgba(0,0,0,0.5); border-radius: 4px 4px 0 0; overflow: hidden; align-items: stretch; }
+        .tv-team { background: var(--thunders-yellow); color: var(--thunders-navy); font-weight: 900; font-size: 36px; padding: 0 20px 0 25px; line-height: 64px; clip-path: polygon(0 0, 100% 0, 85% 100%, 0 100%); margin-right: -15px; z-index: 3; min-width: 90px; text-align: center; }
+        .tv-score { background: rgba(20, 24, 35, 0.95); color: #ffffff; font-weight: 700; font-size: 46px; padding: 0 35px 0 40px; line-height: 64px; z-index: 2; display: flex; align-items: baseline; gap: 10px; }
+        .tv-score-divider { color: #555; font-weight: 400; }
+        .tv-score-wickets { color: var(--thunders-yellow); }
+        .tv-overs { background: rgba(40, 50, 70, 0.95); color: #d1d5db; font-weight: 400; font-size: 26px; padding: 0 25px; line-height: 64px; z-index: 1; border-left: 2px solid rgba(255,255,255,0.1); }
         .tv-overs span { font-weight: 700; color: #fff; margin-left: 5px; }
-        .tv-graphic-sub {
-            background: var(--thunders-navy);
-            color: #fff;
-            font-size: 18px;
-            font-weight: 700;
-            padding: 6px 25px;
-            width: fit-content;
-            border-radius: 0 0 8px 8px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            letter-spacing: 1px;
-            min-height: 22px;
-        }
-        .tv-graphic-sub:empty { display: none; } /* Hides if no target is typed */
+
+        /* Player Stats Row (The International Look) */
+        .tv-players-bar { display: flex; background: rgba(15, 18, 25, 0.9); height: 36px; line-height: 36px; color: white; font-size: 18px; box-shadow: 0 5px 15px rgba(0,0,0,0.4); }
+        .tv-batter { display: flex; align-items: center; padding: 0 20px; border-right: 1px solid rgba(255,255,255,0.15); flex: 1; }
+        .tv-bowler { display: flex; align-items: center; padding: 0 20px; background: rgba(26, 35, 58, 0.9); flex: 1; }
+        
+        .strike-indicator { color: var(--thunders-yellow); font-size: 14px; margin-right: 8px; visibility: hidden; }
+        .strike-indicator.active { visibility: visible; }
+        .p-name { font-weight: 700; margin-right: auto; padding-right: 15px; letter-spacing: 0.5px; }
+        .p-score { font-weight: 700; color: var(--thunders-yellow); }
+        .p-balls { font-weight: 400; color: #aaa; font-size: 16px; margin-left: 4px; }
+        .b-figs { font-weight: 700; color: #fff; }
+
+        /* Target Ribbon */
+        .tv-graphic-sub { background: var(--thunders-navy); color: #fff; font-size: 16px; font-weight: 700; padding: 4px 20px; width: fit-content; border-radius: 0 0 6px 6px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); letter-spacing: 1px; min-height: 20px; margin: 0 auto; }
+        .tv-graphic-sub:empty { display: none; }
 
         /* =========================================
            SCORER CONTROL PANEL (SAMSUNG FOLD)
            ========================================= */
-        #controls-container {
-            display: block;
-            max-width: 900px;
-            margin: 0 auto;
-            padding-bottom: 50px;
-        }
-        .top-nav {
-            background: var(--thunders-navy);
-            padding: 15px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: white;
-        }
+        #controls-container { display: block; max-width: 900px; margin: 0 auto; padding-bottom: 50px; }
+        .top-nav { background: var(--thunders-navy); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; color: white; }
         .nav-left { display: flex; align-items: center; gap: 15px; }
         .mt-logo { background: var(--thunders-yellow); color: var(--thunders-navy); font-weight: 900; padding: 5px 10px; border-radius: 4px; font-size: 20px;}
         .nav-title h1 { margin: 0; font-size: 18px; letter-spacing: 1px; }
         .sync-status { font-size: 11px; color: #2ecc71; font-weight: bold; letter-spacing: 0.5px; margin-top: 3px; display: flex; align-items: center; gap: 5px; }
         .sync-dot { height: 8px; width: 8px; background-color: #2ecc71; border-radius: 50%; display: inline-block; }
-        .btn-reset { background: #e74c3c; color: white; border: none; padding: 10px 20px; border-radius: 4px; font-weight: bold; cursor: pointer; }
-
-        .card { background: white; margin: 20px; border-radius: 8px; border: 1px solid #e0e0e0; overflow: hidden; }
-        .card-header { padding: 12px 20px; font-size: 13px; font-weight: bold; color: #555; background: #f9f9f9; border-bottom: 1px solid #e0e0e0; display: flex; justify-content: space-between;}
-        .card-body { padding: 20px; }
-
-        /* Form Inputs */
-        .form-row { display: flex; gap: 20px; margin-bottom: 15px; }
-        .input-group { flex: 1; display: flex; flex-direction: column; }
-        .input-group label { font-size: 11px; font-weight: bold; color: #777; margin-bottom: 8px; text-transform: uppercase; }
-        .input-group input { padding: 12px; border: 1px solid #ccc; border-radius: 6px; font-size: 16px; font-weight: bold; text-align: center; background: #fafafa; }
+        
+        .card { background: white; margin: 15px; border-radius: 8px; border: 1px solid #e0e0e0; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
+        .card-header { padding: 10px 15px; font-size: 13px; font-weight: bold; color: #555; background: #f9f9f9; border-bottom: 1px solid #e0e0e0; }
+        .card-body { padding: 15px; }
+        
+        /* Grid Layouts for the Fold */
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+        
+        .input-group { display: flex; flex-direction: column; }
+        .input-group label { font-size: 10px; font-weight: bold; color: #777; margin-bottom: 5px; text-transform: uppercase; }
+        .input-group input { padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; font-weight: bold; background: #fafafa; }
+        .input-group input[type="text"] { text-transform: uppercase; }
         .input-group input:focus { outline: none; border-color: var(--thunders-navy); background: white; }
+        
+        .radio-group { display: flex; align-items: center; gap: 5px; font-size: 12px; font-weight: bold; margin-top: 5px; cursor: pointer; }
 
-        /* Quick Add Buttons */
-        .pad-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
-        .btn-pad { padding: 20px 10px; font-size: 18px; font-weight: bold; border-radius: 8px; border: none; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .pad-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+        .btn-pad { padding: 15px 5px; font-size: 16px; font-weight: bold; border-radius: 6px; border: none; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
         .btn-run { background: #fff; border: 1px solid #ddd; color: var(--thunders-navy); }
-        .btn-run:active { background: #eee; }
         .btn-extra { background: #e8f4f8; border: 1px solid #b6d4fe; color: #084298; }
         .btn-wicket { background: #fee2e2; border: 1px solid #fecaca; color: #b91c1c; grid-column: span 2; }
         .btn-undo { background: #f3f4f6; border: 1px solid #d1d5db; color: #4b5563; grid-column: span 2; }
@@ -146,6 +85,7 @@
 
     <!-- OVERLAY VIEW (PRISM Live Studio) -->
     <div id="overlay-container">
+        <!-- Main Score -->
         <div class="tv-graphic-main">
             <div class="tv-team" id="overlay-team">THUN</div>
             <div class="tv-score">
@@ -155,90 +95,112 @@
             </div>
             <div class="tv-overs">OVERS <span id="overlay-overs">0.0</span></div>
         </div>
+        <!-- Player Stats (NEW) -->
+        <div class="tv-players-bar">
+            <div class="tv-batter">
+                <span class="strike-indicator active" id="strike-b1">▶</span>
+                <span class="p-name" id="name-b1">BATTER 1</span>
+                <span class="p-score"><span id="runs-b1">0</span><span class="p-balls">(<span id="balls-b1">0</span>)</span></span>
+            </div>
+            <div class="tv-batter">
+                <span class="strike-indicator" id="strike-b2">▶</span>
+                <span class="p-name" id="name-b2">BATTER 2</span>
+                <span class="p-score"><span id="runs-b2">0</span><span class="p-balls">(<span id="balls-b2">0</span>)</span></span>
+            </div>
+            <div class="tv-bowler">
+                <span class="p-name" id="name-bowl">BOWLER</span>
+                <span class="b-figs"><span id="o-bowl">0.0</span>-<span id="m-bowl">0</span>-<span id="r-bowl">0</span>-<span id="w-bowl">0</span></span>
+            </div>
+        </div>
+        <!-- Target -->
         <div class="tv-graphic-sub" id="overlay-target"></div>
     </div>
 
     <!-- CONTROL PANEL (Samsung Fold) -->
     <div id="controls-container">
-        <!-- Top Nav -->
         <div class="top-nav">
             <div class="nav-left">
                 <div class="mt-logo">MT</div>
                 <div class="nav-title">
-                    <h1>LIVE SCORER</h1>
+                    <h1>PRO SCORER</h1>
                     <div class="sync-status"><span class="sync-dot"></span> LIVE SYNC ACTIVE</div>
                 </div>
             </div>
-            <button class="btn-reset" onclick="resetMatch()">Reset Match</button>
         </div>
 
-        <!-- Settings Card -->
-        <div class="card">
-            <div class="card-header">MATCH SETTINGS</div>
-            <div class="card-body">
-                <div class="form-row">
-                    <div class="input-group">
-                        <label>BATTING (MAX 4 CHARS)</label>
-                        <input type="text" id="input-team" value="THUN" onkeyup="updateDB()">
+        <div class="grid-2">
+            <!-- MAIN SCORE CONTROLS -->
+            <div>
+                <div class="card" style="margin: 15px 0 0 15px;">
+                    <div class="card-header">MATCH STATUS</div>
+                    <div class="card-body grid-2">
+                        <div class="input-group"><label>TEAM</label><input type="text" id="in-team" value="THUN" onkeyup="updateDB()"></div>
+                        <div class="input-group"><label>TARGET/MSG</label><input type="text" id="in-target" placeholder="TARGET 152" onkeyup="updateDB()"></div>
+                        <div class="input-group"><label>TOTAL RUNS</label><input type="number" id="in-runs" value="0" onchange="updateDB()"></div>
+                        <div class="input-group"><label>WICKETS</label><input type="number" id="in-wickets" value="0" onchange="updateDB()"></div>
+                        <div class="input-group"><label>COMP OVERS</label><input type="number" id="in-overs" value="0" onchange="updateDB()"></div>
+                        <div class="input-group"><label>BALLS (0-5)</label><input type="number" id="in-balls" value="0" onchange="updateDB()" max="5"></div>
                     </div>
-                    <div class="input-group">
-                        <label>TARGET SCORE (LEAVE EMPTY IF 1ST INNINGS)</label>
-                        <input type="text" id="input-target" placeholder="e.g. TARGET 152" onkeyup="updateDB()">
+                </div>
+
+                <div class="card" style="margin: 15px 0 0 15px;">
+                    <div class="card-header">QUICK ADD (AUTO-UPDATES OVERS)</div>
+                    <div class="card-body pad-grid">
+                        <button class="btn-pad btn-run" onclick="addTeamRun(0, 1)">0</button>
+                        <button class="btn-pad btn-run" onclick="addTeamRun(1, 1)">1</button>
+                        <button class="btn-pad btn-run" onclick="addTeamRun(2, 1)">2</button>
+                        <button class="btn-pad btn-run" onclick="addTeamRun(3, 1)">3</button>
+                        <button class="btn-pad btn-run" onclick="addTeamRun(4, 1)">4</button>
+                        <button class="btn-pad btn-run" onclick="addTeamRun(6, 1)">6</button>
+                        <button class="btn-pad btn-extra" onclick="addTeamRun(1, 0)">WD/NB</button>
+                        <button class="btn-pad btn-wicket" onclick="addTeamWicket()">+ WICKET</button>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Manual Correction Card -->
-        <div class="card">
-            <div class="card-header"><span style="color: #e74c3c;">MANUAL CORRECTION (OVERRIDES)</span></div>
-            <div class="card-body">
-                <div class="form-row">
-                    <div class="input-group">
-                        <label>RUNS</label>
-                        <input type="number" id="input-runs" value="0" onchange="updateDB()">
-                    </div>
-                    <div class="input-group">
-                        <label>WICKETS</label>
-                        <input type="number" id="input-wickets" value="0" onchange="updateDB()">
-                    </div>
-                    <div class="input-group">
-                        <label>COMP OVERS</label>
-                        <input type="number" id="input-overs-comp" value="0" onchange="updateDB()">
-                    </div>
-                    <div class="input-group">
-                        <label>CURRENT BALLS</label>
-                        <input type="number" id="input-balls" value="0" onchange="updateDB()" max="5">
+            <!-- PLAYER STATS CONTROLS -->
+            <div>
+                <div class="card" style="margin: 15px 15px 0 0;">
+                    <div class="card-header">BATTERS (MANUAL UPDATE)</div>
+                    <div class="card-body">
+                        <!-- Batter 1 -->
+                        <div class="grid-4" style="margin-bottom: 10px;">
+                            <div class="input-group" style="grid-column: span 2;"><label>BATTER 1</label><input type="text" id="in-b1-name" placeholder="Name" onkeyup="updateDB()"></div>
+                            <div class="input-group"><label>RUNS</label><input type="number" id="in-b1-runs" value="0" onchange="updateDB()"></div>
+                            <div class="input-group"><label>BALLS</label><input type="number" id="in-b1-balls" value="0" onchange="updateDB()"></div>
+                        </div>
+                        <label class="radio-group" style="margin-bottom: 15px;"><input type="radio" name="strike" id="strike1" checked onchange="updateDB()"> On Strike</label>
+                        
+                        <!-- Batter 2 -->
+                        <div class="grid-4">
+                            <div class="input-group" style="grid-column: span 2;"><label>BATTER 2</label><input type="text" id="in-b2-name" placeholder="Name" onkeyup="updateDB()"></div>
+                            <div class="input-group"><label>RUNS</label><input type="number" id="in-b2-runs" value="0" onchange="updateDB()"></div>
+                            <div class="input-group"><label>BALLS</label><input type="number" id="in-b2-balls" value="0" onchange="updateDB()"></div>
+                        </div>
+                        <label class="radio-group"><input type="radio" name="strike" id="strike2" onchange="updateDB()"> On Strike</label>
                     </div>
                 </div>
-            </div>
-        </div>
 
-        <!-- Scoring Pad Card -->
-        <div class="card">
-            <div class="card-header">LIVE SCORING PAD <span>TAP TO SYNC IMMEDIATELY</span></div>
-            <div class="card-body pad-grid">
-                <button class="btn-pad btn-run" onclick="addRuns(0, 1)">0</button>
-                <button class="btn-pad btn-run" onclick="addRuns(1, 1)">1</button>
-                <button class="btn-pad btn-run" onclick="addRuns(2, 1)">2</button>
-                <button class="btn-pad btn-run" onclick="addRuns(3, 1)">3</button>
-                <button class="btn-pad btn-run" onclick="addRuns(4, 1)">4</button>
-                <button class="btn-pad btn-run" onclick="addRuns(6, 1)">6</button>
-                <button class="btn-pad btn-extra" onclick="addRuns(1, 0)">WD/NB</button>
-                <button class="btn-pad btn-extra" onclick="addRuns(0, 0)">PEN</button>
-                
-                <button class="btn-pad btn-wicket" onclick="addWicket()">+ WICKET</button>
-                <button class="btn-pad btn-undo" onclick="undoLast()">UNDO LAST BALL</button>
+                <div class="card" style="margin: 15px 15px 0 0;">
+                    <div class="card-header">CURRENT BOWLER (MANUAL UPDATE)</div>
+                    <div class="card-body grid-4">
+                        <div class="input-group" style="grid-column: span 4;"><label>BOWLER NAME</label><input type="text" id="in-bowl-name" placeholder="Name" onkeyup="updateDB()"></div>
+                        <div class="input-group"><label>OVERS</label><input type="number" step="0.1" id="in-bowl-o" value="0" onchange="updateDB()"></div>
+                        <div class="input-group"><label>MAIDENS</label><input type="number" id="in-bowl-m" value="0" onchange="updateDB()"></div>
+                        <div class="input-group"><label>RUNS</label><input type="number" id="in-bowl-r" value="0" onchange="updateDB()"></div>
+                        <div class="input-group"><label>WKTS</label><input type="number" id="in-bowl-w" value="0" onchange="updateDB()"></div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- FIREBASE INTEGRATION -->
+    <!-- FIREBASE -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
         import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
 
-        // Firebase configuration
+        // Your exact Firebase keys
         const firebaseConfig = {
             apiKey: "AIzaSyCo80tL6v0zvoiUN0KfeitImUf5KF5TBXw",
             authDomain: "thunders-scoreboard-ab3f5.firebaseapp.com",
@@ -251,7 +213,7 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
-        const scoreRef = ref(db, 'match_data');
+        const scoreRef = ref(db, 'pro_match_data'); // New database node for the Pro version
 
         // Layout check for PRISM Overlay
         const urlParams = new URLSearchParams(window.location.search);
@@ -261,120 +223,116 @@
             document.body.classList.add('transparent');
         }
 
-        // Keep track of the previous state for the Undo button
-        let previousState = null;
-
-        // Sync from Database to Screen
+        // 1. READ FROM DATABASE
         onValue(scoreRef, (snapshot) => {
             const data = snapshot.val();
             if (data) {
-                // Update Broadcast Graphic
+                // Update Overlay (Main)
                 document.getElementById('overlay-runs').innerText = data.runs;
                 document.getElementById('overlay-wickets').innerText = data.wickets;
-                document.getElementById('overlay-overs').innerText = data.compOvers + "." + data.balls;
+                document.getElementById('overlay-overs').innerText = data.overs + "." + data.balls;
                 document.getElementById('overlay-team').innerText = data.team;
                 document.getElementById('overlay-target').innerText = data.target;
+                
+                // Update Overlay (Players)
+                document.getElementById('name-b1').innerText = data.b1Name || "BATTER 1";
+                document.getElementById('runs-b1').innerText = data.b1Runs || "0";
+                document.getElementById('balls-b1').innerText = data.b1Balls || "0";
+                document.getElementById('strike-b1').className = data.strike === 1 ? "strike-indicator active" : "strike-indicator";
 
-                // Update Input Boxes (Only if user isn't currently typing in them)
+                document.getElementById('name-b2').innerText = data.b2Name || "BATTER 2";
+                document.getElementById('runs-b2').innerText = data.b2Runs || "0";
+                document.getElementById('balls-b2').innerText = data.b2Balls || "0";
+                document.getElementById('strike-b2').className = data.strike === 2 ? "strike-indicator active" : "strike-indicator";
+
+                document.getElementById('name-bowl').innerText = data.bowlName || "BOWLER";
+                document.getElementById('o-bowl').innerText = data.bowlO || "0";
+                document.getElementById('m-bowl').innerText = data.bowlM || "0";
+                document.getElementById('r-bowl').innerText = data.bowlR || "0";
+                document.getElementById('w-bowl').innerText = data.bowlW || "0";
+
+                // Update Control Panel Inputs (Only if not typing)
                 if (document.activeElement.tagName !== "INPUT") {
-                    document.getElementById('input-runs').value = data.runs;
-                    document.getElementById('input-wickets').value = data.wickets;
-                    document.getElementById('input-overs-comp').value = data.compOvers;
-                    document.getElementById('input-balls').value = data.balls;
-                    document.getElementById('input-team').value = data.team;
-                    document.getElementById('input-target').value = data.target;
+                    document.getElementById('in-runs').value = data.runs;
+                    document.getElementById('in-wickets').value = data.wickets;
+                    document.getElementById('in-overs').value = data.overs;
+                    document.getElementById('in-balls').value = data.balls;
+                    document.getElementById('in-team').value = data.team;
+                    document.getElementById('in-target').value = data.target;
+                    
+                    document.getElementById('in-b1-name').value = data.b1Name;
+                    document.getElementById('in-b1-runs').value = data.b1Runs;
+                    document.getElementById('in-b1-balls').value = data.b1Balls;
+                    
+                    document.getElementById('in-b2-name').value = data.b2Name;
+                    document.getElementById('in-b2-runs').value = data.b2Runs;
+                    document.getElementById('in-b2-balls').value = data.b2Balls;
+                    
+                    document.getElementById('in-bowl-name').value = data.bowlName;
+                    document.getElementById('in-bowl-o').value = data.bowlO;
+                    document.getElementById('in-bowl-m').value = data.bowlM;
+                    document.getElementById('in-bowl-r').value = data.bowlR;
+                    document.getElementById('in-bowl-w').value = data.bowlW;
+
+                    if(data.strike === 1) document.getElementById('strike1').checked = true;
+                    if(data.strike === 2) document.getElementById('strike2').checked = true;
                 }
             }
         });
 
-        // Push Manual Input to Database
+        // 2. WRITE TO DATABASE
         window.updateDB = function() {
-            saveState(); // Save before manual override
             set(scoreRef, {
-                runs: parseInt(document.getElementById('input-runs').value) || 0,
-                wickets: parseInt(document.getElementById('input-wickets').value) || 0,
-                compOvers: parseInt(document.getElementById('input-overs-comp').value) || 0,
-                balls: parseInt(document.getElementById('input-balls').value) || 0,
-                team: document.getElementById('input-team').value,
-                target: document.getElementById('input-target').value
+                runs: parseInt(document.getElementById('in-runs').value) || 0,
+                wickets: parseInt(document.getElementById('in-wickets').value) || 0,
+                overs: parseInt(document.getElementById('in-overs').value) || 0,
+                balls: parseInt(document.getElementById('in-balls').value) || 0,
+                team: document.getElementById('in-team').value,
+                target: document.getElementById('in-target').value,
+                
+                b1Name: document.getElementById('in-b1-name').value,
+                b1Runs: parseInt(document.getElementById('in-b1-runs').value) || 0,
+                b1Balls: parseInt(document.getElementById('in-b1-balls').value) || 0,
+                
+                b2Name: document.getElementById('in-b2-name').value,
+                b2Runs: parseInt(document.getElementById('in-b2-runs').value) || 0,
+                b2Balls: parseInt(document.getElementById('in-b2-balls').value) || 0,
+                
+                strike: document.getElementById('strike1').checked ? 1 : 2,
+
+                bowlName: document.getElementById('in-bowl-name').value,
+                bowlO: document.getElementById('in-bowl-o').value || "0",
+                bowlM: parseInt(document.getElementById('in-bowl-m').value) || 0,
+                bowlR: parseInt(document.getElementById('in-bowl-r').value) || 0,
+                bowlW: parseInt(document.getElementById('in-bowl-w').value) || 0,
             });
         };
 
-        // Save current state for undo functionality
-        function saveState() {
-            previousState = {
-                runs: parseInt(document.getElementById('input-runs').value) || 0,
-                wickets: parseInt(document.getElementById('input-wickets').value) || 0,
-                compOvers: parseInt(document.getElementById('input-overs-comp').value) || 0,
-                balls: parseInt(document.getElementById('input-balls').value) || 0
-            };
-        }
+        // Quick Pad Logic (Main Team Score Only)
+        window.addTeamRun = function(runs, ballsToAdd) {
+            let r = parseInt(document.getElementById('in-runs').value) || 0;
+            let b = parseInt(document.getElementById('in-balls').value) || 0;
+            let o = parseInt(document.getElementById('in-overs').value) || 0;
 
-        // Quick Pad: Add Runs
-        window.addRuns = function(runs, ballsToAdd) {
-            saveState();
-            let currentRuns = parseInt(document.getElementById('input-runs').value) || 0;
-            let currentBalls = parseInt(document.getElementById('input-balls').value) || 0;
-            let currentOvers = parseInt(document.getElementById('input-overs-comp').value) || 0;
-
-            document.getElementById('input-runs').value = currentRuns + runs;
-            
-            currentBalls += ballsToAdd;
-            if (currentBalls >= 6) {
-                currentOvers += 1;
-                currentBalls = 0;
-            }
-            document.getElementById('input-balls').value = currentBalls;
-            document.getElementById('input-overs-comp').value = currentOvers;
-            
+            document.getElementById('in-runs').value = r + runs;
+            b += ballsToAdd;
+            if (b >= 6) { o += 1; b = 0; }
+            document.getElementById('in-balls').value = b;
+            document.getElementById('in-overs').value = o;
             window.updateDB();
         };
 
-        // Quick Pad: Add Wicket
-        window.addWicket = function() {
-            saveState();
-            let currentWickets = parseInt(document.getElementById('input-wickets').value) || 0;
-            let currentBalls = parseInt(document.getElementById('input-balls').value) || 0;
-            let currentOvers = parseInt(document.getElementById('input-overs-comp').value) || 0;
+        window.addTeamWicket = function() {
+            let w = parseInt(document.getElementById('in-wickets').value) || 0;
+            let b = parseInt(document.getElementById('in-balls').value) || 0;
+            let o = parseInt(document.getElementById('in-overs').value) || 0;
 
-            document.getElementById('input-wickets').value = currentWickets + 1;
-            
-            currentBalls += 1;
-            if (currentBalls >= 6) {
-                currentOvers += 1;
-                currentBalls = 0;
-            }
-            document.getElementById('input-balls').value = currentBalls;
-            document.getElementById('input-overs-comp').value = currentOvers;
-
+            document.getElementById('in-wickets').value = w + 1;
+            b += 1;
+            if (b >= 6) { o += 1; b = 0; }
+            document.getElementById('in-balls').value = b;
+            document.getElementById('in-overs').value = o;
             window.updateDB();
-        };
-
-        // Quick Pad: Undo Last Action
-        window.undoLast = function() {
-            if (previousState) {
-                document.getElementById('input-runs').value = previousState.runs;
-                document.getElementById('input-wickets').value = previousState.wickets;
-                document.getElementById('input-overs-comp').value = previousState.compOvers;
-                document.getElementById('input-balls').value = previousState.balls;
-                window.updateDB();
-                previousState = null; // Can only undo once
-            } else {
-                alert("Nothing to undo!");
-            }
-        };
-
-        // Reset Entire Match
-        window.resetMatch = function() {
-            if(confirm("Are you sure you want to completely clear the scoreboard?")) {
-                saveState();
-                document.getElementById('input-runs').value = 0;
-                document.getElementById('input-wickets').value = 0;
-                document.getElementById('input-overs-comp').value = 0;
-                document.getElementById('input-balls').value = 0;
-                document.getElementById('input-target').value = "";
-                window.updateDB();
-            }
         };
     </script>
 </body>
