@@ -432,8 +432,8 @@
         <p class="text-muted small mb-3">Enter the next bowler's name:</p>
         <input type="text" id="modal-bowler-name" class="form-control form-control-lg fw-bold mb-3" placeholder="e.g. Starc" autofocus>
         <div class="d-flex gap-2">
-            <button onclick="hideBowlerModal()" class="btn btn-secondary flex-fill fw-bold">Skip</button>
-            <button onclick="confirmNewBowler()" class="btn btn-primary flex-fill fw-bold">Set Bowler</button>
+            <button onclick="window.hideBowlerModal()" class="btn btn-secondary flex-fill fw-bold">Skip</button>
+            <button onclick="window.confirmNewBowler()" class="btn btn-primary flex-fill fw-bold">Set Bowler</button>
         </div>
     </div>
 </div>
@@ -447,8 +447,8 @@
         <p class="text-muted small mb-3">Enter the new batsman's name:</p>
         <input type="text" id="modal-batsman-name" class="form-control form-control-lg fw-bold mb-3" placeholder="e.g. Smith" autofocus>
         <div class="d-flex gap-2">
-            <button onclick="hideBatsmanModal()" class="btn btn-secondary flex-fill fw-bold">Skip</button>
-            <button onclick="confirmNewBatsman()" class="btn btn-success flex-fill fw-bold">Add Batsman</button>
+            <button onclick="window.hideBatsmanModal()" class="btn btn-secondary flex-fill fw-bold">Skip</button>
+            <button onclick="window.confirmNewBatsman()" class="btn btn-success flex-fill fw-bold">Add Batsman</button>
         </div>
     </div>
 </div>
@@ -461,16 +461,16 @@
         </h2>
         <p class="text-muted small mb-3">How many total runs? (1 = wide only, 2 = wide + 1 run, etc.)</p>
         <div class="row g-2 mb-3">
-            <div class="col-3"><button onclick="confirmExtra(1)" class="score-btn btn w-100 fw-bold" style="background:#fff7ed; color:#9a3412; border:2px solid #fdba74; font-size: 20px; padding: 16px 0;">1</button></div>
-            <div class="col-3"><button onclick="confirmExtra(2)" class="score-btn btn w-100 fw-bold" style="background:#fff7ed; color:#9a3412; border:2px solid #fdba74; font-size: 20px; padding: 16px 0;">2</button></div>
-            <div class="col-3"><button onclick="confirmExtra(3)" class="score-btn btn w-100 fw-bold" style="background:#fff7ed; color:#9a3412; border:2px solid #fdba74; font-size: 20px; padding: 16px 0;">3</button></div>
-            <div class="col-3"><button onclick="confirmExtra(4)" class="score-btn btn w-100 fw-bold" style="background:#fff7ed; color:#9a3412; border:2px solid #fdba74; font-size: 20px; padding: 16px 0;">4</button></div>
+            <div class="col-3"><button onclick="window.confirmExtra(1)" class="score-btn btn w-100 fw-bold" style="background:#fff7ed; color:#9a3412; border:2px solid #fdba74; font-size: 20px; padding: 16px 0;">1</button></div>
+            <div class="col-3"><button onclick="window.confirmExtra(2)" class="score-btn btn w-100 fw-bold" style="background:#fff7ed; color:#9a3412; border:2px solid #fdba74; font-size: 20px; padding: 16px 0;">2</button></div>
+            <div class="col-3"><button onclick="window.confirmExtra(3)" class="score-btn btn w-100 fw-bold" style="background:#fff7ed; color:#9a3412; border:2px solid #fdba74; font-size: 20px; padding: 16px 0;">3</button></div>
+            <div class="col-3"><button onclick="window.confirmExtra(4)" class="score-btn btn w-100 fw-bold" style="background:#fff7ed; color:#9a3412; border:2px solid #fdba74; font-size: 20px; padding: 16px 0;">4</button></div>
         </div>
         <div class="row g-2 mb-3">
-            <div class="col-6"><button onclick="confirmExtra(5)" class="score-btn btn w-100 fw-bold" style="background:#fff7ed; color:#9a3412; border:2px solid #fdba74; font-size: 16px; padding: 14px 0;">5</button></div>
-            <div class="col-6"><button onclick="confirmExtra(6)" class="score-btn btn w-100 fw-bold" style="background:#fff7ed; color:#9a3412; border:2px solid #fdba74; font-size: 16px; padding: 14px 0;">6 (bound)</button></div>
+            <div class="col-6"><button onclick="window.confirmExtra(5)" class="score-btn btn w-100 fw-bold" style="background:#fff7ed; color:#9a3412; border:2px solid #fdba74; font-size: 16px; padding: 14px 0;">5</button></div>
+            <div class="col-6"><button onclick="window.confirmExtra(6)" class="score-btn btn w-100 fw-bold" style="background:#fff7ed; color:#9a3412; border:2px solid #fdba74; font-size: 16px; padding: 14px 0;">6 (bound)</button></div>
         </div>
-        <button onclick="hideExtraModal()" class="btn btn-secondary w-100 fw-bold">Cancel</button>
+        <button onclick="window.hideExtraModal()" class="btn btn-secondary w-100 fw-bold">Cancel</button>
     </div>
 </div>
 
@@ -480,8 +480,8 @@
         <h2 class="mb-2 text-uppercase" style="font-size: 20px; font-weight: 900;">End Innings?</h2>
         <p class="text-muted small mb-3">This resets the score to 0-0. Player stats will be cleared. This cannot be undone.</p>
         <div class="d-flex gap-2">
-            <button onclick="hideResetModal()" class="btn btn-secondary flex-fill fw-bold">Cancel</button>
-            <button onclick="confirmReset()" class="btn btn-danger flex-fill fw-bold">Yes, Reset</button>
+            <button onclick="window.hideResetModal()" class="btn btn-secondary flex-fill fw-bold">Cancel</button>
+            <button onclick="window.confirmReset()" class="btn btn-danger flex-fill fw-bold">Yes, Reset</button>
         </div>
     </div>
 </div>
@@ -613,7 +613,6 @@
         else { btn.disabled = true; btn.classList.remove('undo-available'); }
     }
 
-    // THE BUG FIX: "dot" now correctly triggers incrementBall()
     window.scoreAction = (type, value = 0) => {
         saveUndoSnapshot();
         
@@ -665,7 +664,7 @@
             matchState.currentOverBalls.push({ type: 'wicket', value: 0, label: 'W' });
             matchState.striker = { name: 'New Batsman', runs: 0, balls: 0, fours: 0, sixes: 0 };
             incrementBall();
-            if (currentMode === 'control') showBatsmanModal();
+            if (currentMode === 'control') window.showBatsmanModal();
         }
 
         if (matchState.recentBalls.length > 6) matchState.recentBalls = matchState.recentBalls.slice(-6);
@@ -677,7 +676,7 @@
         if (matchState.balls >= 6) {
             matchState.completedOvers += 1; matchState.balls = 0; matchState.currentOverBalls = [];
             swapStrike();
-            if (currentMode === 'control') showBowlerModal();
+            if (currentMode === 'control') window.showBowlerModal();
         }
     }
 
@@ -688,6 +687,7 @@
     }
 
     window.swapBatsmen = () => { saveUndoSnapshot(); swapStrike(); updateUI(matchState); pushStateToFirebase(); };
+    
     window.pushMatchSetup = () => {
         saveUndoSnapshot();
         matchState.battingTeam = (document.getElementById('in-bat').value || "TEAM").toUpperCase();
@@ -698,6 +698,7 @@
         matchState.innings = parseInt(document.getElementById('in-innings').value) || 1;
         updateUI(matchState); pushStateToFirebase();
     };
+    
     window.pushPlayerNames = () => {
         saveUndoSnapshot();
         matchState.striker.name = document.getElementById('in-striker-name').value || '';
@@ -705,6 +706,7 @@
         matchState.bowler.name = document.getElementById('in-bowler-name').value || '';
         pushStateToFirebase();
     };
+    
     window.pushManualOverride = () => {
         saveUndoSnapshot();
         matchState.runs = parseInt(document.getElementById('in-runs').value) || 0;
@@ -713,34 +715,39 @@
         matchState.balls = parseInt(document.getElementById('in-balls').value) || 0;
         updateUI(matchState); pushStateToFirebase();
     };
+    
     window.newBowler = () => { saveUndoSnapshot(); matchState.bowler = { name: document.getElementById('in-bowler-name').value || '', runs: 0, wickets: 0, balls: 0 }; updateUI(matchState); pushStateToFirebase(); };
 
-    // Modals
+    // Modals - Added window. prefix so the module can find them!
     let pendingExtraType = null;
+    
     window.showBowlerModal = () => { document.getElementById('bowler-modal').classList.remove('hidden'); setTimeout(() => document.getElementById('modal-bowler-name').focus(), 50); };
     window.hideBowlerModal = () => { document.getElementById('bowler-modal').classList.add('hidden'); };
     window.confirmNewBowler = () => {
         const n = document.getElementById('modal-bowler-name').value.trim();
         if (n) { saveUndoSnapshot(); matchState.bowler = { name: n, runs: 0, wickets: 0, balls: 0 }; updateUI(matchState); pushStateToFirebase(); }
-        hideBowlerModal();
+        window.hideBowlerModal();
     };
+    
     window.showBatsmanModal = () => { document.getElementById('batsman-modal').classList.remove('hidden'); setTimeout(() => document.getElementById('modal-batsman-name').focus(), 50); };
     window.hideBatsmanModal = () => { document.getElementById('batsman-modal').classList.add('hidden'); };
     window.confirmNewBatsman = () => {
         const n = document.getElementById('modal-batsman-name').value.trim();
         if (n) { saveUndoSnapshot(); matchState.striker.name = n; updateUI(matchState); pushStateToFirebase(); }
-        hideBatsmanModal();
+        window.hideBatsmanModal();
     };
+    
     window.showExtraModal = (type) => { pendingExtraType = type; document.getElementById('extra-modal').classList.remove('hidden'); document.getElementById('extra-modal-title').innerHTML = '<i class="bi bi-exclamation-circle"></i> ' + (type === 'wide' ? 'Wide' : 'No Ball'); };
     window.hideExtraModal = () => { document.getElementById('extra-modal').classList.add('hidden'); pendingExtraType = null; };
-    window.confirmExtra = (totalRuns) => { if (pendingExtraType) scoreAction(pendingExtraType, totalRuns); hideExtraModal(); };
+    window.confirmExtra = (totalRuns) => { if (pendingExtraType) window.scoreAction(pendingExtraType, totalRuns); window.hideExtraModal(); };
+    
     window.showResetModal = () => { document.getElementById('reset-modal').classList.remove('hidden'); };
     window.hideResetModal = () => { document.getElementById('reset-modal').classList.add('hidden'); };
     window.confirmReset = () => {
         saveUndoSnapshot();
         matchState.runs = 0; matchState.wickets = 0; matchState.completedOvers = 0; matchState.balls = 0; matchState.target = null;
         matchState.striker = { name: '', runs: 0, balls: 0, fours: 0, sixes: 0 }; matchState.nonStriker = { name: '', runs: 0, balls: 0, fours: 0, sixes: 0 }; matchState.bowler = { name: '', runs: 0, wickets: 0, balls: 0 };
-        matchState.recentBalls = []; updateUI(matchState); pushStateToFirebase(); hideResetModal();
+        matchState.recentBalls = []; updateUI(matchState); pushStateToFirebase(); window.hideResetModal();
     };
 
     window.handleLogoUpload = (team) => {
@@ -803,11 +810,11 @@
             setText('obs-bowler-name', data.bowler.name || 'BOWLER'); setText('obs-bowler-figs', `${data.bowler.wickets}-${data.bowler.runs} `);
             document.getElementById('obs-bowler-figs').innerHTML = `${data.bowler.wickets}-${data.bowler.runs} <span style="font-size: 11px; color: #aaa; font-weight: 700;">${Math.floor(data.bowler.balls/6)}.${data.bowler.balls%6}</span>`;
 
-            // Expanded Over Tracker (Fix for showing >6 balls like wides)
+            // Expanded Over Tracker
             const trackerContainer = document.getElementById('obs-over-tracker');
             if (trackerContainer) {
                 trackerContainer.innerHTML = '';
-                const ballsToShow = Math.max(6, data.currentOverBalls.length); // Ensures tracker expands if >6 balls
+                const ballsToShow = Math.max(6, data.currentOverBalls.length); 
                 for (let i = 0; i < ballsToShow; i++) {
                     const circle = document.createElement('span');
                     if (i < data.currentOverBalls.length) {
