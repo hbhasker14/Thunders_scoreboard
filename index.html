@@ -19,66 +19,82 @@
             --crimson: #E63946;
             --green: #1B998B;
         }
-        * { font-family: 'Montserrat', sans-serif; }
+        * { font-family: 'Montserrat', sans-serif; box-sizing: border-box; }
         body { margin: 0; padding: 0; background: #f0f2f5; }
 
-        /* Hidden utility */
         .hidden { display: none !important; }
 
-        /* OVERLAY MODE - Hugs the graphic tightly so PRISM box isn't huge! */
+        /* OVERLAY MODE - Centered and cleanly anchored */
         body.overlay-mode { 
             background: transparent !important; 
             overflow: hidden; 
             width: 100vw; 
-            height: auto; 
+            height: 100vh; 
             margin: 0; 
-            padding: 10px; 
-            box-sizing: border-box; 
+            padding: 0; 
+            display: flex; 
+            justify-content: center; 
+            align-items: flex-end; 
+            padding-bottom: 25px; 
         }
 
         .value-updated { animation: pulseText 0.5s ease-out; }
         @keyframes pulseText { 0% { transform: scale(1); } 50% { transform: scale(1.1); color: #fff; } 100% { transform: scale(1); } }
 
-        /* RESPONSIVE TV STYLES - Won't cut off on the right! */
-        .tv-wrapper { width: 100%; display: flex; flex-direction: column; align-items: center; z-index: 9999; }
-        .tv-main-bar { display: flex; background: #070707; color: #fff; height: 85px; box-shadow: 0 10px 30px rgba(0,0,0,0.8); border-radius: 12px; overflow: hidden; width: 100%; align-items: stretch; }
+        /* TV GRAPHIC - Crisp edges, no murky shadow halo */
+        .tv-wrapper { width: max-content; display: flex; flex-direction: column; align-items: center; z-index: 9999; }
+        .tv-main-bar { 
+            display: flex; 
+            background: #070707; 
+            color: #fff; 
+            height: 94px; 
+            border-radius: 12px; 
+            border: 1px solid rgba(255,255,255,0.15); 
+            box-shadow: 0 4px 14px rgba(0,0,0,0.4); 
+            overflow: hidden; 
+            align-items: stretch; 
+            width: max-content; 
+        }
         
-        .tv-logo-box { padding: 0 15px; background: #111; display: flex; align-items: center; border-right: 3px solid #222; flex: 0 0 auto; }
-        .tv-logo-img { width: 65px; height: 65px; border-radius: 50%; object-fit: cover; }
+        .tv-logo-box { padding: 0 16px; background: #111; display: flex; align-items: center; border-right: 2px solid #222; flex: 0 0 auto; }
+        .tv-logo-img { width: 68px; height: 68px; border-radius: 50%; object-fit: cover; }
         
-        .tv-score-box { display: flex; flex-direction: column; justify-content: center; padding: 0 25px; background: #070707; flex: 0 0 auto; }
-        .tv-team-name { font-size: 20px; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; line-height: 1.1; }
-        .tv-score-text { font-size: 50px; font-weight: 900; color: #f97316; line-height: 1; letter-spacing: -2px; margin-top: 2px; }
+        /* Batting Score */
+        .tv-score-box { display: flex; flex-direction: column; justify-content: space-between; padding: 10px 22px; background: #070707; flex: 0 0 auto; }
+        .tv-team-name { font-size: 16px; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; line-height: 1.2; margin: 0; }
+        .tv-score-text { font-size: 50px; font-weight: 900; color: #f97316; line-height: 1; letter-spacing: -2px; margin-top: auto; }
         
-        .tv-overs-box { display: flex; flex-direction: column; justify-content: center; padding: 0 25px 0 0; border-right: 3px solid #222; flex: 0 0 auto; }
-        .tv-overs-label { font-size: 14px; font-weight: 800; color: #ccc; letter-spacing: 2px; }
+        /* Overs & Target */
+        .tv-overs-box { display: flex; flex-direction: column; justify-content: center; padding: 10px 22px 10px 0; border-right: 2px solid #222; flex: 0 0 auto; }
+        .tv-overs-label { font-size: 14px; font-weight: 800; color: #ccc; letter-spacing: 1.5px; }
         .tv-overs-val { font-weight: 900; color: #fff; margin-left: 6px; font-size: 24px; }
-        .tv-target-row { font-size: 14px; font-weight: 800; color: #aaa; letter-spacing: 2px; margin-top: 4px; }
-        .tv-target-val { color: #ccc; font-size: 20px; font-weight: 900; }
+        .tv-target-row { font-size: 13px; font-weight: 800; color: #aaa; letter-spacing: 1.5px; margin-top: 4px; }
+        .tv-target-val { color: #ccc; font-size: 18px; font-weight: 900; }
         
-        /* The middle pill area is allowed to squeeze if PRISM box is narrow */
-        .tv-pill-container { display: flex; align-items: center; justify-content: center; flex: 1 1 auto; min-width: 0; padding: 0 20px; background: #070707; border-right: 3px solid #222; }
-        .tv-pill { display: flex; height: 56px; border-radius: 28px; overflow: hidden; border: 2px solid #333; box-shadow: inset 0 3px 8px rgba(0,0,0,0.5); width: 100%; max-width: 700px; }
-        .tv-striker { display: flex; align-items: center; background: linear-gradient(90deg, #ea580c, #f97316); padding: 0 20px 0 15px; flex: 1; min-width: 0; }
-        .tv-nonstriker { display: flex; align-items: center; background: #1f2937; padding: 0 20px; flex: 1; min-width: 0; }
+        /* Batsman Pill - Locked width so names never crush/disappear */
+        .tv-pill-container { display: flex; align-items: center; justify-content: center; padding: 0 18px; background: #070707; border-right: 2px solid #222; flex: 0 0 auto; }
+        .tv-pill { display: flex; height: 58px; border-radius: 29px; overflow: hidden; border: 2px solid #333; box-shadow: inset 0 2px 6px rgba(0,0,0,0.6); width: 580px; }
+        .tv-striker { display: flex; align-items: center; background: linear-gradient(90deg, #ea580c, #f97316); padding: 0 18px 0 14px; flex: 1; white-space: nowrap; }
+        .tv-nonstriker { display: flex; align-items: center; background: #1f2937; padding: 0 18px; flex: 1; white-space: nowrap; }
         
-        .tv-arrow { font-size: 16px; color: #fff; margin-right: 10px; flex: 0 0 auto; }
-        .tv-bat-name { font-weight: 900; font-size: 22px; text-transform: uppercase; margin-right: auto; color: #000; letter-spacing: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .tv-arrow { font-size: 14px; color: #fff; margin-right: 8px; flex: 0 0 auto; }
+        .tv-bat-name { font-weight: 900; font-size: 20px; text-transform: uppercase; color: #000; letter-spacing: 0.5px; white-space: nowrap; }
         .tv-nonstriker .tv-bat-name { color: #fff; }
-        .tv-bat-runs { font-weight: 900; font-size: 28px; color: #000; margin-left: 15px; flex: 0 0 auto; }
+        .tv-bat-runs { font-weight: 900; font-size: 25px; color: #000; margin-left: auto; padding-left: 10px; flex: 0 0 auto; }
         .tv-nonstriker .tv-bat-runs { color: #fff; }
-        .tv-bat-balls { font-weight: 800; font-size: 16px; color: #000; margin-left: 8px; opacity: 0.8; flex: 0 0 auto; }
+        .tv-bat-balls { font-weight: 800; font-size: 15px; color: #000; margin-left: 4px; opacity: 0.8; flex: 0 0 auto; }
         .tv-nonstriker .tv-bat-balls { color: #aaa; }
         
-        .tv-bowl-box { display: flex; flex-direction: column; justify-content: center; padding: 0 25px 0 30px; background: #070707; flex: 0 0 auto; }
-        .tv-bowl-team { font-size: 18px; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; line-height: 1.1; }
-        .tv-bowl-stats { display: flex; align-items: baseline; gap: 15px; margin-top: 2px; }
-        .tv-bowl-name { font-weight: 900; font-size: 24px; text-transform: uppercase; color: #86efac; letter-spacing: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 220px; }
-        .tv-bowl-figs { font-weight: 900; font-size: 26px; color: #fff; }
-        .tv-bowl-overs { font-size: 18px; color: #aaa; font-weight: 800; margin-left: 6px; }
-        .tv-tracker-row { display: flex; gap: 6px; margin-top: 6px; }
+        /* Bowler Section - Clean vertical breathing room */
+        .tv-bowl-box { display: flex; flex-direction: column; justify-content: space-between; padding: 10px 22px; background: #070707; flex: 0 0 auto; }
+        .tv-bowl-team { font-size: 16px; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; line-height: 1.2; margin: 0; }
+        .tv-bowl-stats { display: flex; align-items: baseline; gap: 12px; margin: 0; }
+        .tv-bowl-name { font-weight: 900; font-size: 22px; text-transform: uppercase; color: #86efac; letter-spacing: 0.5px; white-space: nowrap; }
+        .tv-bowl-figs { font-weight: 900; font-size: 22px; color: #fff; }
+        .tv-bowl-overs { font-size: 16px; color: #aaa; font-weight: 800; margin-left: 6px; }
+        .tv-tracker-row { display: flex; gap: 5px; margin: 0; }
 
-        .over-ball { display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 26px; border-radius: 50%; font-weight: 900; font-size: 13px; border: 2px solid #fff; color: #fff; }
+        .over-ball { display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; border-radius: 50%; font-weight: 900; font-size: 12px; border: 2px solid #fff; color: #fff; }
         .over-ball.empty { border-color: #555; color: transparent; }
         .over-ball.dot { border-color: #aaa; color: transparent; }
         .over-ball.run { border-color: #fff; }
@@ -87,7 +103,7 @@
         .over-ball.wicket { border-color: #ef4444; background: #ef4444; color: #fff; }
         .over-ball.extra { border-color: #f59e0b; color: #f59e0b; }
 
-        .tv-equation { margin-top: 12px; background: rgba(15, 20, 30, 0.95); color: #fff; padding: 10px 40px; border-radius: 8px; font-size: 22px; font-weight: 900; letter-spacing: 2px; box-shadow: 0 6px 15px rgba(0,0,0,0.7); border: 2px solid #333; text-transform: uppercase; }
+        .tv-equation { margin-top: 10px; background: rgba(15, 20, 30, 0.95); color: #fff; padding: 8px 32px; border-radius: 8px; font-size: 18px; font-weight: 900; letter-spacing: 2px; border: 1px solid #333; text-transform: uppercase; }
 
         .score-btn { transition: all 0.12s; user-select: none; }
         .score-btn:active { transform: scale(0.95); }
@@ -136,7 +152,7 @@
             <div id="obs-over-tracker" class="tv-tracker-row"></div>
         </div>
 
-        <div class="tv-logo-box" style="border-right: none; border-left: 3px solid #222;">
+        <div class="tv-logo-box" style="border-right: none; border-left: 2px solid #222;">
             <img id="obs-bowl-logo" class="tv-logo-img hidden">
         </div>
     </div>
@@ -173,7 +189,6 @@
     </header>
 
     <div class="container-fluid py-3" style="max-width: 1000px;">
-        <!-- Match Setup Row with COLOR PICKERS -->
         <div class="row g-3 mb-3">
             <div class="col-12">
                 <div class="card border-0 shadow-sm rounded-3">
@@ -227,7 +242,6 @@
             </div>
         </div>
 
-        <!-- Live Preview + Players Row -->
         <div class="row g-3 mb-3">
             <div class="col-12 col-lg-5">
                 <div class="card border-0 shadow-sm rounded-3 h-100">
@@ -267,7 +281,6 @@
                             <i class="bi bi-people-fill text-primary"></i> Players
                         </h2>
                         <div class="row g-2">
-                            <!-- Striker -->
                             <div class="col-12">
                                 <div class="d-flex align-items-center gap-2 p-2 rounded" style="background: rgba(244,208,63,0.1); border-left: 3px solid var(--gold);">
                                     <i class="bi bi-star-fill text-warning"></i>
@@ -278,7 +291,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- Non-Striker -->
                             <div class="col-12">
                                 <div class="d-flex align-items-center gap-2 p-2 rounded" style="background: #f8f9fa; border-left: 3px solid #ccc;">
                                     <i class="bi bi-person text-muted"></i>
@@ -289,7 +301,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- Bowler -->
                             <div class="col-12">
                                 <div class="d-flex align-items-center gap-2 p-2 rounded" style="background: rgba(230,57,70,0.08); border-left: 3px solid var(--crimson);">
                                     <i class="bi bi-circle-fill text-danger" style="font-size: 10px;"></i>
@@ -310,7 +321,6 @@
             </div>
         </div>
 
-        <!-- Scoring Pad -->
         <div class="row g-3">
             <div class="col-12">
                 <div class="card border-0 shadow-sm rounded-3">
@@ -318,26 +328,22 @@
                         <h2 class="text-uppercase mb-3 d-flex justify-content-between align-items-center" style="font-size: 13px; font-weight: 800; letter-spacing: 1px; color: #555; border-bottom: 1px solid #eee; padding-bottom: 8px;">
                             <span><i class="bi bi-controller text-success"></i> Scoring Pad</span>
                         </h2>
-                        <!-- Runs -->
                         <div class="row g-2 mb-2">
                             <div class="col-3"><button onclick="window.scoreAction('dot')" class="score-btn btn w-100 fw-bold text-secondary border" style="background:#f1f5f9; font-size: 18px; padding: 20px 0;">DOT</button></div>
                             <div class="col-3"><button onclick="window.scoreAction('runs', 1)" class="score-btn btn w-100 fw-bold" style="background:#eff6ff; color:#1d4ed8; border:2px solid #93c5fd; font-size: 24px; padding: 18px 0;">1</button></div>
                             <div class="col-3"><button onclick="window.scoreAction('runs', 2)" class="score-btn btn w-100 fw-bold" style="background:#eff6ff; color:#1d4ed8; border:2px solid #93c5fd; font-size: 24px; padding: 18px 0;">2</button></div>
                             <div class="col-3"><button onclick="window.scoreAction('runs', 3)" class="score-btn btn w-100 fw-bold" style="background:#eff6ff; color:#1d4ed8; border:2px solid #93c5fd; font-size: 24px; padding: 18px 0;">3</button></div>
                         </div>
-                        <!-- Boundaries -->
                         <div class="row g-2 mb-2">
                             <div class="col-6"><button onclick="window.scoreAction('runs', 4)" class="score-btn btn w-100 fw-bold text-white" style="background:#10b981; font-size: 28px; padding: 24px 0;">FOUR</button></div>
                             <div class="col-6"><button onclick="window.scoreAction('runs', 6)" class="score-btn btn w-100 fw-bold text-white" style="background:#8b5cf6; font-size: 28px; padding: 24px 0;">SIX!</button></div>
                         </div>
-                        <!-- Extras -->
                         <div class="row g-2 mb-2">
                             <div class="col-6 col-md-3"><button onclick="window.showExtraModal('wide')" class="score-btn btn w-100 fw-bold" style="background:#fff7ed; color:#9a3412; border:1px solid #fdba74; padding: 14px 0;">WIDE</button></div>
                             <div class="col-6 col-md-3"><button onclick="window.showExtraModal('noball')" class="score-btn btn w-100 fw-bold" style="background:#fff7ed; color:#9a3412; border:1px solid #fdba74; padding: 14px 0;">NO BALL</button></div>
                             <div class="col-6 col-md-3"><button onclick="window.scoreAction('bye', 1)" class="score-btn btn w-100 fw-bold" style="background:#f0fdf4; color:#166534; border:1px solid #86efac; padding: 14px 0;">BYE +1</button></div>
                             <div class="col-6 col-md-3"><button onclick="window.scoreAction('legbye', 1)" class="score-btn btn w-100 fw-bold" style="background:#f0fdf4; color:#166534; border:1px solid #86efac; padding: 14px 0;">LEG BYE +1</button></div>
                         </div>
-                        <!-- Wicket & Swap -->
                         <div class="row g-2">
                             <div class="col-8"><button onclick="window.scoreAction('wicket')" class="score-btn btn w-100 fw-bold text-white text-uppercase" style="background: var(--crimson); font-size: 22px; padding: 20px 0;"><i class="bi bi-x-circle"></i> WICKET</button></div>
                             <div class="col-4"><button onclick="window.swapBatsmen()" class="score-btn btn w-100 fw-bold" style="background:#e2e8f0; color:#334155; font-size: 14px; padding: 20px 0;"><i class="bi bi-arrow-left-right"></i> SWAP</button></div>
@@ -347,7 +353,6 @@
             </div>
         </div>
 
-        <!-- Recent Balls + Manual Override -->
         <div class="row g-3 mt-1">
             <div class="col-12 col-lg-6">
                 <div class="card border-0 shadow-sm rounded-3">
@@ -674,7 +679,7 @@
             setText('obs-bat-team', data.battingTeam); setText('obs-bowl-team', data.bowlingTeam);
             setText('obs-score', data.runs); setText('obs-wickets', data.wickets); setText('obs-overs', oversString);
 
-            // COLOR UPDATES FOR OVERLAY
+            // Live team colors
             document.getElementById('obs-bat-team').style.color = data.batTeamColor || '#F4D03F';
             document.getElementById('obs-bowl-team').style.color = data.bowlTeamColor || '#86efac';
 
@@ -717,6 +722,10 @@
             updateInputIfNotFocused('in-target', data.target || ''); updateInputIfNotFocused('in-total-overs', data.totalOvers);
             updateInputIfNotFocused('in-innings', String(data.innings)); updateInputIfNotFocused('in-striker-name', data.striker.name);
             updateInputIfNotFocused('in-nonstriker-name', data.nonStriker.name); updateInputIfNotFocused('in-bowler-name', data.bowler.name);
+
+            setText('in-striker-runs', data.striker.runs); setText('in-striker-balls', data.striker.balls);
+            setText('in-nonstriker-runs', data.nonStriker.runs); setText('in-nonstriker-balls', data.nonStriker.balls);
+            setText('in-bowler-overs', `${Math.floor(data.bowler.balls/6)}.${data.bowler.balls%6}`); setText('in-bowler-runs', data.bowler.runs); setText('in-bowler-wickets', data.bowler.wickets);
 
             setText('prev-bat', data.battingTeam); setText('prev-score', data.runs); setText('prev-wickets', data.wickets); setText('prev-overs', oversString);
             setText('prev-striker', `*${data.striker.name || 'Batsman'} ${data.striker.runs}(${data.striker.balls})`); setText('prev-bowler', `${data.bowler.name || 'Bowler'} ${data.bowler.wickets}-${data.bowler.runs}`);
