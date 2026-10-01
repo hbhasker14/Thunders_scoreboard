@@ -25,8 +25,8 @@
         /* Hidden utility */
         .hidden { display: none !important; }
 
-        /* Overlay mode (transparent for Prism Live / OBS) */
-        body.overlay-mode { background: transparent !important; overflow: hidden; width: 100vw; height: 100vh; }
+        /* Overlay mode - Forces PRISM to render full 1080p canvas */
+        body.overlay-mode { background: transparent !important; overflow: hidden; width: 1920px; height: 1080px; margin: 0; padding: 0; }
 
         .value-updated { animation: pulseText 0.5s ease-out; }
         @keyframes pulseText {
@@ -38,10 +38,10 @@
         /* Over tracker circles - MASSIVE TV Style */
         .over-ball {
             display: inline-flex; align-items: center; justify-content: center;
-            width: 24px; height: 24px; border-radius: 50%;
-            font-weight: 800; font-size: 14px;
-            border: 2px solid #fff; color: #fff;
-            margin: 0 2px;
+            width: 32px; height: 32px; border-radius: 50%;
+            font-weight: 900; font-size: 18px;
+            border: 3px solid #fff; color: #fff;
+            margin: 0 4px;
         }
         .over-ball.empty { border-color: #555; color: transparent; }
         .over-ball.dot { border-color: #aaa; color: transparent; }
@@ -57,83 +57,76 @@
         .score-btn { transition: all 0.12s; user-select: none; }
         .score-btn:active { transform: scale(0.95); }
         .modal-backdrop-custom { background: rgba(0,0,0,0.8); backdrop-filter: blur(4px); }
-
-        /* Undo button pulse */
-        .undo-available { animation: undoPulse 1.5s infinite; }
-        @keyframes undoPulse {
-            0%, 100% { box-shadow: 0 0 0 0 rgba(244, 208, 63, 0.4); }
-            50% { box-shadow: 0 0 0 8px rgba(244, 208, 63, 0); }
-        }
     </style>
 </head>
 <body>
 
 <!-- ==================== OVERLAY VIEW (Full-width TV broadcast for Prism Live / OBS) ==================== -->
-<div id="overlay-view" class="hidden" style="position: fixed; bottom: 5%; left: 0; width: 100%; display: flex; flex-direction: column; align-items: center; z-index: 9999;">
+<div id="overlay-view" class="hidden" style="position: absolute; bottom: 60px; left: 50%; transform: translateX(-50%); width: 1800px; display: flex; flex-direction: column; align-items: center; z-index: 9999;">
     
-    <!-- Main TV Graphic Bar (Now 96% of screen width) -->
-    <div style="display: flex; background: #070707; color: #fff; height: 85px; box-shadow: 0 12px 35px rgba(0,0,0,0.8); border-radius: 12px; overflow: hidden; align-items: stretch; width: 96%; max-width: 1800px;">
+    <!-- Main TV Graphic Bar (Hardcoded Huge) -->
+    <div style="display: flex; background: #070707; color: #fff; height: 100px; box-shadow: 0 15px 40px rgba(0,0,0,0.9); border-radius: 16px; overflow: hidden; align-items: stretch; width: 100%;">
 
         <!-- Left: Batting Team Logo -->
-        <div style="padding: 0 15px; background: #111; display: flex; align-items: center; border-right: 2px solid #222;">
-            <img id="obs-bat-logo" class="logo-img hidden" style="width: 65px; height: 65px; border-radius: 50%; object-fit: cover;">
+        <div style="padding: 0 20px; background: #111; display: flex; align-items: center; border-right: 3px solid #222;">
+            <img id="obs-bat-logo" class="logo-img hidden" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover;">
         </div>
 
         <!-- Left: Batting Score (Wickets-Runs) -->
-        <div style="display: flex; flex-direction: column; justify-content: center; padding: 0 25px 0 25px; background: #070707;">
-            <div id="obs-bat-team" style="font-size: 16px; font-weight: 700; color: #e5e5e5; letter-spacing: 2px; text-transform: uppercase;">TEAM</div>
-            <div style="font-size: 48px; font-weight: 900; color: #f97316; line-height: 1; letter-spacing: -2px; margin-top: 2px;">
+        <div style="display: flex; flex-direction: column; justify-content: center; padding: 0 35px 0 30px; background: #070707;">
+            <div id="obs-bat-team" style="font-size: 20px; font-weight: 800; color: #e5e5e5; letter-spacing: 3px; text-transform: uppercase;">TEAM</div>
+            <div style="font-size: 60px; font-weight: 900; color: #f97316; line-height: 1; letter-spacing: -2px; margin-top: 2px;">
                 <span id="obs-wickets">0</span>-<span id="obs-score">0</span>
             </div>
         </div>
 
         <!-- Left: Overs & Target -->
-        <div style="display: flex; flex-direction: column; justify-content: center; padding: 0 25px 0 0; min-width: 120px; border-right: 2px solid #222;">
-            <div style="font-size: 14px; font-weight: 700; color: #ccc; letter-spacing: 1px;">OVERS <span id="obs-overs" style="font-weight: 900; color: #fff; margin-left: 4px; font-size: 20px;">0.0</span></div>
-            <div id="obs-target-container" class="hidden" style="font-size: 14px; font-weight: 700; color: #aaa; letter-spacing: 1px; margin-top: 4px;">TARGET <span id="obs-target" style="color: #ccc; font-size: 18px; font-weight: 900;">0</span></div>
+        <div style="display: flex; flex-direction: column; justify-content: center; padding: 0 35px 0 0; min-width: 150px; border-right: 3px solid #222;">
+            <div style="font-size: 18px; font-weight: 800; color: #ccc; letter-spacing: 2px;">OVERS <span id="obs-overs" style="font-weight: 900; color: #fff; margin-left: 6px; font-size: 26px;">0.0</span></div>
+            <div id="obs-target-container" class="hidden" style="font-size: 18px; font-weight: 800; color: #aaa; letter-spacing: 2px; margin-top: 6px;">TARGET <span id="obs-target" style="color: #ccc; font-size: 24px; font-weight: 900;">0</span></div>
         </div>
 
         <!-- Center: Batsmen (The Pill) -->
-        <div style="display: flex; align-items: center; justify-content: center; flex: 1; padding: 0 20px; background: #070707; border-right: 2px solid #222;">
-            <div style="display: flex; height: 56px; border-radius: 28px; overflow: hidden; border: 2px solid #333; box-shadow: inset 0 3px 8px rgba(0,0,0,0.5); width: 100%; max-width: 750px;">
+        <div style="display: flex; align-items: center; justify-content: center; flex: 1; padding: 0 25px; background: #070707; border-right: 3px solid #222;">
+            <div style="display: flex; height: 68px; border-radius: 34px; overflow: hidden; border: 2px solid #333; box-shadow: inset 0 4px 10px rgba(0,0,0,0.5); width: 100%; max-width: 900px;">
                 <!-- Striker (Left Side - Orange) -->
-                <div style="display: flex; align-items: center; background: linear-gradient(90deg, #ea580c, #f97316); padding: 0 20px 0 16px; flex: 1;">
-                    <span style="font-size: 14px; color: #fff; margin-right: 10px;">▶</span>
-                    <span id="obs-striker-name" style="font-weight: 900; font-size: 22px; text-transform: uppercase; margin-right: auto; color: #000; letter-spacing: 0.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">BATSMAN 1</span>
-                    <span id="obs-striker-runs" style="font-weight: 900; font-size: 26px; color: #000; margin-left: 15px;">0</span>
-                    <span id="obs-striker-balls" style="font-weight: 700; font-size: 16px; color: #000; margin-left: 6px; opacity: 0.8;">(0)</span>
+                <div style="display: flex; align-items: center; background: linear-gradient(90deg, #ea580c, #f97316); padding: 0 25px 0 20px; flex: 1;">
+                    <span style="font-size: 18px; color: #fff; margin-right: 12px;">▶</span>
+                    <span id="obs-striker-name" style="font-weight: 900; font-size: 28px; text-transform: uppercase; margin-right: auto; color: #000; letter-spacing: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">BATSMAN 1</span>
+                    <span id="obs-striker-runs" style="font-weight: 900; font-size: 34px; color: #000; margin-left: 20px;">0</span>
+                    <span id="obs-striker-balls" style="font-weight: 800; font-size: 20px; color: #000; margin-left: 8px; opacity: 0.8;">(0)</span>
                 </div>
                 <!-- Non-Striker (Right Side - Dark) -->
-                <div style="display: flex; align-items: center; background: #1f2937; padding: 0 20px; flex: 1;">
-                    <span id="obs-nonstriker-name" style="font-weight: 800; font-size: 20px; text-transform: uppercase; margin-right: auto; color: #fff; letter-spacing: 0.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">BATSMAN 2</span>
-                    <span id="obs-nonstriker-runs" style="font-weight: 900; font-size: 24px; color: #fff; margin-left: 15px;">0</span>
-                    <span id="obs-nonstriker-balls" style="font-weight: 700; font-size: 15px; color: #aaa; margin-left: 6px;">(0)</span>
+                <div style="display: flex; align-items: center; background: #1f2937; padding: 0 25px; flex: 1;">
+                    <span id="obs-nonstriker-name" style="font-weight: 800; font-size: 26px; text-transform: uppercase; margin-right: auto; color: #fff; letter-spacing: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">BATSMAN 2</span>
+                    <span id="obs-nonstriker-runs" style="font-weight: 900; font-size: 32px; color: #fff; margin-left: 20px;">0</span>
+                    <span id="obs-nonstriker-balls" style="font-weight: 700; font-size: 18px; color: #aaa; margin-left: 8px;">(0)</span>
                 </div>
             </div>
         </div>
 
         <!-- Right: Bowler info & Over tracker -->
-        <div style="display: flex; flex-direction: column; justify-content: center; padding: 0 20px 0 25px; min-width: 340px; background: #070707;">
+        <div style="display: flex; flex-direction: column; justify-content: center; padding: 0 25px 0 35px; min-width: 420px; background: #070707;">
             <div style="display: flex; justify-content: space-between; align-items: baseline;">
-                <div id="obs-bowl-team" style="font-size: 14px; font-weight: 700; color: #e5e5e5; letter-spacing: 2px; text-transform: uppercase;">TEAM</div>
+                <div id="obs-bowl-team" style="font-size: 18px; font-weight: 800; color: #e5e5e5; letter-spacing: 3px; text-transform: uppercase;">TEAM</div>
             </div>
-            <div style="display: flex; align-items: baseline; gap: 10px; margin-top: 2px;">
-                <span id="obs-bowler-name" style="font-weight: 900; font-size: 22px; text-transform: uppercase; color: #86efac; letter-spacing: 0.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 200px;">BOWLER</span>
-                <span id="obs-bowler-figs" style="font-weight: 900; font-size: 22px; color: #fff;">0-0 <span style="font-size: 16px; color: #aaa; font-weight: 700;">0.0</span></span>
+            <div style="display: flex; align-items: baseline; gap: 15px; margin-top: 4px;">
+                <span id="obs-bowler-name" style="font-weight: 900; font-size: 28px; text-transform: uppercase; color: #86efac; letter-spacing: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 250px;">BOWLER</span>
+                <span id="obs-bowler-figs" style="font-weight: 900; font-size: 28px; color: #fff;">0-0 <span style="font-size: 20px; color: #aaa; font-weight: 800;">0.0</span></span>
             </div>
-            <div id="obs-over-tracker" style="display: flex; gap: 5px; margin-top: 6px;">
+            <div id="obs-over-tracker" style="display: flex; gap: 8px; margin-top: 8px;">
                 <!-- circles injected dynamically -->
             </div>
         </div>
 
         <!-- Right: Bowling Team Logo -->
-        <div style="padding: 0 15px; background: #111; display: flex; align-items: center; border-left: 2px solid #222;">
-            <img id="obs-bowl-logo" class="logo-img hidden" style="width: 65px; height: 65px; border-radius: 50%; object-fit: cover;">
+        <div style="padding: 0 20px; background: #111; display: flex; align-items: center; border-left: 3px solid #222;">
+            <img id="obs-bowl-logo" class="logo-img hidden" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover;">
         </div>
     </div>
 
     <!-- MASSIVE 2nd Innings Equation Ribbon -->
-    <div id="obs-equation-ribbon" class="hidden" style="margin-top: 12px; background: rgba(15, 20, 30, 0.95); color: #fff; padding: 10px 35px; border-radius: 8px; font-size: 20px; font-weight: 800; letter-spacing: 2px; box-shadow: 0 6px 15px rgba(0,0,0,0.6); border: 2px solid #333; text-transform: uppercase;">
+    <div id="obs-equation-ribbon" class="hidden" style="margin-top: 15px; background: rgba(15, 20, 30, 0.95); color: #fff; padding: 12px 45px; border-radius: 10px; font-size: 26px; font-weight: 900; letter-spacing: 3px; box-shadow: 0 8px 20px rgba(0,0,0,0.7); border: 2px solid #333; text-transform: uppercase;">
         <span id="obs-eq-text"></span>
     </div>
 </div>
@@ -155,10 +148,10 @@
                 </div>
             </div>
             <div class="d-flex gap-2">
-                <button id="undo-btn" onclick="undoLastAction()" class="btn btn-warning btn-sm fw-bold d-flex align-items-center gap-1" disabled>
+                <button id="undo-btn" onclick="window.undoLastAction()" class="btn btn-warning btn-sm fw-bold d-flex align-items-center gap-1" disabled>
                     <i class="bi bi-arrow-counterclockwise"></i> <span class="d-none d-sm-inline">Undo</span>
                 </button>
-                <button onclick="showResetModal()" class="btn btn-danger btn-sm fw-bold">
+                <button onclick="window.showResetModal()" class="btn btn-danger btn-sm fw-bold">
                     <i class="bi bi-arrow-repeat"></i> <span class="d-none d-sm-inline">Reset</span>
                 </button>
             </div>
@@ -177,33 +170,33 @@
                         <div class="row g-3">
                             <div class="col-6 col-md-3">
                                 <label class="form-label small fw-bold text-muted text-uppercase mb-1">Batting Team</label>
-                                <input type="text" id="in-bat" maxlength="15" class="form-control fw-bold text-center text-uppercase" value="THUNDERS" onchange="pushMatchSetup()" oninput="this.value = this.value.toUpperCase()">
+                                <input type="text" id="in-bat" maxlength="15" class="form-control fw-bold text-center text-uppercase" value="THUNDERS" onchange="window.pushMatchSetup()" oninput="this.value = this.value.toUpperCase()">
                             </div>
                             <div class="col-6 col-md-3">
                                 <label class="form-label small fw-bold text-muted text-uppercase mb-1">Bowling Team</label>
-                                <input type="text" id="in-bowl" maxlength="15" class="form-control fw-bold text-center text-uppercase" value="OPPONENT" onchange="pushMatchSetup()" oninput="this.value = this.value.toUpperCase()">
+                                <input type="text" id="in-bowl" maxlength="15" class="form-control fw-bold text-center text-uppercase" value="OPPONENT" onchange="window.pushMatchSetup()" oninput="this.value = this.value.toUpperCase()">
                             </div>
                             <div class="col-6 col-md-3">
                                 <label class="form-label small fw-bold text-muted text-uppercase mb-1">Batting Logo</label>
-                                <input type="file" id="in-bat-logo" accept="image/*" class="form-control form-control-sm" onchange="handleLogoUpload('batting')">
+                                <input type="file" id="in-bat-logo" accept="image/*" class="form-control form-control-sm" onchange="window.handleLogoUpload('batting')">
                             </div>
                             <div class="col-6 col-md-3">
                                 <label class="form-label small fw-bold text-muted text-uppercase mb-1">Bowling Logo</label>
-                                <input type="file" id="in-bowl-logo" accept="image/*" class="form-control form-control-sm" onchange="handleLogoUpload('bowling')">
+                                <input type="file" id="in-bowl-logo" accept="image/*" class="form-control form-control-sm" onchange="window.handleLogoUpload('bowling')">
                             </div>
                         </div>
                         <div class="row g-3 mt-1">
                             <div class="col-6 col-md-4">
                                 <label class="form-label small fw-bold text-muted text-uppercase mb-1">Target (2nd Innings)</label>
-                                <input type="number" id="in-target" class="form-control fw-bold text-center" placeholder="e.g. 152" onchange="pushMatchSetup()">
+                                <input type="number" id="in-target" class="form-control fw-bold text-center" placeholder="e.g. 152" onchange="window.pushMatchSetup()">
                             </div>
                             <div class="col-6 col-md-4">
                                 <label class="form-label small fw-bold text-muted text-uppercase mb-1">Total Overs</label>
-                                <input type="number" id="in-total-overs" class="form-control fw-bold text-center" value="20" onchange="pushMatchSetup()">
+                                <input type="number" id="in-total-overs" class="form-control fw-bold text-center" value="20" onchange="window.pushMatchSetup()">
                             </div>
                             <div class="col-12 col-md-4">
                                 <label class="form-label small fw-bold text-muted text-uppercase mb-1">Innings</label>
-                                <select id="in-innings" class="form-select fw-bold" onchange="pushMatchSetup()">
+                                <select id="in-innings" class="form-select fw-bold" onchange="window.pushMatchSetup()">
                                     <option value="1">1st Innings</option>
                                     <option value="2">2nd Innings</option>
                                 </select>
@@ -836,7 +829,7 @@
             setText('obs-striker-name', data.striker.name || 'BATSMAN 1'); setText('obs-striker-runs', data.striker.runs); setText('obs-striker-balls', `(${data.striker.balls})`);
             setText('obs-nonstriker-name', data.nonStriker.name || 'BATSMAN 2'); setText('obs-nonstriker-runs', data.nonStriker.runs); setText('obs-nonstriker-balls', `(${data.nonStriker.balls})`);
             setText('obs-bowler-name', data.bowler.name || 'BOWLER'); setText('obs-bowler-figs', `${data.bowler.wickets}-${data.bowler.runs} `);
-            document.getElementById('obs-bowler-figs').innerHTML = `${data.bowler.wickets}-${data.bowler.runs} <span style="font-size: 16px; color: #aaa; font-weight: 700; margin-left: 4px;">${Math.floor(data.bowler.balls/6)}.${data.bowler.balls%6}</span>`;
+            document.getElementById('obs-bowler-figs').innerHTML = `${data.bowler.wickets}-${data.bowler.runs} <span style="font-size: 20px; color: #aaa; font-weight: 800; margin-left: 6px;">${Math.floor(data.bowler.balls/6)}.${data.bowler.balls%6}</span>`;
 
             const trackerContainer = document.getElementById('obs-over-tracker');
             if (trackerContainer) {
