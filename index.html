@@ -24,7 +24,7 @@
 
         .hidden { display: none !important; }
 
-        /* OVERLAY MODE - Centered and cleanly anchored */
+        /* OVERLAY MODE */
         body.overlay-mode { 
             background: transparent !important; 
             overflow: hidden; 
@@ -41,37 +41,27 @@
         .value-updated { animation: pulseText 0.5s ease-out; }
         @keyframes pulseText { 0% { transform: scale(1); } 50% { transform: scale(1.1); color: #fff; } 100% { transform: scale(1); } }
 
-        /* TV GRAPHIC - Crisp edges, no murky shadow halo */
-        .tv-wrapper { width: max-content; display: flex; flex-direction: column; align-items: center; z-index: 9999; }
+        /* TV GRAPHIC BASE */
+        .tv-wrapper { width: max-content; display: flex; flex-direction: column; align-items: center; z-index: 9999; position: relative; }
         .tv-main-bar { 
-            display: flex; 
-            background: #070707; 
-            color: #fff; 
-            height: 94px; 
-            border-radius: 12px; 
-            border: 1px solid rgba(255,255,255,0.15); 
-            box-shadow: 0 4px 14px rgba(0,0,0,0.4); 
-            overflow: hidden; 
-            align-items: stretch; 
-            width: max-content; 
+            display: flex; background: #070707; color: #fff; height: 94px; border-radius: 12px; 
+            border: 1px solid rgba(255,255,255,0.15); box-shadow: 0 4px 14px rgba(0,0,0,0.4); 
+            overflow: hidden; align-items: stretch; width: max-content; z-index: 10; position: relative;
         }
         
         .tv-logo-box { padding: 0 16px; background: #111; display: flex; align-items: center; border-right: 2px solid #222; flex: 0 0 auto; }
         .tv-logo-img { width: 68px; height: 68px; border-radius: 50%; object-fit: cover; }
         
-        /* Batting Score */
         .tv-score-box { display: flex; flex-direction: column; justify-content: space-between; padding: 10px 22px; background: #070707; flex: 0 0 auto; }
         .tv-team-name { font-size: 16px; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; line-height: 1.2; margin: 0; }
         .tv-score-text { font-size: 50px; font-weight: 900; color: #f97316; line-height: 1; letter-spacing: -2px; margin-top: auto; }
         
-        /* Overs & Target */
         .tv-overs-box { display: flex; flex-direction: column; justify-content: center; padding: 10px 22px 10px 0; border-right: 2px solid #222; flex: 0 0 auto; }
         .tv-overs-label { font-size: 14px; font-weight: 800; color: #ccc; letter-spacing: 1.5px; }
         .tv-overs-val { font-weight: 900; color: #fff; margin-left: 6px; font-size: 24px; }
         .tv-target-row { font-size: 13px; font-weight: 800; color: #aaa; letter-spacing: 1.5px; margin-top: 4px; }
         .tv-target-val { color: #ccc; font-size: 18px; font-weight: 900; }
         
-        /* Batsman Pill - Locked width so names never crush/disappear */
         .tv-pill-container { display: flex; align-items: center; justify-content: center; padding: 0 18px; background: #070707; border-right: 2px solid #222; flex: 0 0 auto; }
         .tv-pill { display: flex; height: 58px; border-radius: 29px; overflow: hidden; border: 2px solid #333; box-shadow: inset 0 2px 6px rgba(0,0,0,0.6); width: 580px; }
         .tv-striker { display: flex; align-items: center; background: linear-gradient(90deg, #ea580c, #f97316); padding: 0 18px 0 14px; flex: 1; white-space: nowrap; }
@@ -85,7 +75,6 @@
         .tv-bat-balls { font-weight: 800; font-size: 15px; color: #000; margin-left: 4px; opacity: 0.8; flex: 0 0 auto; }
         .tv-nonstriker .tv-bat-balls { color: #aaa; }
         
-        /* Bowler Section - Clean vertical breathing room */
         .tv-bowl-box { display: flex; flex-direction: column; justify-content: space-between; padding: 10px 22px; background: #070707; flex: 0 0 auto; }
         .tv-bowl-team { font-size: 16px; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; line-height: 1.2; margin: 0; }
         .tv-bowl-stats { display: flex; align-items: baseline; gap: 12px; margin: 0; }
@@ -105,6 +94,42 @@
 
         .tv-equation { margin-top: 10px; background: rgba(15, 20, 30, 0.95); color: #fff; padding: 8px 32px; border-radius: 8px; font-size: 18px; font-weight: 900; letter-spacing: 2px; border: 1px solid #333; text-transform: uppercase; }
 
+        /* ====================================================
+           NEW EVENT BANNER ANIMATIONS (4s, 6s, Wickets, 50s) 
+           ==================================================== */
+        .event-banner {
+            position: absolute;
+            bottom: 30px; /* Hides behind the main bar */
+            left: 50%;
+            transform: translateX(-50%) translateY(0) scale(0.9);
+            opacity: 0;
+            padding: 10px 40px;
+            border-radius: 8px 8px 0 0;
+            color: white;
+            font-weight: 900;
+            font-size: 40px;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            border: 2px solid rgba(255,255,255,0.2);
+            border-bottom: none;
+            z-index: 1; /* Sits UNDER the main z-index 10 bar */
+            text-align: center;
+            pointer-events: none;
+            transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            white-space: nowrap;
+        }
+        /* When triggered, it pops up above the bar */
+        .event-banner.show-event {
+            bottom: 94px; /* Rises exactly above the 94px main bar */
+            transform: translateX(-50%) translateY(0) scale(1);
+            opacity: 1;
+        }
+        /* Dynamic Colors */
+        .event-four { background: linear-gradient(90deg, #059669, #10b981); text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+        .event-six { background: linear-gradient(90deg, #4c1d95, #7c3aed); text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+        .event-wicket { background: linear-gradient(90deg, #7f1d1d, #dc2626); text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+        .event-milestone { background: linear-gradient(90deg, #b45309, #f59e0b); color: #000; border: 2px solid #000; border-bottom: none; text-shadow: none; }
+
         .score-btn { transition: all 0.12s; user-select: none; }
         .score-btn:active { transform: scale(0.95); }
         .modal-backdrop-custom { background: rgba(0,0,0,0.8); backdrop-filter: blur(4px); }
@@ -114,6 +139,13 @@
 
 <!-- ==================== OVERLAY VIEW ==================== -->
 <div id="overlay-view" class="hidden tv-wrapper">
+    
+    <!-- EVENT BANNER (Pops up from behind the main bar) -->
+    <div id="obs-event-banner" class="event-banner">
+        <span id="obs-event-text">SIX!</span>
+    </div>
+
+    <!-- Main Score Bar -->
     <div class="tv-main-bar">
         <div class="tv-logo-box">
             <img id="obs-bat-logo" class="tv-logo-img hidden">
@@ -461,12 +493,14 @@
         striker: { name: '', runs: 0, balls: 0, fours: 0, sixes: 0 },
         nonStriker: { name: '', runs: 0, balls: 0, fours: 0, sixes: 0 },
         bowler: { name: '', runs: 0, wickets: 0, balls: 0 },
-        bowlerStats: {}, recentBalls: [], currentOverBalls: [], lastUpdateTs: 0
+        bowlerStats: {}, recentBalls: [], currentOverBalls: [], lastUpdateTs: 0,
+        currentEvent: null // NEW: Holds the active popup event
     };
 
     let undoStack = [];
     const MAX_UNDO = 50;
     let currentMode = 'control';
+    let lastPlayedEventId = 0;
 
     function checkURLMode() {
         const params = new URLSearchParams(window.location.search);
@@ -522,6 +556,7 @@
                 matchState.bowler = { name: data.bowlName||'', runs: data.bowlR||0, wickets: data.bowlW||0, balls: data.bowlBalls||0 };
                 matchState.recentBalls = data.recentBalls || [];
                 matchState.currentOverBalls = data.currentOverBalls || [];
+                matchState.currentEvent = data.currentEvent || null; // Capture the event
 
                 if (data.runs !== oldRuns || data.wickets !== oldWickets) triggerVisualUpdate();
                 updateUI(matchState);
@@ -545,7 +580,8 @@
             strike: 1,
             bowlName: matchState.bowler.name, bowlO: Math.floor(matchState.bowler.balls / 6) + '.' + (matchState.bowler.balls % 6),
             bowlM: 0, bowlR: matchState.bowler.runs, bowlW: matchState.bowler.wickets, bowlBalls: matchState.bowler.balls,
-            bowlerStats: matchState.bowlerStats, recentBalls: matchState.recentBalls, currentOverBalls: matchState.currentOverBalls, lastUpdateTs: matchState.lastUpdateTs
+            bowlerStats: matchState.bowlerStats, recentBalls: matchState.recentBalls, currentOverBalls: matchState.currentOverBalls, 
+            currentEvent: matchState.currentEvent, lastUpdateTs: matchState.lastUpdateTs
         };
         set(scoreRef, dbData);
     }
@@ -559,17 +595,44 @@
         if (undoStack.length > 0) { btn.disabled = false; btn.classList.add('undo-available'); } else { btn.disabled = true; btn.classList.remove('undo-available'); }
     }
 
+    // NEW: Function to trigger overlay animations
+    window.triggerEvent = (type, message) => {
+        matchState.currentEvent = { id: Date.now(), type: type, message: message };
+    };
+
     window.scoreAction = (type, value = 0) => {
         saveUndoSnapshot();
+        
         if (type === 'dot') {
             matchState.striker.balls += 1; matchState.bowler.balls += 1;
             matchState.recentBalls.push({ type: 'dot', value: 0, label: '' }); matchState.currentOverBalls.push({ type: 'dot', value: 0, label: '' });
             incrementBall(); 
         } else if (type === 'runs') {
+            
+            // Check for Milestones BEFORE adding the runs
+            const oldRuns = matchState.striker.runs;
+            const newRuns = oldRuns + value;
+            let eventFired = false;
+            
+            if (oldRuns < 50 && newRuns >= 50 && newRuns < 100) {
+                window.triggerEvent('milestone', `${matchState.striker.name} - FIFTY!`);
+                eventFired = true;
+            } else if (oldRuns < 100 && newRuns >= 100) {
+                window.triggerEvent('milestone', `${matchState.striker.name} - CENTURY!`);
+                eventFired = true;
+            }
+            
+            // If no milestone, show standard boundaries
+            if (!eventFired) {
+                if (value === 4) window.triggerEvent('four', 'FOUR!');
+                if (value === 6) window.triggerEvent('six', 'SIX!');
+            }
+
             matchState.runs += value; matchState.striker.runs += value; matchState.striker.balls += 1; matchState.bowler.runs += value; matchState.bowler.balls += 1;
             const ballType = value === 4 ? 'four' : value === 6 ? 'six' : 'run';
             matchState.recentBalls.push({ type: ballType, value, label: value }); matchState.currentOverBalls.push({ type: ballType, value, label: value });
             incrementBall(); if (value % 2 === 1) swapStrike();
+            
         } else if (type === 'wide') {
             const extraRuns = value - 1; matchState.runs += value; matchState.bowler.runs += value;
             const label = 'WD' + (value > 1 ? '+' + (value-1) : '');
@@ -586,6 +649,7 @@
             matchState.recentBalls.push({ type: 'extra', value, label }); matchState.currentOverBalls.push({ type: 'extra', value, label });
             incrementBall(); if (value % 2 === 1) swapStrike();
         } else if (type === 'wicket') {
+            window.triggerEvent('wicket', 'WICKET!');
             matchState.wickets += 1; matchState.striker.balls += 1; matchState.bowler.balls += 1; matchState.bowler.wickets += 1;
             matchState.recentBalls.push({ type: 'wicket', value: 0, label: 'W' }); matchState.currentOverBalls.push({ type: 'wicket', value: 0, label: 'W' });
             matchState.striker = { name: 'New Batsman', runs: 0, balls: 0, fours: 0, sixes: 0 };
@@ -672,6 +736,25 @@
         reader.readAsDataURL(file);
     };
 
+    // OVERLAY EVENT ANIMATION PLAYER
+    function playOverlayEvent(type, message) {
+        const banner = document.getElementById('obs-event-banner');
+        const text = document.getElementById('obs-event-text');
+        if (!banner || !text) return;
+
+        // Clear existing classes
+        banner.className = 'event-banner';
+        banner.classList.add('event-' + type);
+        text.innerText = message;
+        
+        // Trigger CSS Reflow for animation
+        void banner.offsetWidth;
+        banner.classList.add('show-event');
+
+        // Hide after 4 seconds
+        setTimeout(() => { banner.classList.remove('show-event'); }, 4000);
+    }
+
     function updateUI(data) {
         const oversString = `${data.completedOvers}.${data.balls}`;
 
@@ -682,6 +765,12 @@
             // Live team colors
             document.getElementById('obs-bat-team').style.color = data.batTeamColor || '#F4D03F';
             document.getElementById('obs-bowl-team').style.color = data.bowlTeamColor || '#86efac';
+
+            // Catch and play new events
+            if (data.currentEvent && data.currentEvent.id !== lastPlayedEventId) {
+                lastPlayedEventId = data.currentEvent.id;
+                playOverlayEvent(data.currentEvent.type, data.currentEvent.message);
+            }
 
             if (data.battingTeamLogo) { document.getElementById('obs-bat-logo').src = data.battingTeamLogo; document.getElementById('obs-bat-logo').classList.remove('hidden'); } else document.getElementById('obs-bat-logo').classList.add('hidden');
             if (data.bowlingTeamLogo) { document.getElementById('obs-bowl-logo').src = data.bowlingTeamLogo; document.getElementById('obs-bowl-logo').classList.remove('hidden'); } else document.getElementById('obs-bowl-logo').classList.add('hidden');
