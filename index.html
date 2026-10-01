@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Melbourne Thunders Live Scoreboard</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800;900&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navy: '#0B132B',
+                        gold: '#F4D03F',
+                        crimson: '#E63946',
+                        darkerNavy: '#070C1A'
+                    },
+                    fontFamily: {
+                        sans: ['Montserrat', 'sans-serif'],
+                        display: ['Montserrat', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body { font-family: 'Montserrat', sans-serif; margin: 0; padding: 0; }
+        
+        /* Specific rules when the app is in overlay mode for PRISM/OBS */
+        body.overlay-mode {
+            background-color: transparent !important;
+            overflow: hidden;
+        }
+
+        /* Broadcast Graphic Styling */
+        .score-bug {
+            box-shadow: 0 12px 35px rgba(0,0,0,0.6);
+            border-bottom: 4px solid #F4D03F;
+        }
+
+        .clip-slant-right {
+            clip-path: polygon(0 0, 100% 0, calc(100% - 15px) 100%, 0 100%);
+        }
+        
+        .clip-slant-both {
+            clip-path: polygon(15px 0, 100% 0, calc(100% - 15px) 100%, 0 100%);
+        }
+
+        /* Value change animations */
+        .value-updated {
+            animation: pulseText 0.5s ease-out;
+        }
+
+        @keyframes pulseText {
+            0% { transform: scale(1); color: inherit; }
+            50% { transform: scale(1.3); color: #fff; }
+            100% { transform: scale(1); color: inherit; }
+        }
+
+        /* Modal styling */
+        .modal {
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(4px);
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-900 h-screen w-screen overflow-x-hidden transition-colors duration-300">
+
+    <div id="overlay-view" class="hidden h-full w-full relative">
+        <!-- Lower Third positioned near bottom for PRISM/OBS -->
+        <div class="absolute bottom-16 left-1/2 transform -translate-x-1/2 flex items-end">
+            
+            <div class="score-bug flex rounded-xl overflow-hidden font-display border border-gray-700/50">
+                
+                <!-- Batting Team Name -->
+                <div class="bg-navy px-8 py-3 flex flex-col justify-center items-center min-w-[150px] text-white">
+                    <span id="obs-bat-team" class="font-black text-3xl tracking-widest uppercase text-white drop-shadow-md">THUN</span>
+                    <div id="obs-target-container" class="hidden text-[10px] text-gold font-bold mt-1 tracking-wider uppercase bg-darkerNavy px-2 py-0.5 rounded">
+                        Target <span id="obs-target"></span>
+                    </div>
+                </div>
+                
+                <!-- Main Score Block (Runs/Wickets) -->
+                <div class="bg-gold text-navy px-10 py-3 flex items-baseline justify-center font-black clip-slant-both relative -ml-4 z-10 min-w-[190px] shadow-[inset_0_0_10px_rgba(0,0,0,0.2)]">
+                    <span id="obs-score" class="text-6xl drop-shadow-sm tabular-nums">0</span>
+                    <span class="text-4xl mx-2 text-navy/70 font-bold">-</span>
+                    <span id="obs-wickets" class="text-4xl drop-shadow-sm tabular-nums">0</span>
+                </div>
+                
+                <!-- Overs Block -->
+                <div class="bg-navy px-6 py-3 flex items-center justify-center relative -ml-4 pl-10 pr-6 min-w-[140px] text-white border-l border-white/10">
+                    <div class="flex flex-col items-center">
+                        <span class="text-gray-400 text-[10px] font-bold tracking-widest uppercase mb-0.5">Overs</span>
+                        <span id="obs-overs" class="font-black text-3xl tabular-nums drop-shadow-md">0.0</span>
+                    </div>
+                </div>
+
+                <!-- Bowling Team -->
+                <div class="bg-darkerNavy px-6 py-3 flex items-center justify-center min-w-[100px] text-white">
+                    <span id="obs-bowl-team" class="font-bold text-xl text-gray-400 tracking-wider uppercase">OPP</span>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    <div id="control-panel" class="hidden min-h-screen flex-col bg-gray-50 pb-24">
+        
+        <!-- Header -->
+        <header class="bg-navy text-white p-4 shadow-lg sticky top-0 z-20 flex justify-between items-center border-b-4 border-gold">
+            <div class="flex items-center gap-3">
+                <div class="bg-gold text-navy font-black p-2 rounded text-xl leading-none">MT</div>
+                <div>
+                    <h1 class="text-lg font-black uppercase tracking-widest">Live Scorer</h1>
+                    <div class="text-[10px] text-gray-300 flex items-center gap-1 font-bold tracking-wide uppercase">
+                        <span id="sync-indicator" class="w-2 h-2 rounded-full bg-red-500 animate-pulse inline-block"></span> 
+                        <span id="sync-text">Connecting...</span>
+                    </div>
+                </div>
+            </div>
+            <button onclick="showResetModal()" class="text-xs bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded font-bold transition">Reset Match</button>
+        </header>
+
+        <!-- Main Layout grid optimized for Fold (Wide screen) -->
+        <div class="p-4 md:p-6 w-full mx-auto grid grid-cols-1 md:grid-cols-12 gap-6 max-w-6xl">
+            
+            <div class="md:col-span-5 space-y-6">
+                
+                <!-- Live Preview Block -->
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+                    <div class="bg-gray-100 px-4 py-2 border-b border-gray-200 text-xs font-bold text-gray-500 uppercase flex justify-between">
+                        <span>Broadcast Preview</span>
+                        <span class="text-blue-500">Live</span>
+                    </div>
+                    
+                    <div class="p-4 bg-gray-800 flex justify-center py-8">
+                        <!-- Mini version of the overlay bug -->
+                        <div class="flex rounded-lg overflow-hidden border border-gray-600 transform scale-90 sm:scale-100 origin-center shadow-2xl">
+                            <div class="bg-navy px-4 py-2 flex items-center justify-center min-w-[80px] text-white">
+                                <span id="prev-bat" class="font-black text-xl">THUN</span>
+                            </div>
+                            <div class="bg-gold text-navy px-6 py-2 flex items-baseline justify-center font-black clip-slant-both relative -ml-2 z-10 min-w-[120px]">
+                                <span id="prev-score" class="text-3xl">0</span>
+                                <span class="text-xl mx-1 text-navy/70">-</span>
+                                <span id="prev-wickets" class="text-2xl">0</span>
+                            </div>
+                            <div class="bg-navy px-4 py-2 flex items-center justify-center relative -ml-2 pl-6 pr-4 min-w-[90px] text-white">
+                                <span id="prev-overs" class="font-black text-xl">0.0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Match Setup (Team Names & Overrides) -->
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-5">
+                    <h2 class="text-sm font-black text-gray-800 uppercase tracking-wider mb-4 border-b pb-2">Match Settings</h2>
+                    
+                    <div class="grid grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <label class="block text-[10px] font-bold text-gray-500 mb-1 uppercase">Batting (Max 4 chars)</label>
+                            <input type="text" id="in-bat" maxlength="4" class="w-full bg-gray-100 border border-gray-300 rounded-lg p-3 font-bold uppercase text-center focus:ring-2 focus:ring-gold focus:outline-none" value="THUN" onchange="pushManualUpdate()">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold text-gray-500 mb-1 uppercase">Bowling (Max 4 chars)</label>
+                            <input type="text" id="in-bowl" maxlength="4" class="w-full bg-gray-100 border border-gray-300 rounded-lg p-3 font-bold uppercase text-center focus:ring-2 focus:ring-gold focus:outline-none" value="OPP" onchange="pushManualUpdate()">
+                        </div>
+                    </div>
+
+                    <div class="mb-6">
+                        <label class="block text-[10px] font-bold text-gray-500 mb-1 uppercase">Target Score (Leave empty if 1st Innings)</label>
+                        <input type="number" id="in-target" class="w-full bg-gray-100 border border-gray-300 rounded-lg p-3 font-bold text-center focus:ring-2 focus:ring-gold focus:outline-none" placeholder="e.g. 152" onchange="pushManualUpdate()">
+                    </div>
+
+                    <h3 class="text-xs font-bold text-red-600 mb-2 uppercase tracking-wide">Manual Correction (Overrides)</h3>
+                    <div class="grid grid-cols-4 gap-2">
+                        <div>
+                            <label class="block text-[10px] font-bold text-gray-500 mb-1 text-center">Runs</label>
+                            <input type="number" id="in-runs" class="w-full bg-gray-100 border border-gray-300 rounded p-2 font-bold text-center" onchange="pushManualUpdate()">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold text-gray-500 mb-1 text-center">Wickets</label>
+                            <input type="number" id="in-wickets" class="w-full bg-gray-100 border border-gray-300 rounded p-2 font-bold text-center" onchange="pushManualUpdate()">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold text-gray-500 mb-1 text-center">Comp Overs</label>
+                            <input type="number" id="in-overs" class="w-full bg-gray-100 border border-gray-300 rounded p-2 font-bold text-center" onchange="pushManualUpdate()">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold text-gray-500 mb-1 text-center">Current Balls</label>
+                            <input type="number" id="in-balls" class="w-full bg-gray-100 border border-gray-300 rounded p-2 font-bold text-center" onchange="pushManualUpdate()">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="md:col-span-7">
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-4 sm:p-6 h-full flex flex-col">
+                    <h2 class="text-sm font-black text-gray-800 uppercase tracking-wider mb-4 flex items-center justify-between border-b pb-2">
+                        <span>Live Scoring Pad</span>
+                        <span class="bg-gray-200 text-gray-600 px-2 py-1 rounded text-xs">Tap to sync immediately</span>
+                    </h2>
+                    
+                    <!-- Runs Grid -->
+                    <div class="grid grid-cols-4 gap-2 sm:gap-3 mb-4 flex-grow">
+                        <button onclick="scoreAction('runs', 0, true)" class="col-span-1 bg-gray-100 hover:bg-gray-200 border-b-4 border-gray-300 text-gray-700 font-black text-xl rounded-xl py-6 active:scale-95 active:border-b-0 active:translate-y-1 transition-all">DOT</button>
+                        <button onclick="scoreAction('runs', 1, true)" class="col-span-1 bg-blue-50 hover:bg-blue-100 border-b-4 border-blue-200 text-blue-700 font-black text-2xl rounded-xl py-6 active:scale-95 active:border-b-0 active:translate-y-1 transition-all">1</button>
+                        <button onclick="scoreAction('runs', 2, true)" class="col-span-1 bg-blue-50 hover:bg-blue-100 border-b-4 border-blue-200 text-blue-700 font-black text-2xl rounded-xl py-6 active:scale-95 active:border-b-0 active:translate-y-1 transition-all">2</button>
+                        <button onclick="scoreAction('runs', 3, true)" class="col-span-1 bg-blue-50 hover:bg-blue-100 border-b-4 border-blue-200 text-blue-700 font-black text-2xl rounded-xl py-6 active:scale-95 active:border-b-0 active:translate-y-1 transition-all">3</button>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-3 mb-6 flex-grow">
+                        <button onclick="scoreAction('runs', 4, true)" class="bg-emerald-500 hover:bg-emerald-600 border-b-4 border-emerald-700 text-white font-black text-4xl rounded-xl py-8 active:scale-95 active:border-b-0 active:translate-y-1 transition-all tracking-wider shadow-sm">FOUR</button>
+                        <button onclick="scoreAction('runs', 6, true)" class="bg-purple-600 hover:bg-purple-700 border-b-4 border-purple-800 text-white font-black text-4xl rounded-xl py-8 active:scale-95 active:border-b-0 active:translate-y-1 transition-all tracking-wider shadow-sm">SIX!</button>
+                    </div>
+
+                    <!-- Extras and Wickets -->
+                    <div class="grid grid-cols-2 gap-3 mb-3">
+                        <button onclick="scoreAction('extra', 1, false)" class="bg-orange-100 hover:bg-orange-200 border border-orange-300 text-orange-800 font-bold py-4 rounded-xl active:scale-95 transition-all text-sm uppercase tracking-wide">
+                            Wide (+1) <br> <span class="text-[10px] font-normal normal-case opacity-70">No ball added</span>
+                        </button>
+                        <button onclick="scoreAction('extra', 1, false)" class="bg-orange-100 hover:bg-orange-200 border border-orange-300 text-orange-800 font-bold py-4 rounded-xl active:scale-95 transition-all text-sm uppercase tracking-wide">
+                            No Ball (+1) <br> <span class="text-[10px] font-normal normal-case opacity-70">No ball added</span>
+                        </button>
+                    </div>
+
+                    <div class="mt-auto">
+                        <button onclick="scoreAction('wicket', 0, true)" class="w-full bg-crimson hover:bg-red-700 border-b-4 border-red-900 text-white font-black text-3xl py-6 rounded-xl active:scale-95 active:border-b-0 active:translate-y-1 transition-all tracking-widest uppercase shadow-md">WICKET</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="reset-modal" class="fixed inset-0 modal hidden z-50 flex justify-center items-center">
+        <div class="bg-white rounded-2xl shadow-2xl p-6 max-w-sm w-[90%] transform scale-95 transition-transform duration-200" id="reset-modal-content">
+            <h2 class="text-xl font-black text-gray-900 mb-2 uppercase">End Innings?</h2>
+            <p class="text-gray-600 text-sm mb-6">Are you sure you want to reset the scoreboard to 0? This cannot be undone.</p>
+            <div class="flex gap-3">
+                <button onclick="hideResetModal()" class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-3 rounded-lg">Cancel</button>
+                <button onclick="confirmReset()" class="flex-1 bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-lg">Yes, Reset</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Global configuration variables
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'cricket-broadcast-app';
+        const firebaseConfigStr = typeof __firebase_config !== 'undefined' ? __firebase_config : '{}';
+        
+        // Strict path rule adherence
+        const COLLECTION_NAME = 'cricket_scores';
+        const MATCH_DOC_ID = 'live_match_thunders';
+        
+        let db;
+        let auth;
+        let matchDocRef;
+
+        // Local state representation
+        let matchState = {
+            battingTeam: 'THUN',
+            bowlingTeam: 'OPP',
+            runs: 0,
+            wickets: 0,
+            completedOvers: 0,
+            balls: 0,
+            target: null,
+            lastUpdateTs: 0 // Used to trigger animations
+        };
+
+        let currentMode = 'control'; // default
+
+        // Determine view mode from URL (e.g. ?mode=overlay)
+        function checkURLMode() {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('mode') === 'overlay') {
+                currentMode = 'overlay';
+                document.getElementById('overlay-view').classList.remove('hidden');
+                document.body.classList.add('overlay-mode');
+            } else {
+                currentMode = 'control';
+                document.getElementById('control-panel').classList.remove('hidden');
+                document.getElementById('control-panel').classList.add('flex');
+            }
+        }
+
+        async function init() {
+            checkURLMode();
+
+            try {
+                let config = {};
+                if (firebaseConfigStr && firebaseConfigStr !== '{}') {
+                    config = JSON.parse(firebaseConfigStr);
+                } else {
+                    console.warn("No Firebase config injected. Running in local UI-only mode for preview.");
+                    setupLocalFallback();
+                    return;
+                }
+
+                const app = initializeApp(config);
+                db = getFirestore(app);
+                auth = getAuth(app);
+                
+                // Construct strict document path exactly as required by rules
+                matchDocRef = doc(db, 'artifacts', appId, 'public', 'data', COLLECTION_NAME, MATCH_DOC_ID);
+
+                // Authentication (Rule 3)
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    await signInWithCustomToken(auth, __initial_auth_token);
+                } else {
+                    await signInAnonymously(auth);
+                }
+                
+                if (!auth.currentUser) throw new Error("Authentication failed");
+                
+                updateSyncStatus(true, "Live");
+                setupRealtimeListener();
+
+            } catch (error) {
+                console.error("Initialization error:", error);
+                updateSyncStatus(false, "Connection Error");
+            }
+        }
+
+        function setupRealtimeListener() {
+            if (!db) return;
+
+            onSnapshot(matchDocRef, (docSnap) => {
+                if (docSnap.exists()) {
+                    const newData = docSnap.data();
+                    
+                    // Trigger animation if runs/wickets changed
+                    if (newData.runs !== matchState.runs || newData.wickets !== matchState.wickets) {
+                        triggerVisualUpdate();
+                    }
+
+                    matchState = { ...matchState, ...newData };
+                    updateUI(matchState);
+                } else {
+                    // Initialize empty doc if it doesn't exist
+                    pushStateToFirebase();
+                }
+            }, (error) => {
+                console.error("Firestore listener error:", error);
+                updateSyncStatus(false, "Offline");
+            });
+        }
+
+        async function pushStateToFirebase() {
+            if (!db || !auth.currentUser) return;
+            
+            // Add a timestamp to guarantee a document change is registered
+            matchState.lastUpdateTs = Date.now();
+            
+            try {
+                await setDoc(matchDocRef, matchState);
+                updateSyncStatus(true, "Synced");
+            } catch (error) {
+                console.error("Error saving state:", error);
+                updateSyncStatus(false, "Sync Failed");
+            }
+        }
+
+        window.scoreAction = (type, value, countsAsBall) => {
+            // Optimistic update status
+            updateSyncStatus(true, "Syncing...");
+
+            if (type === 'runs' || type === 'extra') {
+                matchState.runs += value;
+            } else if (type === 'wicket') {
+                if (matchState.wickets < 10) {
+                    matchState.wickets += 1;
+                }
+            }
+
+            if (countsAsBall) {
+                incrementBall();
+            }
+
+            // Immediately update local UI to feel snappy, then push
+            updateUI(matchState);
+            pushStateToFirebase();
+        };
+
+        function incrementBall() {
+            matchState.balls += 1;
+            if (matchState.balls >= 6) {
+                matchState.completedOvers += 1;
+                matchState.balls = 0;
+            }
+        }
+
+        window.pushManualUpdate = () => {
+            updateSyncStatus(true, "Syncing...");
+            
+            matchState.battingTeam = (document.getElementById('in-bat').value || "TEAM").toUpperCase();
+            matchState.bowlingTeam = (document.getElementById('in-bowl').value || "OPP").toUpperCase();
+            
+            const targetVal = document.getElementById('in-target').value;
+            matchState.target = targetVal ? parseInt(targetVal) : null;
+            
+            matchState.runs = parseInt(document.getElementById('in-runs').value) || 0;
+            matchState.wickets = parseInt(document.getElementById('in-wickets').value) || 0;
+            matchState.completedOvers = parseInt(document.getElementById('in-overs').value) || 0;
+            
+            let b = parseInt(document.getElementById('in-balls').value) || 0;
+            while (b >= 6) {
+                matchState.completedOvers += 1;
+                b -= 6;
+            }
+            matchState.balls = b;
+
+            updateUI(matchState);
+            pushStateToFirebase();
+        };
+
+        function updateUI(data) {
+            const oversString = `${data.completedOvers}.${data.balls}`;
+            
+            if (currentMode === 'overlay') {
+                // Update OBS/PRISM overlay
+                setText('obs-bat-team', data.battingTeam);
+                setText('obs-bowl-team', data.bowlingTeam);
+                setText('obs-score', data.runs);
+                setText('obs-wickets', data.wickets);
+                setText('obs-overs', oversString);
+                
+                const targetContainer = document.getElementById('obs-target-container');
+                if (data.target) {
+                    targetContainer.classList.remove('hidden');
+                    setText('obs-target', data.target);
+                } else {
+                    targetContainer.classList.add('hidden');
+                }
+            } 
+            
+            if (currentMode === 'control') {
+                // Update inputs without disrupting typing (only if not currently focused)
+                updateInputIfNotFocused('in-bat', data.battingTeam);
+                updateInputIfNotFocused('in-bowl', data.bowlingTeam);
+                updateInputIfNotFocused('in-runs', data.runs);
+                updateInputIfNotFocused('in-wickets', data.wickets);
+                updateInputIfNotFocused('in-overs', data.completedOvers);
+                updateInputIfNotFocused('in-balls', data.balls);
+                updateInputIfNotFocused('in-target', data.target || '');
+                
+                // Update Preview
+                setText('prev-bat', data.battingTeam);
+                setText('prev-score', data.runs);
+                setText('prev-wickets', data.wickets);
+                setText('prev-overs', oversString);
+            }
+        }
+
+        // Helper functions for UI
+        function setText(id, value) {
+            const el = document.getElementById(id);
+            if(el) el.innerText = value;
+        }
+
+        function updateInputIfNotFocused(id, value) {
+            const el = document.getElementById(id);
+            if (el && document.activeElement !== el) {
+                el.value = value;
+            }
+        }
+
+        function triggerVisualUpdate() {
+            // Makes the numbers pop slightly when they change on the broadcast
+            const score = document.getElementById('obs-score');
+            const wick = document.getElementById('obs-wickets');
+            
+            if(score) {
+                score.classList.remove('value-updated');
+                void score.offsetWidth; // trigger reflow
+                score.classList.add('value-updated');
+            }
+            if(wick) {
+                wick.classList.remove('value-updated');
+                void wick.offsetWidth; // trigger reflow
+                wick.classList.add('value-updated');
+            }
+        }
+
+        function updateSyncStatus(isOk, text) {
+            const ind = document.getElementById('sync-indicator');
+            const txt = document.getElementById('sync-text');
+            if(!ind || !txt) return;
+
+            txt.innerText = text;
+            if (isOk) {
+                ind.classList.replace('bg-red-500', 'bg-green-500');
+                ind.classList.replace('bg-yellow-500', 'bg-green-500');
+            } else {
+                ind.classList.replace('bg-green-500', 'bg-red-500');
+            }
+        }
+
+        window.showResetModal = () => {
+            const modal = document.getElementById('reset-modal');
+            const content = document.getElementById('reset-modal-content');
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                content.classList.replace('scale-95', 'scale-100');
+            }, 10);
+        };
+
+        window.hideResetModal = () => {
+            const modal = document.getElementById('reset-modal');
+            const content = document.getElementById('reset-modal-content');
+            content.classList.replace('scale-100', 'scale-95');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 200);
+        };
+
+        window.confirmReset = () => {
+            matchState.runs = 0;
+            matchState.wickets = 0;
+            matchState.completedOvers = 0;
+            matchState.balls = 0;
+            matchState.target = null;
+            document.getElementById('in-target').value = '';
+            
+            updateUI(matchState);
+            pushStateToFirebase();
+            hideResetModal();
+        };
+
+        // Fallback for local UI testing if Firebase config is missing
+        function setupLocalFallback() {
+            updateSyncStatus(false, "Local Mode (No DB)");
+            const syncInd = document.getElementById('sync-indicator');
+            if(syncInd) syncInd.classList.replace('bg-red-500', 'bg-yellow-500');
+
+            updateUI(matchState);
+            
+            // Override push function to just update local UI
+            window.pushStateToFirebase = () => {
+                triggerVisualUpdate();
+                updateUI(matchState);
+            };
+        }
+
+        // Boot up
+        window.addEventListener('DOMContentLoaded', init);
+
+    </script>
+</body>
+</html>
