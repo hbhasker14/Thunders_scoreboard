@@ -54,6 +54,21 @@
         .ball-wicket { background: #ef4444; color: #fff; }
         .ball-extra { background: #f59e0b; color: #000; }
 
+        /* Over tracker circles */
+        .over-ball {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 22px; height: 22px; border-radius: 50%;
+            font-weight: 800; font-size: 10px;
+            border: 1.5px solid rgba(255,255,255,0.2);
+        }
+        .over-ball.empty { background: transparent; }
+        .over-ball.dot { background: #555; color: #fff; border-color: #555; }
+        .over-ball.run { background: #3b82f6; color: #fff; border-color: #3b82f6; }
+        .over-ball.four { background: #10b981; color: #fff; border-color: #10b981; }
+        .over-ball.six { background: #8b5cf6; color: #fff; border-color: #8b5cf6; }
+        .over-ball.wicket { background: #ef4444; color: #fff; border-color: #ef4444; }
+        .over-ball.extra { background: #f59e0b; color: #000; border-color: #f59e0b; }
+
         .logo-img { object-fit: contain; }
 
         /* Striker highlight */
@@ -97,31 +112,32 @@
         <!-- Full-width broadcast graphic -->
         <div style="width: 100%; box-shadow: 0 -4px 20px rgba(0,0,0,0.6);">
 
-            <!-- Top Score Bar (full width) -->
-            <div class="d-flex align-items-stretch" style="height: 56px;">
-                <!-- Batting team + logo -->
-                <div class="d-flex align-items-center gap-2 px-4" style="background: var(--navy);">
-                    <img id="obs-bat-logo" src="" alt="" class="logo-img hidden" style="width: 36px; height: 36px;">
-                    <span id="obs-bat-team" class="text-white text-uppercase" style="font-size: 22px; font-weight: 900; letter-spacing: 1px;">THUN</span>
+            <!-- Main Score Bar (full width) -->
+            <div class="d-flex align-items-stretch" style="height: 60px;">
+                <!-- Batting team logo + name -->
+                <div class="d-flex align-items-center gap-2 px-4" style="background: var(--navy); min-width: 120px;">
+                    <img id="obs-bat-logo" src="" alt="" class="logo-img hidden" style="width: 40px; height: 40px;">
+                    <div>
+                        <div id="obs-bat-team" class="text-white text-uppercase" style="font-size: 18px; font-weight: 900; letter-spacing: 1px; line-height: 1;">THUN</div>
+                        <div style="font-size: 9px; color: rgba(255,255,255,0.4); font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">Batting</div>
+                    </div>
                 </div>
 
-                <!-- Score block -->
-                <div class="d-flex align-items-center gap-2 px-4" style="background: var(--gold);">
-                    <span id="obs-score" class="tabular-nums" style="font-size: 36px; font-weight: 900; color: var(--navy); line-height: 1;">0</span>
-                    <span style="font-size: 24px; font-weight: 700; color: rgba(11,19,43,0.4);">/</span>
-                    <span id="obs-wickets" class="tabular-nums" style="font-size: 28px; font-weight: 900; color: var(--navy);">0</span>
+                <!-- Score block (runs/wickets) -->
+                <div class="d-flex align-items-center gap-3 px-4" style="background: var(--gold); min-width: 140px;">
+                    <span id="obs-score" class="tabular-nums" style="font-size: 38px; font-weight: 900; color: var(--navy); line-height: 1;">0</span>
+                    <div class="d-flex flex-column">
+                        <span style="font-size: 14px; font-weight: 700; color: rgba(11,19,43,0.4); line-height: 1;">/</span>
+                        <span id="obs-wickets" class="tabular-nums" style="font-size: 22px; font-weight: 900; color: var(--navy); line-height: 1;">0</span>
+                    </div>
                 </div>
 
-                <!-- Overs -->
-                <div class="d-flex align-items-center px-3" style="background: var(--dark-navy);">
+                <!-- Overs + CRR -->
+                <div class="d-flex align-items-center gap-3 px-3" style="background: var(--dark-navy);">
                     <div class="text-center">
                         <div style="font-size: 9px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.4);">Overs</div>
                         <div id="obs-overs" class="tabular-nums text-white" style="font-size: 20px; font-weight: 900;">0.0</div>
                     </div>
-                </div>
-
-                <!-- CRR -->
-                <div class="d-flex align-items-center px-3" style="background: var(--dark-navy);">
                     <div class="text-center">
                         <div style="font-size: 9px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: rgba(255,255,255,0.4);">CRR</div>
                         <div id="obs-crr" class="tabular-nums" style="font-size: 16px; font-weight: 800; color: var(--gold);">0.00</div>
@@ -144,51 +160,57 @@
                     </div>
                 </div>
 
-                <!-- Recent balls strip (fills remaining width) -->
-                <div class="d-flex align-items-center gap-1 px-3 flex-grow-1 justify-content-end" style="background: var(--dark-navy);">
-                    <div id="obs-recent-balls" class="d-flex align-items-center gap-1"></div>
-                </div>
+                <!-- Spacer (fills remaining width) -->
+                <div class="flex-grow-1" style="background: var(--dark-navy);"></div>
 
                 <!-- Bowling team + logo -->
-                <div class="d-flex align-items-center gap-2 px-4" style="background: var(--navy);">
-                    <img id="obs-bowl-logo" src="" alt="" class="logo-img hidden" style="width: 28px; height: 28px;">
-                    <span id="obs-bowl-team" class="text-uppercase" style="font-size: 16px; font-weight: 700; color: rgba(255,255,255,0.6); letter-spacing: 1px;">OPP</span>
+                <div class="d-flex align-items-center gap-2 px-4" style="background: var(--navy); min-width: 120px;">
+                    <div class="text-end">
+                        <div id="obs-bowl-team" class="text-uppercase" style="font-size: 18px; font-weight: 900; color: rgba(255,255,255,0.6); letter-spacing: 1px; line-height: 1;">OPP</div>
+                        <div style="font-size: 9px; color: rgba(255,255,255,0.3); font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">Bowling</div>
+                    </div>
+                    <img id="obs-bowl-logo" src="" alt="" class="logo-img hidden" style="width: 40px; height: 40px;">
                 </div>
             </div>
 
             <!-- Batsmen + Bowler Bar (full width, linear) -->
-            <div class="d-flex align-items-stretch" style="height: 40px;">
-                <!-- Striker -->
-                <div id="obs-striker-row" class="d-flex align-items-center gap-2 px-4" style="background: #1a233a; border-left: 3px solid var(--gold); flex: 1;">
-                    <span style="width: 8px; height: 8px; border-radius: 50%; background: var(--gold); display: inline-block;"></span>
-                    <span id="obs-striker-name" class="text-white" style="font-weight: 800; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Batsman 1</span>
-                    <span style="color: rgba(255,255,255,0.3); font-size: 12px;">|</span>
-                    <span id="obs-striker-runs" style="color: var(--gold); font-weight: 800; font-size: 15px;">0</span>
-                    <span id="obs-striker-balls" style="color: rgba(255,255,255,0.5); font-size: 12px;">(0)</span>
-                    <span id="obs-striker-sr" style="color: rgba(255,255,255,0.4); font-size: 11px; margin-left: auto;">SR 0.00</span>
+            <div class="d-flex align-items-stretch" style="height: 48px;">
+
+                <!-- Striker pill -->
+                <div id="obs-striker-row" class="d-flex align-items-center gap-2 px-4" style="background: #1a233a; border-left: 4px solid var(--gold); flex: 1;">
+                    <span style="color: var(--gold); font-size: 12px; font-weight: 900;">▶</span>
+                    <span id="obs-striker-name" class="text-white" style="font-weight: 800; font-size: 16px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Batsman 1</span>
+                    <span style="color: rgba(255,255,255,0.3); font-size: 14px;">|</span>
+                    <span id="obs-striker-runs" style="color: var(--gold); font-weight: 900; font-size: 18px;">0</span>
+                    <span id="obs-striker-balls" style="color: rgba(255,255,255,0.4); font-size: 13px;">(0)</span>
+                    <span id="obs-striker-sr" style="color: rgba(255,255,255,0.35); font-size: 11px; margin-left: auto;">SR 0.0</span>
                 </div>
 
                 <!-- Divider -->
-                <div style="width: 1px; background: rgba(255,255,255,0.15);"></div>
+                <div style="width: 2px; background: rgba(255,255,255,0.1);"></div>
 
-                <!-- Non-striker -->
+                <!-- Non-striker pill -->
                 <div id="obs-nonstriker-row" class="d-flex align-items-center gap-2 px-4" style="background: #111927; flex: 1;">
-                    <span style="width: 8px; height: 8px; display: inline-block;"></span>
-                    <span id="obs-nonstriker-name" style="color: rgba(255,255,255,0.7); font-weight: 700; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Batsman 2</span>
-                    <span style="color: rgba(255,255,255,0.2); font-size: 12px;">|</span>
-                    <span id="obs-nonstriker-runs" style="color: rgba(255,255,255,0.7); font-weight: 700; font-size: 15px;">0</span>
-                    <span id="obs-nonstriker-balls" style="color: rgba(255,255,255,0.4); font-size: 12px;">(0)</span>
-                    <span id="obs-nonstriker-sr" style="color: rgba(255,255,255,0.3); font-size: 11px; margin-left: auto;">SR 0.00</span>
+                    <span style="color: rgba(255,255,255,0.2); font-size: 12px; font-weight: 900; width: 14px;"></span>
+                    <span id="obs-nonstriker-name" style="color: rgba(255,255,255,0.7); font-weight: 700; font-size: 16px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Batsman 2</span>
+                    <span style="color: rgba(255,255,255,0.15); font-size: 14px;">|</span>
+                    <span id="obs-nonstriker-runs" style="color: rgba(255,255,255,0.7); font-weight: 700; font-size: 18px;">0</span>
+                    <span id="obs-nonstriker-balls" style="color: rgba(255,255,255,0.3); font-size: 13px;">(0)</span>
+                    <span id="obs-nonstriker-sr" style="color: rgba(255,255,255,0.25); font-size: 11px; margin-left: auto;">SR 0.0</span>
                 </div>
 
                 <!-- Divider -->
-                <div style="width: 1px; background: rgba(255,255,255,0.15);"></div>
+                <div style="width: 2px; background: rgba(255,255,255,0.1);"></div>
 
-                <!-- Bowler -->
-                <div class="d-flex align-items-center gap-2 px-4" style="background: #1a1520; flex: 0 0 200px;">
-                    <i class="bi bi-circle-fill" style="font-size: 6px; color: var(--crimson);"></i>
-                    <span id="obs-bowler-name" style="color: rgba(255,255,255,0.7); font-weight: 700; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Bowler</span>
-                    <span id="obs-bowler-figs" style="color: rgba(255,255,255,0.5); font-size: 12px; margin-left: auto;">0-0 (0.0)</span>
+                <!-- Bowler + Over tracker -->
+                <div class="d-flex flex-column justify-content-center px-4" style="background: #1a1520; min-width: 240px;">
+                    <div class="d-flex align-items-center gap-2">
+                        <i class="bi bi-circle-fill" style="font-size: 6px; color: var(--crimson);"></i>
+                        <span id="obs-bowler-name" style="color: rgba(255,255,255,0.8); font-weight: 700; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Bowler</span>
+                        <span id="obs-bowler-figs" style="color: var(--gold); font-size: 13px; font-weight: 700; margin-left: auto;">0-0 (0.0)</span>
+                    </div>
+                    <!-- Current Over Tracker: 6 circles -->
+                    <div id="obs-over-tracker" class="d-flex align-items-center gap-1 mt-1"></div>
                 </div>
             </div>
         </div>
@@ -446,7 +468,7 @@
                 <div class="card border-0 shadow-sm rounded-3">
                     <div class="card-body p-3">
                         <h3 class="text-uppercase mb-2" style="font-size: 12px; font-weight: 800; color: #555;">
-                            <i class="bi bi-clock-history"></i> Recent Balls
+                            <i class="bi bi-clock-history"></i> This Over
                         </h3>
                         <div id="control-recent-balls" class="d-flex flex-wrap gap-1 align-items-center" style="min-height: 36px;">
                             <span class="text-muted small">No balls bowled yet</span>
@@ -588,6 +610,7 @@
         nonStriker: { name: '', runs: 0, balls: 0, fours: 0, sixes: 0 },
         bowler: { name: '', runs: 0, wickets: 0, balls: 0 },
         recentBalls: [],
+        currentOverBalls: [],
         lastUpdateTs: 0
     };
 
@@ -668,6 +691,7 @@
 
                 // Recent balls
                 matchState.recentBalls = data.recentBalls || [];
+                matchState.currentOverBalls = data.currentOverBalls || [];
 
                 if (data.runs !== oldRuns || data.wickets !== oldWickets) {
                     triggerVisualUpdate();
@@ -720,6 +744,7 @@
             bowlBalls: matchState.bowler.balls,
 
             recentBalls: matchState.recentBalls,
+            currentOverBalls: matchState.currentOverBalls,
             lastUpdateTs: matchState.lastUpdateTs
         };
 
@@ -767,8 +792,8 @@
         if (type === 'dot') {
             matchState.striker.balls += 1;
             matchState.bowler.balls += 1;
-            incrementBall();
             matchState.recentBalls.push({ type: 'dot', value: 0 });
+            matchState.currentOverBalls.push({ type: 'dot', value: 0 });
         }
         else if (type === 'runs') {
             matchState.runs += value;
@@ -780,7 +805,9 @@
             if (value === 4) matchState.striker.fours += 1;
             if (value === 6) matchState.striker.sixes += 1;
 
-            matchState.recentBalls.push({ type: value === 4 ? 'four' : value === 6 ? 'six' : 'run', value });
+            const ballType = value === 4 ? 'four' : value === 6 ? 'six' : 'run';
+            matchState.recentBalls.push({ type: ballType, value });
+            matchState.currentOverBalls.push({ type: ballType, value });
 
             incrementBall();
 
@@ -794,25 +821,27 @@
             const extraRuns = value - 1; // runs beyond the wide penalty
             matchState.runs += value;
             matchState.bowler.runs += value;
-            matchState.recentBalls.push({ type: 'extra', value, label: 'WD' + (value > 1 ? '+' + (value-1) : '') });
-            // No ball counted for the wide itself
-            if (extraRuns % 2 === 1) swapStrike(); // if they ran an odd number
+            const label = 'WD' + (value > 1 ? '+' + (value-1) : '');
+            matchState.recentBalls.push({ type: 'extra', value, label });
+            matchState.currentOverBalls.push({ type: 'extra', value, label });
+            if (extraRuns % 2 === 1) swapStrike();
         }
         else if (type === 'noball') {
-            // value = total runs (1 for no ball only, 2+ if they ran or boundary)
             const extraRuns = value - 1;
             matchState.runs += value;
             matchState.bowler.runs += value;
-            matchState.recentBalls.push({ type: 'extra', value, label: 'NB' + (value > 1 ? '+' + (value-1) : '') });
-            // For no balls, if batsmen ran, the striker faces the runs
-            // But no ball is counted as a legal delivery
+            const label = 'NB' + (value > 1 ? '+' + (value-1) : '');
+            matchState.recentBalls.push({ type: 'extra', value, label });
+            matchState.currentOverBalls.push({ type: 'extra', value, label });
             if (extraRuns % 2 === 1) swapStrike();
         }
         else if (type === 'bye' || type === 'legbye') {
             matchState.runs += value;
-            matchState.striker.balls += 1; // byes/legbyes count as balls faced
+            matchState.striker.balls += 1;
             matchState.bowler.balls += 1;
-            matchState.recentBalls.push({ type: 'extra', value, label: type === 'bye' ? 'B' : 'LB' });
+            const label = type === 'bye' ? 'B' : 'LB';
+            matchState.recentBalls.push({ type: 'extra', value, label });
+            matchState.currentOverBalls.push({ type: 'extra', value, label });
             incrementBall();
             if (value % 2 === 1) swapStrike();
         }
@@ -823,10 +852,9 @@
             matchState.bowler.balls += 1;
             matchState.bowler.wickets += 1;
             matchState.recentBalls.push({ type: 'wicket', value: 0 });
-            // Replace striker with placeholder, popup will ask for name
+            matchState.currentOverBalls.push({ type: 'wicket', value: 0 });
             matchState.striker = { name: 'New Batsman', runs: 0, balls: 0, fours: 0, sixes: 0 };
             incrementBall();
-            // Show new batsman popup (only in control mode)
             if (currentMode === 'control') {
                 showBatsmanModal();
             }
@@ -846,9 +874,8 @@
         if (matchState.balls >= 6) {
             matchState.completedOvers += 1;
             matchState.balls = 0;
-            // End of over: swap strike
+            matchState.currentOverBalls = []; // Clear for new over
             swapStrike();
-            // Show new bowler popup (only in control mode)
             if (currentMode === 'control') {
                 showBowlerModal();
             }
@@ -1065,15 +1092,23 @@
             setText('obs-bowler-name', data.bowler.name || 'Bowler');
             setText('obs-bowler-figs', `${data.bowler.wickets}-${data.bowler.runs} (${Math.floor(data.bowler.balls/6)}.${data.bowler.balls%6})`);
 
-            // Recent balls
-            const ballsContainer = document.getElementById('obs-recent-balls');
-            ballsContainer.innerHTML = '';
-            data.recentBalls.forEach(ball => {
-                const pill = document.createElement('span');
-                pill.className = `ball-pill ball-${ball.type}`;
-                pill.textContent = ball.label || ball.value;
-                ballsContainer.appendChild(pill);
-            });
+            // Over tracker (6 circles for current over)
+            const trackerContainer = document.getElementById('obs-over-tracker');
+            if (trackerContainer) {
+                trackerContainer.innerHTML = '';
+                for (let i = 0; i < 6; i++) {
+                    const circle = document.createElement('span');
+                    if (i < data.currentOverBalls.length) {
+                        const ball = data.currentOverBalls[i];
+                        circle.className = `over-ball ${ball.type}`;
+                        circle.textContent = ball.label || ball.value;
+                    } else {
+                        circle.className = 'over-ball empty';
+                        circle.textContent = '';
+                    }
+                    trackerContainer.appendChild(circle);
+                }
+            }
 
             // CRR
             const totalBalls = data.completedOvers * 6 + data.balls;
@@ -1146,18 +1181,26 @@
                 prevBatLogo.classList.remove('hidden');
             } else { prevBatLogo.classList.add('hidden'); }
 
-            // Recent balls in control
+            // Control panel over tracker
             const controlBalls = document.getElementById('control-recent-balls');
-            if (data.recentBalls.length === 0) {
-                controlBalls.innerHTML = '<span class="text-muted small">No balls bowled yet</span>';
-            } else {
-                controlBalls.innerHTML = '';
-                data.recentBalls.forEach(ball => {
-                    const pill = document.createElement('span');
-                    pill.className = `ball-pill ball-${ball.type}`;
-                    pill.textContent = ball.label || ball.value;
-                    controlBalls.appendChild(pill);
-                });
+            if (controlBalls) {
+                if (data.currentOverBalls.length === 0) {
+                    controlBalls.innerHTML = '<span class="text-muted small">No balls bowled yet</span>';
+                } else {
+                    controlBalls.innerHTML = '';
+                    for (let i = 0; i < 6; i++) {
+                        const circle = document.createElement('span');
+                        if (i < data.currentOverBalls.length) {
+                            const ball = data.currentOverBalls[i];
+                            circle.className = `over-ball ${ball.type}`;
+                            circle.textContent = ball.label || ball.value;
+                        } else {
+                            circle.className = 'over-ball empty';
+                            circle.textContent = '';
+                        }
+                        controlBalls.appendChild(circle);
+                    }
+                }
             }
 
             updateUndoButton();
