@@ -90,80 +90,106 @@
 </head>
 <body>
 
-<!-- ==================== OVERLAY VIEW (for Prism Live / OBS) ==================== -->
+<!-- ==================== OVERLAY VIEW (Full-width TV broadcast for Prism Live / OBS) ==================== -->
 <div id="overlay-view" class="hidden">
-    <div class="overlay-container d-flex justify-content-center" style="position: fixed; bottom: 24px; left: 0; right: 0;">
-        <div class="score-bug rounded-3 overflow-hidden" style="max-width: 720px; width: 100%; border: 1px solid rgba(255,255,255,0.1);">
+    <div style="position: fixed; bottom: 0; left: 0; right: 0; z-index: 9999;">
 
-            <!-- Main Score Bar -->
-            <div class="d-flex align-items-stretch w-100">
-                <!-- Batting Team (logo + name + score) -->
-                <div class="d-flex align-items-center gap-2 px-3 py-2" style="background: var(--navy); min-width: 200px;">
+        <!-- Full-width broadcast graphic -->
+        <div style="width: 100%; box-shadow: 0 -4px 20px rgba(0,0,0,0.6);">
+
+            <!-- Top Score Bar (full width) -->
+            <div class="d-flex align-items-stretch" style="height: 56px;">
+                <!-- Batting team + logo -->
+                <div class="d-flex align-items-center gap-2 px-4" style="background: var(--navy);">
                     <img id="obs-bat-logo" src="" alt="" class="logo-img hidden" style="width: 36px; height: 36px;">
-                    <div class="text-white">
-                        <div class="d-flex align-items-baseline gap-2">
-                            <span id="obs-bat-team" class="font-weight-black text-uppercase" style="font-size: 22px; font-weight: 900; letter-spacing: 1px;">THUN</span>
-                        </div>
-                        <div class="d-flex align-items-baseline gap-1">
-                            <span id="obs-score" class="tabular-nums" style="font-size: 38px; font-weight: 900; line-height: 1;">0</span>
-                            <span style="font-size: 22px; font-weight: 700; color: rgba(255,255,255,0.5);">-</span>
-                            <span id="obs-wickets" class="tabular-nums" style="font-size: 26px; font-weight: 900;">0</span>
-                        </div>
+                    <span id="obs-bat-team" class="text-white text-uppercase" style="font-size: 22px; font-weight: 900; letter-spacing: 1px;">THUN</span>
+                </div>
+
+                <!-- Score block -->
+                <div class="d-flex align-items-center gap-2 px-4" style="background: var(--gold);">
+                    <span id="obs-score" class="tabular-nums" style="font-size: 36px; font-weight: 900; color: var(--navy); line-height: 1;">0</span>
+                    <span style="font-size: 24px; font-weight: 700; color: rgba(11,19,43,0.4);">/</span>
+                    <span id="obs-wickets" class="tabular-nums" style="font-size: 28px; font-weight: 900; color: var(--navy);">0</span>
+                </div>
+
+                <!-- Overs -->
+                <div class="d-flex align-items-center px-3" style="background: var(--dark-navy);">
+                    <div class="text-center">
+                        <div style="font-size: 9px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.4);">Overs</div>
+                        <div id="obs-overs" class="tabular-nums text-white" style="font-size: 20px; font-weight: 900;">0.0</div>
                     </div>
                 </div>
 
-                <!-- Overs Block -->
-                <div class="d-flex align-items-center px-3 py-2" style="background: var(--dark-navy); min-width: 90px;">
-                    <div class="text-center text-white w-100">
-                        <div style="font-size: 9px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.5);">Overs</div>
-                        <div id="obs-overs" class="tabular-nums" style="font-size: 22px; font-weight: 900;">0.0</div>
+                <!-- CRR -->
+                <div class="d-flex align-items-center px-3" style="background: var(--dark-navy);">
+                    <div class="text-center">
+                        <div style="font-size: 9px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: rgba(255,255,255,0.4);">CRR</div>
+                        <div id="obs-crr" class="tabular-nums" style="font-size: 16px; font-weight: 800; color: var(--gold);">0.00</div>
                     </div>
                 </div>
 
-                <!-- Target (if 2nd innings) -->
-                <div id="obs-target-container" class="d-none align-items-center px-3 py-2" style="background: var(--crimson);">
-                    <div class="text-center text-white w-100">
-                        <div style="font-size: 9px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;">Target</div>
-                        <div id="obs-target" style="font-size: 20px; font-weight: 900;">0</div>
+                <!-- Target (2nd innings) -->
+                <div id="obs-target-container" class="d-none align-items-center px-3" style="background: var(--crimson);">
+                    <div class="text-center">
+                        <div style="font-size: 9px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: rgba(255,255,255,0.7);">Target</div>
+                        <div id="obs-target" class="text-white" style="font-size: 18px; font-weight: 900;">0</div>
                     </div>
                 </div>
 
-                <!-- Bowling Team -->
-                <div class="d-flex align-items-center gap-2 px-3 py-2 flex-grow-1" style="background: var(--dark-navy);">
+                <!-- RRR (2nd innings) -->
+                <div id="obs-rrr-container" class="d-none align-items-center px-3" style="background: rgba(230,57,70,0.7);">
+                    <div class="text-center">
+                        <div style="font-size: 9px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: rgba(255,255,255,0.7);">RRR</div>
+                        <div id="obs-rrr" class="tabular-nums text-white" style="font-size: 16px; font-weight: 800;">0.00</div>
+                    </div>
+                </div>
+
+                <!-- Recent balls strip (fills remaining width) -->
+                <div class="d-flex align-items-center gap-1 px-3 flex-grow-1 justify-content-end" style="background: var(--dark-navy);">
+                    <div id="obs-recent-balls" class="d-flex align-items-center gap-1"></div>
+                </div>
+
+                <!-- Bowling team + logo -->
+                <div class="d-flex align-items-center gap-2 px-4" style="background: var(--navy);">
                     <img id="obs-bowl-logo" src="" alt="" class="logo-img hidden" style="width: 28px; height: 28px;">
                     <span id="obs-bowl-team" class="text-uppercase" style="font-size: 16px; font-weight: 700; color: rgba(255,255,255,0.6); letter-spacing: 1px;">OPP</span>
                 </div>
             </div>
 
-            <!-- Player Info Bar -->
-            <div style="background: var(--dark-navy); border-top: 1px solid rgba(255,255,255,0.08);">
-                <!-- Batsmen -->
-                <div class="player-row striker-row" id="obs-striker-row">
-                    <span class="ball-pill ball-dot" style="width: 8px; height: 8px; background: var(--gold);"></span>
-                    <span id="obs-striker-name" class="player-name text-white">Batsman 1</span>
-                    <span id="obs-striker-stats" class="player-stats" style="color: var(--gold); margin-left: auto;">0 (0)</span>
-                </div>
-                <div class="player-row" id="obs-nonstriker-row">
-                    <span style="width: 8px; height: 8px;"></span>
-                    <span id="obs-nonstriker-name" class="player-name" style="color: rgba(255,255,255,0.7);">Batsman 2</span>
-                    <span id="obs-nonstriker-stats" class="player-stats" style="color: rgba(255,255,255,0.5); margin-left: auto;">0 (0)</span>
+            <!-- Batsmen + Bowler Bar (full width, linear) -->
+            <div class="d-flex align-items-stretch" style="height: 40px;">
+                <!-- Striker -->
+                <div id="obs-striker-row" class="d-flex align-items-center gap-2 px-4" style="background: #1a233a; border-left: 3px solid var(--gold); flex: 1;">
+                    <span style="width: 8px; height: 8px; border-radius: 50%; background: var(--gold); display: inline-block;"></span>
+                    <span id="obs-striker-name" class="text-white" style="font-weight: 800; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Batsman 1</span>
+                    <span style="color: rgba(255,255,255,0.3); font-size: 12px;">|</span>
+                    <span id="obs-striker-runs" style="color: var(--gold); font-weight: 800; font-size: 15px;">0</span>
+                    <span id="obs-striker-balls" style="color: rgba(255,255,255,0.5); font-size: 12px;">(0)</span>
+                    <span id="obs-striker-sr" style="color: rgba(255,255,255,0.4); font-size: 11px; margin-left: auto;">SR 0.00</span>
                 </div>
 
-                <!-- Bowler + Recent Balls -->
-                <div class="d-flex align-items-center justify-content-between px-3 py-1" style="border-top: 1px solid rgba(255,255,255,0.05);">
-                    <div class="d-flex align-items-center gap-2">
-                        <i class="bi bi-circle-fill" style="font-size: 6px; color: var(--crimson);"></i>
-                        <span id="obs-bowler-name" class="player-name" style="color: rgba(255,255,255,0.7); font-size: 13px;">Bowler</span>
-                        <span id="obs-bowler-stats" class="player-stats" style="color: rgba(255,255,255,0.4); font-size: 11px;">0-0 (0.0)</span>
-                    </div>
-                    <div id="obs-recent-balls" class="d-flex align-items-center"></div>
-                </div>
-            </div>
+                <!-- Divider -->
+                <div style="width: 1px; background: rgba(255,255,255,0.15);"></div>
 
-            <!-- CRR / RRR -->
-            <div class="d-flex justify-content-between px-3 py-1" style="background: var(--navy); border-top: 1px solid rgba(255,255,255,0.08);">
-                <span style="font-size: 11px; color: rgba(255,255,255,0.5); font-weight: 600;">CRR: <span id="obs-crr" style="color: var(--gold);">0.00</span></span>
-                <span id="obs-rrr-container" class="d-none" style="font-size: 11px; color: rgba(255,255,255,0.5); font-weight: 600;">RRR: <span id="obs-rrr" style="color: var(--crimson);">0.00</span></span>
+                <!-- Non-striker -->
+                <div id="obs-nonstriker-row" class="d-flex align-items-center gap-2 px-4" style="background: #111927; flex: 1;">
+                    <span style="width: 8px; height: 8px; display: inline-block;"></span>
+                    <span id="obs-nonstriker-name" style="color: rgba(255,255,255,0.7); font-weight: 700; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Batsman 2</span>
+                    <span style="color: rgba(255,255,255,0.2); font-size: 12px;">|</span>
+                    <span id="obs-nonstriker-runs" style="color: rgba(255,255,255,0.7); font-weight: 700; font-size: 15px;">0</span>
+                    <span id="obs-nonstriker-balls" style="color: rgba(255,255,255,0.4); font-size: 12px;">(0)</span>
+                    <span id="obs-nonstriker-sr" style="color: rgba(255,255,255,0.3); font-size: 11px; margin-left: auto;">SR 0.00</span>
+                </div>
+
+                <!-- Divider -->
+                <div style="width: 1px; background: rgba(255,255,255,0.15);"></div>
+
+                <!-- Bowler -->
+                <div class="d-flex align-items-center gap-2 px-4" style="background: #1a1520; flex: 0 0 200px;">
+                    <i class="bi bi-circle-fill" style="font-size: 6px; color: var(--crimson);"></i>
+                    <span id="obs-bowler-name" style="color: rgba(255,255,255,0.7); font-weight: 700; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Bowler</span>
+                    <span id="obs-bowler-figs" style="color: rgba(255,255,255,0.5); font-size: 12px; margin-left: auto;">0-0 (0.0)</span>
+                </div>
             </div>
         </div>
     </div>
@@ -383,10 +409,10 @@
                         <!-- Extras -->
                         <div class="row g-2 mb-2">
                             <div class="col-6 col-md-3">
-                                <button onclick="scoreAction('wide')" class="score-btn btn w-100 fw-bold" style="background:#fff7ed; color:#9a3412; border:1px solid #fdba74; font-size: 13px; padding: 14px 0;">WIDE +1</button>
+                                <button onclick="showExtraModal('wide')" class="score-btn btn w-100 fw-bold" style="background:#fff7ed; color:#9a3412; border:1px solid #fdba74; font-size: 13px; padding: 14px 0;">WIDE</button>
                             </div>
                             <div class="col-6 col-md-3">
-                                <button onclick="scoreAction('noball')" class="score-btn btn w-100 fw-bold" style="background:#fff7ed; color:#9a3412; border:1px solid #fdba74; font-size: 13px; padding: 14px 0;">NO BALL +1</button>
+                                <button onclick="showExtraModal('noball')" class="score-btn btn w-100 fw-bold" style="background:#fff7ed; color:#9a3412; border:1px solid #fdba74; font-size: 13px; padding: 14px 0;">NO BALL</button>
                             </div>
                             <div class="col-6 col-md-3">
                                 <button onclick="scoreAction('bye', 1)" class="score-btn btn w-100 fw-bold" style="background:#f0fdf4; color:#166534; border:1px solid #86efac; font-size: 13px; padding: 14px 0;">BYE +1</button>
@@ -459,6 +485,57 @@
 
         <!-- Spacer for mobile -->
         <div style="height: 40px;"></div>
+    </div>
+</div>
+
+<!-- ==================== NEW BOWLER MODAL (end of over) ==================== -->
+<div id="bowler-modal" class="modal-backdrop-custom hidden position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center" style="z-index: 9999;">
+    <div class="bg-white rounded-3 shadow p-4" style="max-width: 400px; width: 90%;">
+        <h2 class="mb-1 text-uppercase d-flex align-items-center gap-2" style="font-size: 18px; font-weight: 900; color: var(--crimson);">
+            <i class="bi bi-arrow-repeat"></i> Over Complete
+        </h2>
+        <p class="text-muted small mb-3">Enter the next bowler's name:</p>
+        <input type="text" id="modal-bowler-name" class="form-control form-control-lg fw-bold mb-3" placeholder="e.g. Starc" autofocus>
+        <div class="d-flex gap-2">
+            <button onclick="hideBowlerModal()" class="btn btn-secondary flex-fill fw-bold">Skip</button>
+            <button onclick="confirmNewBowler()" class="btn btn-primary flex-fill fw-bold">Set Bowler</button>
+        </div>
+    </div>
+</div>
+
+<!-- ==================== NEW BATSMAN MODAL (wicket) ==================== -->
+<div id="batsman-modal" class="modal-backdrop-custom hidden position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center" style="z-index: 9999;">
+    <div class="bg-white rounded-3 shadow p-4" style="max-width: 400px; width: 90%;">
+        <h2 class="mb-1 text-uppercase d-flex align-items-center gap-2" style="font-size: 18px; font-weight: 900; color: var(--crimson);">
+            <i class="bi bi-x-circle"></i> Wicket!
+        </h2>
+        <p class="text-muted small mb-3">Enter the new batsman's name:</p>
+        <input type="text" id="modal-batsman-name" class="form-control form-control-lg fw-bold mb-3" placeholder="e.g. Smith" autofocus>
+        <div class="d-flex gap-2">
+            <button onclick="hideBatsmanModal()" class="btn btn-secondary flex-fill fw-bold">Skip</button>
+            <button onclick="confirmNewBatsman()" class="btn btn-success flex-fill fw-bold">Add Batsman</button>
+        </div>
+    </div>
+</div>
+
+<!-- ==================== EXTRA RUNS MODAL (wide/no ball with runs) ==================== -->
+<div id="extra-modal" class="modal-backdrop-custom hidden position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center" style="z-index: 9999;">
+    <div class="bg-white rounded-3 shadow p-4" style="max-width: 380px; width: 90%;">
+        <h2 id="extra-modal-title" class="mb-2 text-uppercase d-flex align-items-center gap-2" style="font-size: 18px; font-weight: 900; color: #9a3412;">
+            <i class="bi bi-exclamation-circle"></i> Wide
+        </h2>
+        <p class="text-muted small mb-3">How many total runs? (1 = wide only, 2 = wide + 1 run, etc.)</p>
+        <div class="row g-2 mb-3">
+            <div class="col-3"><button onclick="confirmExtra(1)" class="score-btn btn w-100 fw-bold" style="background:#fff7ed; color:#9a3412; border:2px solid #fdba74; font-size: 20px; padding: 16px 0;">1</button></div>
+            <div class="col-3"><button onclick="confirmExtra(2)" class="score-btn btn w-100 fw-bold" style="background:#fff7ed; color:#9a3412; border:2px solid #fdba74; font-size: 20px; padding: 16px 0;">2</button></div>
+            <div class="col-3"><button onclick="confirmExtra(3)" class="score-btn btn w-100 fw-bold" style="background:#fff7ed; color:#9a3412; border:2px solid #fdba74; font-size: 20px; padding: 16px 0;">3</button></div>
+            <div class="col-3"><button onclick="confirmExtra(4)" class="score-btn btn w-100 fw-bold" style="background:#fff7ed; color:#9a3412; border:2px solid #fdba74; font-size: 20px; padding: 16px 0;">4</button></div>
+        </div>
+        <div class="row g-2 mb-3">
+            <div class="col-6"><button onclick="confirmExtra(5)" class="score-btn btn w-100 fw-bold" style="background:#fff7ed; color:#9a3412; border:2px solid #fdba74; font-size: 16px; padding: 14px 0;">5</button></div>
+            <div class="col-6"><button onclick="confirmExtra(6)" class="score-btn btn w-100 fw-bold" style="background:#fff7ed; color:#9a3412; border:2px solid #fdba74; font-size: 16px; padding: 14px 0;">6 (bound)</button></div>
+        </div>
+        <button onclick="hideExtraModal()" class="btn btn-secondary w-100 fw-bold">Cancel</button>
     </div>
 </div>
 
@@ -713,16 +790,23 @@
             }
         }
         else if (type === 'wide') {
-            matchState.runs += 1;
-            matchState.bowler.runs += 1;
-            matchState.recentBalls.push({ type: 'extra', value: 1, label: 'WD' });
-            // No ball counted
+            // value = total runs (1 for wide only, 2+ if they ran)
+            const extraRuns = value - 1; // runs beyond the wide penalty
+            matchState.runs += value;
+            matchState.bowler.runs += value;
+            matchState.recentBalls.push({ type: 'extra', value, label: 'WD' + (value > 1 ? '+' + (value-1) : '') });
+            // No ball counted for the wide itself
+            if (extraRuns % 2 === 1) swapStrike(); // if they ran an odd number
         }
         else if (type === 'noball') {
-            matchState.runs += 1;
-            matchState.bowler.runs += 1;
-            matchState.recentBalls.push({ type: 'extra', value: 1, label: 'NB' });
-            // No ball counted
+            // value = total runs (1 for no ball only, 2+ if they ran or boundary)
+            const extraRuns = value - 1;
+            matchState.runs += value;
+            matchState.bowler.runs += value;
+            matchState.recentBalls.push({ type: 'extra', value, label: 'NB' + (value > 1 ? '+' + (value-1) : '') });
+            // For no balls, if batsmen ran, the striker faces the runs
+            // But no ball is counted as a legal delivery
+            if (extraRuns % 2 === 1) swapStrike();
         }
         else if (type === 'bye' || type === 'legbye') {
             matchState.runs += value;
@@ -739,9 +823,13 @@
             matchState.bowler.balls += 1;
             matchState.bowler.wickets += 1;
             matchState.recentBalls.push({ type: 'wicket', value: 0 });
-            // Replace striker BEFORE incrementBall (which may swap strike at over end)
+            // Replace striker with placeholder, popup will ask for name
             matchState.striker = { name: 'New Batsman', runs: 0, balls: 0, fours: 0, sixes: 0 };
             incrementBall();
+            // Show new batsman popup (only in control mode)
+            if (currentMode === 'control') {
+                showBatsmanModal();
+            }
         }
 
         // Trim recent balls to last 6
@@ -760,6 +848,10 @@
             matchState.balls = 0;
             // End of over: swap strike
             swapStrike();
+            // Show new bowler popup (only in control mode)
+            if (currentMode === 'control') {
+                showBowlerModal();
+            }
         }
     }
 
@@ -813,6 +905,82 @@
         matchState.bowler = { name: newName, runs: 0, wickets: 0, balls: 0 };
         updateUI(matchState);
         pushStateToFirebase();
+    };
+
+    // ==================== MODAL FUNCTIONS ====================
+    let pendingExtraType = null;
+
+    window.showBowlerModal = () => {
+        const modal = document.getElementById('bowler-modal');
+        if (!modal) return;
+        modal.classList.remove('hidden');
+        const input = document.getElementById('modal-bowler-name');
+        if (input) {
+            input.value = '';
+            setTimeout(() => input.focus(), 50);
+        }
+    };
+
+    window.hideBowlerModal = () => {
+        document.getElementById('bowler-modal').classList.add('hidden');
+    };
+
+    window.confirmNewBowler = () => {
+        const name = document.getElementById('modal-bowler-name').value.trim();
+        if (name) {
+            saveUndoSnapshot();
+            matchState.bowler = { name: name, runs: 0, wickets: 0, balls: 0 };
+            updateUI(matchState);
+            pushStateToFirebase();
+        }
+        hideBowlerModal();
+    };
+
+    window.showBatsmanModal = () => {
+        const modal = document.getElementById('batsman-modal');
+        if (!modal) return;
+        modal.classList.remove('hidden');
+        const input = document.getElementById('modal-batsman-name');
+        if (input) {
+            input.value = '';
+            setTimeout(() => input.focus(), 50);
+        }
+    };
+
+    window.hideBatsmanModal = () => {
+        document.getElementById('batsman-modal').classList.add('hidden');
+    };
+
+    window.confirmNewBatsman = () => {
+        const name = document.getElementById('modal-batsman-name').value.trim();
+        if (name) {
+            saveUndoSnapshot();
+            matchState.striker.name = name;
+            updateUI(matchState);
+            pushStateToFirebase();
+        }
+        hideBatsmanModal();
+    };
+
+    window.showExtraModal = (type) => {
+        pendingExtraType = type;
+        const modal = document.getElementById('extra-modal');
+        const title = document.getElementById('extra-modal-title');
+        if (!modal || !title) return;
+        title.innerHTML = '<i class="bi bi-exclamation-circle"></i> ' + (type === 'wide' ? 'Wide' : 'No Ball');
+        modal.classList.remove('hidden');
+    };
+
+    window.hideExtraModal = () => {
+        document.getElementById('extra-modal').classList.add('hidden');
+        pendingExtraType = null;
+    };
+
+    window.confirmExtra = (totalRuns) => {
+        if (pendingExtraType) {
+            scoreAction(pendingExtraType, totalRuns);
+        }
+        hideExtraModal();
     };
 
     // ==================== LOGO UPLOAD ====================
@@ -887,11 +1055,15 @@
 
             // Players
             setText('obs-striker-name', data.striker.name || 'Batsman 1');
-            setText('obs-striker-stats', `${data.striker.runs} (${data.striker.balls})`);
+            setText('obs-striker-runs', data.striker.runs);
+            setText('obs-striker-balls', `(${data.striker.balls})`);
+            setText('obs-striker-sr', `SR ${data.striker.balls > 0 ? (data.striker.runs / data.striker.balls * 100).toFixed(1) : '0.0'}`);
             setText('obs-nonstriker-name', data.nonStriker.name || 'Batsman 2');
-            setText('obs-nonstriker-stats', `${data.nonStriker.runs} (${data.nonStriker.balls})`);
+            setText('obs-nonstriker-runs', data.nonStriker.runs);
+            setText('obs-nonstriker-balls', `(${data.nonStriker.balls})`);
+            setText('obs-nonstriker-sr', `SR ${data.nonStriker.balls > 0 ? (data.nonStriker.runs / data.nonStriker.balls * 100).toFixed(1) : '0.0'}`);
             setText('obs-bowler-name', data.bowler.name || 'Bowler');
-            setText('obs-bowler-stats', `${data.bowler.wickets}-${data.bowler.runs} (${Math.floor(data.bowler.balls/6)}.${data.bowler.balls%6})`);
+            setText('obs-bowler-figs', `${data.bowler.wickets}-${data.bowler.runs} (${Math.floor(data.bowler.balls/6)}.${data.bowler.balls%6})`);
 
             // Recent balls
             const ballsContainer = document.getElementById('obs-recent-balls');
@@ -1063,8 +1235,22 @@
 
     // ==================== KEYBOARD SHORTCUTS ====================
     document.addEventListener('keydown', (e) => {
+        // Enter key in modals
+        if (e.key === 'Enter') {
+            if (!document.getElementById('bowler-modal').classList.contains('hidden')) {
+                confirmNewBowler(); return;
+            }
+            if (!document.getElementById('batsman-modal').classList.contains('hidden')) {
+                confirmNewBatsman(); return;
+            }
+        }
         if (currentMode !== 'control') return;
         if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'SELECT') return;
+
+        // Don't process shortcuts if a modal is open
+        if (!document.getElementById('bowler-modal').classList.contains('hidden')) return;
+        if (!document.getElementById('batsman-modal').classList.contains('hidden')) return;
+        if (!document.getElementById('extra-modal').classList.contains('hidden')) return;
 
         switch(e.key) {
             case '0': scoreAction('dot'); break;
