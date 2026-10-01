@@ -25,24 +25,63 @@
         /* Hidden utility */
         .hidden { display: none !important; }
 
-        /* Overlay mode - Forces PRISM to render full 1080p canvas */
-        body.overlay-mode { background: transparent !important; overflow: hidden; width: 1920px; height: 1080px; margin: 0; padding: 0; }
+        /* OVERLAY MODE - FORCES EXACT 1080p CANVAS SO IT NEVER CUTS OFF */
+        body.overlay-mode { 
+            background: transparent !important; 
+            overflow: hidden; 
+            width: 1920px; 
+            height: 1080px; 
+            margin: 0; 
+            padding: 0; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: flex-end; 
+            align-items: center; 
+            padding-bottom: 45px; 
+        }
 
         .value-updated { animation: pulseText 0.5s ease-out; }
-        @keyframes pulseText {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); color: #fff; }
-            100% { transform: scale(1); }
-        }
+        @keyframes pulseText { 0% { transform: scale(1); } 50% { transform: scale(1.1); color: #fff; } 100% { transform: scale(1); } }
 
-        /* Over tracker circles - MASSIVE TV Style */
-        .over-ball {
-            display: inline-flex; align-items: center; justify-content: center;
-            width: 32px; height: 32px; border-radius: 50%;
-            font-weight: 900; font-size: 18px;
-            border: 3px solid #fff; color: #fff;
-            margin: 0 4px;
-        }
+        /* MASSIVE TV STYLES FOR BROADCAST */
+        .tv-wrapper { width: 96%; max-width: 1850px; display: flex; flex-direction: column; align-items: center; z-index: 9999; }
+        .tv-main-bar { display: flex; background: #070707; color: #fff; height: 140px; box-shadow: 0 15px 40px rgba(0,0,0,0.9); border-radius: 16px; overflow: hidden; width: 100%; align-items: stretch; }
+        
+        .tv-logo-box { padding: 0 25px; background: #111; display: flex; align-items: center; border-right: 4px solid #222; }
+        .tv-logo-img { width: 110px; height: 110px; border-radius: 50%; object-fit: cover; }
+        
+        .tv-score-box { display: flex; flex-direction: column; justify-content: center; padding: 0 45px 0 35px; background: #070707; }
+        .tv-team-name { font-size: 26px; font-weight: 800; color: #e5e5e5; letter-spacing: 4px; text-transform: uppercase; }
+        .tv-score-text { font-size: 85px; font-weight: 900; color: #f97316; line-height: 1; letter-spacing: -3px; margin-top: 2px; }
+        
+        .tv-overs-box { display: flex; flex-direction: column; justify-content: center; padding: 0 45px 0 0; min-width: 220px; border-right: 4px solid #222; }
+        .tv-overs-label { font-size: 24px; font-weight: 800; color: #ccc; letter-spacing: 2px; }
+        .tv-overs-val { font-weight: 900; color: #fff; margin-left: 8px; font-size: 36px; }
+        .tv-target-row { font-size: 22px; font-weight: 800; color: #aaa; letter-spacing: 2px; margin-top: 6px; }
+        .tv-target-val { color: #ccc; font-size: 32px; font-weight: 900; }
+        
+        .tv-pill-container { display: flex; align-items: center; justify-content: center; flex: 1; padding: 0 35px; background: #070707; border-right: 4px solid #222; }
+        .tv-pill { display: flex; height: 96px; border-radius: 48px; overflow: hidden; border: 3px solid #333; box-shadow: inset 0 4px 10px rgba(0,0,0,0.5); width: 100%; max-width: 1000px; }
+        .tv-striker { display: flex; align-items: center; background: linear-gradient(90deg, #ea580c, #f97316); padding: 0 35px 0 25px; flex: 1; }
+        .tv-nonstriker { display: flex; align-items: center; background: #1f2937; padding: 0 35px; flex: 1; }
+        
+        .tv-arrow { font-size: 24px; color: #fff; margin-right: 15px; }
+        .tv-bat-name { font-weight: 900; font-size: 40px; text-transform: uppercase; margin-right: auto; color: #000; letter-spacing: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .tv-nonstriker .tv-bat-name { color: #fff; }
+        .tv-bat-runs { font-weight: 900; font-size: 48px; color: #000; margin-left: 25px; }
+        .tv-nonstriker .tv-bat-runs { color: #fff; }
+        .tv-bat-balls { font-weight: 800; font-size: 28px; color: #000; margin-left: 10px; opacity: 0.8; }
+        .tv-nonstriker .tv-bat-balls { color: #aaa; }
+        
+        .tv-bowl-box { display: flex; flex-direction: column; justify-content: center; padding: 0 35px 0 45px; min-width: 520px; background: #070707; }
+        .tv-bowl-team { font-size: 24px; font-weight: 800; color: #e5e5e5; letter-spacing: 3px; text-transform: uppercase; }
+        .tv-bowl-stats { display: flex; align-items: baseline; gap: 20px; margin-top: 4px; }
+        .tv-bowl-name { font-weight: 900; font-size: 40px; text-transform: uppercase; color: #86efac; letter-spacing: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 300px; }
+        .tv-bowl-figs { font-weight: 900; font-size: 40px; color: #fff; }
+        .tv-bowl-overs { font-size: 28px; color: #aaa; font-weight: 800; margin-left: 8px; }
+        .tv-tracker-row { display: flex; gap: 10px; margin-top: 10px; }
+
+        .over-ball { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 50%; font-weight: 900; font-size: 22px; border: 3px solid #fff; color: #fff; margin: 0 4px; }
         .over-ball.empty { border-color: #555; color: transparent; }
         .over-ball.dot { border-color: #aaa; color: transparent; }
         .over-ball.run { border-color: #fff; }
@@ -51,7 +90,7 @@
         .over-ball.wicket { border-color: #ef4444; background: #ef4444; color: #fff; }
         .over-ball.extra { border-color: #f59e0b; color: #f59e0b; }
 
-        .logo-img { object-fit: contain; }
+        .tv-equation { margin-top: 20px; background: rgba(15, 20, 30, 0.95); color: #fff; padding: 18px 60px; border-radius: 12px; font-size: 36px; font-weight: 900; letter-spacing: 3px; box-shadow: 0 8px 20px rgba(0,0,0,0.7); border: 3px solid #333; text-transform: uppercase; }
 
         /* Scoring buttons */
         .score-btn { transition: all 0.12s; user-select: none; }
@@ -62,71 +101,62 @@
 <body>
 
 <!-- ==================== OVERLAY VIEW (Full-width TV broadcast for Prism Live / OBS) ==================== -->
-<div id="overlay-view" class="hidden" style="position: absolute; bottom: 60px; left: 50%; transform: translateX(-50%); width: 1800px; display: flex; flex-direction: column; align-items: center; z-index: 9999;">
-    
-    <!-- Main TV Graphic Bar (Hardcoded Huge) -->
-    <div style="display: flex; background: #070707; color: #fff; height: 100px; box-shadow: 0 15px 40px rgba(0,0,0,0.9); border-radius: 16px; overflow: hidden; align-items: stretch; width: 100%;">
-
+<div id="overlay-view" class="hidden tv-wrapper">
+    <div class="tv-main-bar">
         <!-- Left: Batting Team Logo -->
-        <div style="padding: 0 20px; background: #111; display: flex; align-items: center; border-right: 3px solid #222;">
-            <img id="obs-bat-logo" class="logo-img hidden" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover;">
+        <div class="tv-logo-box">
+            <img id="obs-bat-logo" class="tv-logo-img hidden">
         </div>
 
         <!-- Left: Batting Score (Wickets-Runs) -->
-        <div style="display: flex; flex-direction: column; justify-content: center; padding: 0 35px 0 30px; background: #070707;">
-            <div id="obs-bat-team" style="font-size: 20px; font-weight: 800; color: #e5e5e5; letter-spacing: 3px; text-transform: uppercase;">TEAM</div>
-            <div style="font-size: 60px; font-weight: 900; color: #f97316; line-height: 1; letter-spacing: -2px; margin-top: 2px;">
-                <span id="obs-wickets">0</span>-<span id="obs-score">0</span>
-            </div>
+        <div class="tv-score-box">
+            <div id="obs-bat-team" class="tv-team-name">TEAM</div>
+            <div class="tv-score-text"><span id="obs-wickets">0</span>-<span id="obs-score">0</span></div>
         </div>
 
         <!-- Left: Overs & Target -->
-        <div style="display: flex; flex-direction: column; justify-content: center; padding: 0 35px 0 0; min-width: 150px; border-right: 3px solid #222;">
-            <div style="font-size: 18px; font-weight: 800; color: #ccc; letter-spacing: 2px;">OVERS <span id="obs-overs" style="font-weight: 900; color: #fff; margin-left: 6px; font-size: 26px;">0.0</span></div>
-            <div id="obs-target-container" class="hidden" style="font-size: 18px; font-weight: 800; color: #aaa; letter-spacing: 2px; margin-top: 6px;">TARGET <span id="obs-target" style="color: #ccc; font-size: 24px; font-weight: 900;">0</span></div>
+        <div class="tv-overs-box">
+            <div class="tv-overs-label">OVERS <span id="obs-overs" class="tv-overs-val">0.0</span></div>
+            <div id="obs-target-container" class="hidden tv-target-row">TARGET <span id="obs-target" class="tv-target-val">0</span></div>
         </div>
 
         <!-- Center: Batsmen (The Pill) -->
-        <div style="display: flex; align-items: center; justify-content: center; flex: 1; padding: 0 25px; background: #070707; border-right: 3px solid #222;">
-            <div style="display: flex; height: 68px; border-radius: 34px; overflow: hidden; border: 2px solid #333; box-shadow: inset 0 4px 10px rgba(0,0,0,0.5); width: 100%; max-width: 900px;">
-                <!-- Striker (Left Side - Orange) -->
-                <div style="display: flex; align-items: center; background: linear-gradient(90deg, #ea580c, #f97316); padding: 0 25px 0 20px; flex: 1;">
-                    <span style="font-size: 18px; color: #fff; margin-right: 12px;">▶</span>
-                    <span id="obs-striker-name" style="font-weight: 900; font-size: 28px; text-transform: uppercase; margin-right: auto; color: #000; letter-spacing: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">BATSMAN 1</span>
-                    <span id="obs-striker-runs" style="font-weight: 900; font-size: 34px; color: #000; margin-left: 20px;">0</span>
-                    <span id="obs-striker-balls" style="font-weight: 800; font-size: 20px; color: #000; margin-left: 8px; opacity: 0.8;">(0)</span>
+        <div class="tv-pill-container">
+            <div class="tv-pill">
+                <div class="tv-striker">
+                    <span class="tv-arrow">▶</span>
+                    <span id="obs-striker-name" class="tv-bat-name">BATSMAN 1</span>
+                    <span id="obs-striker-runs" class="tv-bat-runs">0</span>
+                    <span id="obs-striker-balls" class="tv-bat-balls">(0)</span>
                 </div>
-                <!-- Non-Striker (Right Side - Dark) -->
-                <div style="display: flex; align-items: center; background: #1f2937; padding: 0 25px; flex: 1;">
-                    <span id="obs-nonstriker-name" style="font-weight: 800; font-size: 26px; text-transform: uppercase; margin-right: auto; color: #fff; letter-spacing: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">BATSMAN 2</span>
-                    <span id="obs-nonstriker-runs" style="font-weight: 900; font-size: 32px; color: #fff; margin-left: 20px;">0</span>
-                    <span id="obs-nonstriker-balls" style="font-weight: 700; font-size: 18px; color: #aaa; margin-left: 8px;">(0)</span>
+                <div class="tv-nonstriker">
+                    <span id="obs-nonstriker-name" class="tv-bat-name">BATSMAN 2</span>
+                    <span id="obs-nonstriker-runs" class="tv-bat-runs">0</span>
+                    <span id="obs-nonstriker-balls" class="tv-bat-balls">(0)</span>
                 </div>
             </div>
         </div>
 
         <!-- Right: Bowler info & Over tracker -->
-        <div style="display: flex; flex-direction: column; justify-content: center; padding: 0 25px 0 35px; min-width: 420px; background: #070707;">
-            <div style="display: flex; justify-content: space-between; align-items: baseline;">
-                <div id="obs-bowl-team" style="font-size: 18px; font-weight: 800; color: #e5e5e5; letter-spacing: 3px; text-transform: uppercase;">TEAM</div>
+        <div class="tv-bowl-box">
+            <div id="obs-bowl-team" class="tv-bowl-team">TEAM</div>
+            <div class="tv-bowl-stats">
+                <span id="obs-bowler-name" class="tv-bowl-name">BOWLER</span>
+                <span id="obs-bowler-figs" class="tv-bowl-figs">0-0 <span class="tv-bowl-overs">0.0</span></span>
             </div>
-            <div style="display: flex; align-items: baseline; gap: 15px; margin-top: 4px;">
-                <span id="obs-bowler-name" style="font-weight: 900; font-size: 28px; text-transform: uppercase; color: #86efac; letter-spacing: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 250px;">BOWLER</span>
-                <span id="obs-bowler-figs" style="font-weight: 900; font-size: 28px; color: #fff;">0-0 <span style="font-size: 20px; color: #aaa; font-weight: 800;">0.0</span></span>
-            </div>
-            <div id="obs-over-tracker" style="display: flex; gap: 8px; margin-top: 8px;">
+            <div id="obs-over-tracker" class="tv-tracker-row">
                 <!-- circles injected dynamically -->
             </div>
         </div>
 
         <!-- Right: Bowling Team Logo -->
-        <div style="padding: 0 20px; background: #111; display: flex; align-items: center; border-left: 3px solid #222;">
-            <img id="obs-bowl-logo" class="logo-img hidden" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover;">
+        <div class="tv-logo-box" style="border-right: none; border-left: 4px solid #222;">
+            <img id="obs-bowl-logo" class="tv-logo-img hidden">
         </div>
     </div>
 
     <!-- MASSIVE 2nd Innings Equation Ribbon -->
-    <div id="obs-equation-ribbon" class="hidden" style="margin-top: 15px; background: rgba(15, 20, 30, 0.95); color: #fff; padding: 12px 45px; border-radius: 10px; font-size: 26px; font-weight: 900; letter-spacing: 3px; box-shadow: 0 8px 20px rgba(0,0,0,0.7); border: 2px solid #333; text-transform: uppercase;">
+    <div id="obs-equation-ribbon" class="hidden tv-equation">
         <span id="obs-eq-text"></span>
     </div>
 </div>
@@ -829,7 +859,7 @@
             setText('obs-striker-name', data.striker.name || 'BATSMAN 1'); setText('obs-striker-runs', data.striker.runs); setText('obs-striker-balls', `(${data.striker.balls})`);
             setText('obs-nonstriker-name', data.nonStriker.name || 'BATSMAN 2'); setText('obs-nonstriker-runs', data.nonStriker.runs); setText('obs-nonstriker-balls', `(${data.nonStriker.balls})`);
             setText('obs-bowler-name', data.bowler.name || 'BOWLER'); setText('obs-bowler-figs', `${data.bowler.wickets}-${data.bowler.runs} `);
-            document.getElementById('obs-bowler-figs').innerHTML = `${data.bowler.wickets}-${data.bowler.runs} <span style="font-size: 20px; color: #aaa; font-weight: 800; margin-left: 6px;">${Math.floor(data.bowler.balls/6)}.${data.bowler.balls%6}</span>`;
+            document.getElementById('obs-bowler-figs').innerHTML = `${data.bowler.wickets}-${data.bowler.runs} <span class="tv-bowl-overs">${Math.floor(data.bowler.balls/6)}.${data.bowler.balls%6}</span>`;
 
             const trackerContainer = document.getElementById('obs-over-tracker');
             if (trackerContainer) {
