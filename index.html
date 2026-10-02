@@ -39,77 +39,113 @@
         }
 
         .value-updated { animation: pulseText 0.5s ease-out; }
-        @keyframes pulseText { 0% { transform: scale(1); } 50% { transform: scale(1.1); color: #fff; } 100% { transform: scale(1); } }
+        @keyframes pulseText { 0% { transform: scale(1); color: #f4d03f; } 50% { transform: scale(1.1); color: #fff; } 100% { transform: scale(1); } }
 
-        /* TV GRAPHIC - Sharp, Crisp, Professional Broadcast Look */
+        /* TV GRAPHIC - SHARP, ZERO BLUR, SOLID BORDERS */
         .tv-wrapper { width: max-content; display: flex; flex-direction: column; align-items: center; z-index: 9999; position: relative; }
         .tv-main-bar { 
-            display: flex; background: rgba(10, 10, 12, 0.95); color: #fff; height: 90px; border-radius: 4px; 
-            border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 8px 25px rgba(0,0,0,0.6); 
+            display: flex; background: #070707; color: #fff; height: 94px; border-radius: 6px; 
+            border: 2px solid #222; /* Crisp border instead of shadow */
             overflow: hidden; align-items: stretch; width: max-content; z-index: 10; position: relative;
         }
         
-        /* Dynamic Color Logo Boxes */
-        .tv-logo-box { padding: 0 16px; display: flex; align-items: center; border-right: 1px solid #000; flex: 0 0 auto; width: 90px; justify-content: center; }
-        .tv-logo-box-right { padding: 0 16px; display: flex; align-items: center; border-left: 1px solid #000; flex: 0 0 auto; width: 90px; justify-content: center; }
-        .tv-logo-img { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; box-shadow: 0 2px 8px rgba(0,0,0,0.4); border: 2px solid rgba(255,255,255,0.2); }
+        .tv-logo-box { padding: 0 16px; background: #000; display: flex; align-items: center; border-right: 2px solid #333; flex: 0 0 auto; width: 94px; justify-content: center; }
+        .tv-logo-box-right { padding: 0 16px; background: #000; display: flex; align-items: center; border-left: 2px solid #333; flex: 0 0 auto; width: 94px; justify-content: center; }
+        .tv-logo-img { width: 68px; height: 68px; border-radius: 50%; object-fit: cover; border: 2px solid #fff; } /* Solid border on logo */
         
-        /* Main Score Section */
-        .tv-score-box { display: flex; flex-direction: column; justify-content: space-between; padding: 10px 22px; flex: 0 0 auto; }
-        .tv-team-name { font-size: 16px; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; line-height: 1.2; margin: 0; color: #ccc; }
-        .tv-score-text { font-size: 50px; font-weight: 900; color: #ffffff; line-height: 1; letter-spacing: -2px; margin-top: auto; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+        /* Main Score Section - SCORE IS NOW CRISP WHITE */
+        .tv-score-box { display: flex; flex-direction: column; justify-content: space-between; padding: 10px 22px; background: #070707; flex: 0 0 auto; }
+        .tv-team-name { font-size: 16px; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; line-height: 1.2; margin: 0; }
+        .tv-score-text { font-size: 50px; font-weight: 900; color: #ffffff; line-height: 1; letter-spacing: -2px; margin-top: auto; }
         
         /* Overs & Target */
-        .tv-overs-box { display: flex; flex-direction: column; justify-content: center; padding: 10px 22px 10px 0; border-right: 1px solid rgba(255,255,255,0.1); flex: 0 0 auto; }
+        .tv-overs-box { display: flex; flex-direction: column; justify-content: center; padding: 10px 22px 10px 0; border-right: 2px solid #333; flex: 0 0 auto; background: #070707; }
         .tv-overs-label { font-size: 14px; font-weight: 800; color: #888; letter-spacing: 1.5px; }
         .tv-overs-val { font-weight: 900; color: #fff; margin-left: 6px; font-size: 24px; }
         .tv-target-row { font-size: 13px; font-weight: 800; color: #888; letter-spacing: 1.5px; margin-top: 4px; }
-        .tv-target-val { color: #ccc; font-size: 18px; font-weight: 900; }
+        .tv-target-val { color: #fff; font-size: 18px; font-weight: 900; }
         
-        /* Batsman Panels - Sharp borders instead of round pills */
-        .tv-pill-container { display: flex; align-items: center; justify-content: center; padding: 0 18px; border-right: 1px solid rgba(255,255,255,0.1); flex: 0 0 auto; }
-        .tv-pill { display: flex; height: 58px; border-radius: 4px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 4px 10px rgba(0,0,0,0.3); width: 580px; }
-        .tv-striker { display: flex; align-items: center; background: #ea580c; padding: 0 18px 0 14px; flex: 1; white-space: nowrap; border-right: 1px solid rgba(0,0,0,0.3); }
+        /* Batsman Panels - Flat and Crisp */
+        .tv-pill-container { display: flex; align-items: center; justify-content: center; padding: 0 18px; background: #070707; border-right: 2px solid #333; flex: 0 0 auto; }
+        .tv-pill { display: flex; height: 58px; border-radius: 4px; overflow: hidden; border: 2px solid #444; width: 580px; }
+        .tv-striker { display: flex; align-items: center; background: #ea580c; padding: 0 18px 0 14px; flex: 1; white-space: nowrap; border-right: 2px solid #222; }
         .tv-nonstriker { display: flex; align-items: center; background: #1e293b; padding: 0 18px; flex: 1; white-space: nowrap; }
         
         .tv-arrow { font-size: 14px; color: #fff; margin-right: 8px; flex: 0 0 auto; }
-        .tv-bat-name { font-weight: 900; font-size: 20px; text-transform: uppercase; color: #fff; letter-spacing: 0.5px; white-space: nowrap; text-shadow: 0 1px 2px rgba(0,0,0,0.4); }
-        .tv-bat-runs { font-weight: 900; font-size: 25px; color: #fff; margin-left: auto; padding-left: 10px; flex: 0 0 auto; text-shadow: 0 1px 2px rgba(0,0,0,0.4); }
+        .tv-bat-name { font-weight: 900; font-size: 20px; text-transform: uppercase; color: #fff; letter-spacing: 0.5px; white-space: nowrap; }
+        .tv-bat-runs { font-weight: 900; font-size: 25px; color: #fff; margin-left: auto; padding-left: 10px; flex: 0 0 auto; }
         .tv-bat-balls { font-weight: 800; font-size: 15px; color: rgba(255,255,255,0.7); margin-left: 4px; flex: 0 0 auto; }
         
         /* Bowler Section */
-        .tv-bowl-box { display: flex; flex-direction: column; justify-content: space-between; padding: 10px 22px; flex: 0 0 auto; }
-        .tv-bowl-team { font-size: 16px; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; line-height: 1.2; margin: 0; color: #ccc; }
+        .tv-bowl-box { display: flex; flex-direction: column; justify-content: space-between; padding: 10px 22px; background: #070707; flex: 0 0 auto; }
+        .tv-bowl-team { font-size: 16px; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; line-height: 1.2; margin: 0; }
         .tv-bowl-stats { display: flex; align-items: baseline; gap: 12px; margin: 0; }
         .tv-bowl-name { font-weight: 900; font-size: 22px; text-transform: uppercase; color: #38bdf8; letter-spacing: 0.5px; white-space: nowrap; }
         .tv-bowl-figs { font-weight: 900; font-size: 22px; color: #fff; }
         .tv-bowl-overs { font-size: 16px; color: #888; font-weight: 800; margin-left: 6px; }
         .tv-tracker-row { display: flex; gap: 5px; margin: 0; }
 
-        .over-ball { display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; border-radius: 50%; font-weight: 900; font-size: 12px; border: 2px solid rgba(255,255,255,0.8); color: #fff; }
+        .over-ball { display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; border-radius: 50%; font-weight: 900; font-size: 12px; border: 2px solid #fff; color: #fff; }
         .over-ball.empty { border-color: #444; color: transparent; }
         .over-ball.dot { border-color: #777; color: transparent; }
-        .over-ball.run { border-color: #fff; }
+        .over-ball.run { border-color: #fff; background: transparent; }
         .over-ball.four { border-color: #10b981; color: #10b981; }
         .over-ball.six { border-color: #a855f7; color: #a855f7; }
         .over-ball.wicket { border-color: #ef4444; background: #ef4444; color: #fff; }
         .over-ball.extra { border-color: #f59e0b; color: #f59e0b; }
 
-        .tv-equation { margin-top: 10px; background: rgba(10, 10, 12, 0.95); color: #fff; padding: 8px 32px; border-radius: 4px; font-size: 18px; font-weight: 900; letter-spacing: 2px; border: 1px solid rgba(255,255,255,0.1); text-transform: uppercase; box-shadow: 0 4px 10px rgba(0,0,0,0.4); }
+        .tv-equation { margin-top: 10px; background: #070707; color: #fff; padding: 8px 32px; border-radius: 4px; font-size: 18px; font-weight: 900; letter-spacing: 2px; border: 2px solid #333; text-transform: uppercase; }
 
-        /* EVENT BANNER ANIMATIONS */
-        .event-banner {
-            position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(0) scale(0.9);
-            opacity: 0; padding: 10px 40px; border-radius: 4px 4px 0 0; color: white;
-            font-weight: 900; font-size: 36px; text-transform: uppercase; letter-spacing: 4px;
-            border: 1px solid rgba(255,255,255,0.2); border-bottom: none; z-index: 1; text-align: center;
-            pointer-events: none; transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); white-space: nowrap;
+        /* ====================================================
+           NEW CINEMATIC CENTER-SCREEN EVENT SPLASH 
+           ==================================================== */
+        .event-splash-container {
+            position: fixed;
+            top: 40%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10000;
+            pointer-events: none;
+            display: none;
+            justify-content: center;
+            align-items: center;
         }
-        .event-banner.show-event { bottom: 90px; transform: translateX(-50%) translateY(0) scale(1); opacity: 1; }
-        .event-four { background: #059669; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
-        .event-six { background: #7c3aed; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
-        .event-wicket { background: #dc2626; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
-        .event-milestone { background: #f59e0b; color: #000; border: 1px solid #000; border-bottom: none; text-shadow: none; }
+        .event-splash-container.show {
+            display: flex;
+        }
+        .splash-card {
+            background: #111;
+            border: 6px solid #fff;
+            border-radius: 8px;
+            padding: 30px 100px;
+            box-shadow: 15px 15px 0px rgba(0,0,0,1); /* Hard shadow, zero blur */
+            transform: scale(0);
+            animation: slamIn 3.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+        .splash-text {
+            font-size: 140px;
+            font-weight: 900;
+            color: #fff;
+            text-transform: uppercase;
+            font-style: italic;
+            letter-spacing: 8px;
+            line-height: 1;
+            margin: 0;
+            text-align: center;
+        }
+        
+        @keyframes slamIn {
+            0% { transform: scale(5) rotate(-5deg); opacity: 0; }
+            15% { transform: scale(1) rotate(-5deg); opacity: 1; }
+            80% { transform: scale(1.05) rotate(-5deg); opacity: 1; }
+            100% { transform: scale(0) rotate(-5deg); opacity: 0; }
+        }
+
+        /* Splash Colors */
+        .splash-four .splash-card { border-color: #10b981; }
+        .splash-six .splash-card { border-color: #a855f7; }
+        .splash-wicket .splash-card { border-color: #ef4444; background: #7f1d1d; }
+        .splash-milestone .splash-card { border-color: #f59e0b; background: #b45309; }
 
         .score-btn { transition: all 0.12s; user-select: none; }
         .score-btn:active { transform: scale(0.95); }
@@ -121,8 +157,12 @@
 <!-- ==================== OVERLAY VIEW ==================== -->
 <div id="overlay-view" class="hidden tv-wrapper">
     
-    <!-- EVENT BANNER -->
-    <div id="obs-event-banner" class="event-banner"><span id="obs-event-text">SIX!</span></div>
+    <!-- EPIC CINEMATIC SPLASH SCREEN -->
+    <div id="obs-event-splash" class="event-splash-container">
+        <div id="obs-event-card" class="splash-card">
+            <h1 id="obs-event-text" class="splash-text">SIX!</h1>
+        </div>
+    </div>
 
     <!-- Main Score Bar -->
     <div class="tv-main-bar">
@@ -218,7 +258,7 @@
                             <div class="col-6 col-md-3">
                                 <label class="form-label small fw-bold text-muted text-uppercase mb-1">Bowling Team</label>
                                 <div class="d-flex gap-1">
-                                    <input type="color" id="in-bowl-color" class="form-control form-control-color p-1" value="#059669" style="width: 38px;" onchange="window.pushMatchSetup()">
+                                    <input type="color" id="in-bowl-color" class="form-control form-control-color p-1" value="#86efac" style="width: 38px;" onchange="window.pushMatchSetup()">
                                     <input type="text" id="in-bowl" maxlength="15" class="form-control fw-bold text-center text-uppercase" value="OPPONENT" onchange="window.pushMatchSetup()" oninput="this.value = this.value.toUpperCase()">
                                 </div>
                             </div>
@@ -671,13 +711,19 @@
     window.showResetModal = () => { document.getElementById('reset-modal').classList.remove('hidden'); };
     window.hideResetModal = () => { document.getElementById('reset-modal').classList.add('hidden'); };
     
-    // BUG FIX FOR RESET - Wipes current over circles properly
+    // RESET BUG FIX - Explicitly clears UI and data arrays
     window.confirmReset = () => {
         saveUndoSnapshot();
         matchState.runs = 0; matchState.wickets = 0; matchState.completedOvers = 0; matchState.balls = 0; matchState.target = null;
         matchState.striker = { name: '', runs: 0, balls: 0, fours: 0, sixes: 0 }; matchState.nonStriker = { name: '', runs: 0, balls: 0, fours: 0, sixes: 0 }; matchState.bowler = { name: '', runs: 0, wickets: 0, balls: 0 };
-        matchState.bowlerStats = {}; matchState.recentBalls = []; 
-        matchState.currentOverBalls = []; // FIXED
+        matchState.bowlerStats = {}; 
+        matchState.recentBalls = []; 
+        matchState.currentOverBalls = [];
+        
+        // Force the local UI containers to empty immediately
+        if(document.getElementById('obs-over-tracker')) document.getElementById('obs-over-tracker').innerHTML = '';
+        if(document.getElementById('control-recent-balls')) document.getElementById('control-recent-balls').innerHTML = '<span class="text-muted small">No balls bowled yet</span>';
+        
         updateUI(matchState); pushStateToFirebase(); window.hideResetModal();
     };
 
@@ -700,13 +746,18 @@
     };
 
     function playOverlayEvent(type, message) {
-        const banner = document.getElementById('obs-event-banner');
+        const splash = document.getElementById('obs-event-splash');
+        const card = document.getElementById('obs-event-card');
         const text = document.getElementById('obs-event-text');
-        if (!banner || !text) return;
-        banner.className = 'event-banner'; banner.classList.add('event-' + type);
+        if (!splash || !text || !card) return;
+        
+        splash.className = 'event-splash-container'; 
+        splash.classList.add('splash-' + type);
         text.innerText = message;
-        void banner.offsetWidth; banner.classList.add('show-event');
-        setTimeout(() => { banner.classList.remove('show-event'); }, 4000);
+        
+        void splash.offsetWidth; 
+        splash.classList.add('show');
+        setTimeout(() => { splash.classList.remove('show'); }, 3500);
     }
 
     function updateUI(data) {
@@ -716,9 +767,9 @@
             setText('obs-bat-team', data.battingTeam); setText('obs-bowl-team', data.bowlingTeam);
             setText('obs-score', data.runs); setText('obs-wickets', data.wickets); setText('obs-overs', oversString);
 
-            // COLOR ASSIGNMENT FIX: Applied to logo panels, not score text
-            document.getElementById('obs-bat-logo-box').style.backgroundColor = data.batTeamColor || '#111';
-            document.getElementById('obs-bowl-logo-box').style.backgroundColor = data.bowlTeamColor || '#111';
+            // TEAM COLORS - APPLIED TO THE LOGO BOX BACKGROUNDS FOR A CRISP LOOK
+            document.getElementById('obs-bat-logo-box').style.backgroundColor = data.batTeamColor || '#000';
+            document.getElementById('obs-bowl-logo-box').style.backgroundColor = data.bowlTeamColor || '#000';
 
             if (data.currentEvent && data.currentEvent.id !== lastPlayedEventId) {
                 lastPlayedEventId = data.currentEvent.id;
