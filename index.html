@@ -24,7 +24,7 @@
 
         .hidden { display: none !important; }
 
-        /* OVERLAY MODE - Centered and cleanly anchored */
+        /* OVERLAY MODE */
         body.overlay-mode { 
             background: transparent !important; 
             overflow: hidden; 
@@ -41,31 +41,32 @@
         .value-updated { animation: pulseText 0.5s ease-out; }
         @keyframes pulseText { 0% { transform: scale(1); color: #f4d03f; } 50% { transform: scale(1.1); color: #fff; } 100% { transform: scale(1); } }
 
-        /* TV GRAPHIC - SHARP, ZERO BLUR, SOLID BORDERS */
+        /* TV GRAPHIC BASE */
         .tv-wrapper { width: max-content; display: flex; flex-direction: column; align-items: center; z-index: 9999; position: relative; }
+        
+        /* FREE HIT INDICATOR */
+        @keyframes pulseFreeHit { 0% { background: #dc2626; box-shadow: 0 -2px 10px rgba(220,38,38,0.2); } 100% { background: #b91c1c; box-shadow: 0 -8px 20px rgba(220,38,38,0.8); } }
+        .tv-free-hit { position: absolute; top: -34px; left: 50%; transform: translateX(-50%); color: white; padding: 4px 35px; font-weight: 900; font-size: 20px; border-radius: 8px 8px 0 0; letter-spacing: 3px; border: 2px solid #222; border-bottom: none; z-index: 5; animation: pulseFreeHit 0.8s infinite alternate; text-shadow: 0 2px 4px rgba(0,0,0,0.5); text-transform: uppercase; }
+
         .tv-main-bar { 
             display: flex; background: #070707; color: #fff; height: 94px; border-radius: 6px; 
-            border: 2px solid #222; /* Crisp border instead of shadow */
-            overflow: hidden; align-items: stretch; width: max-content; z-index: 10; position: relative;
+            border: 2px solid #222; overflow: hidden; align-items: stretch; width: max-content; z-index: 10; position: relative;
         }
         
         .tv-logo-box { padding: 0 16px; background: #000; display: flex; align-items: center; border-right: 2px solid #333; flex: 0 0 auto; width: 94px; justify-content: center; }
         .tv-logo-box-right { padding: 0 16px; background: #000; display: flex; align-items: center; border-left: 2px solid #333; flex: 0 0 auto; width: 94px; justify-content: center; }
-        .tv-logo-img { width: 68px; height: 68px; border-radius: 50%; object-fit: cover; border: 2px solid #fff; } /* Solid border on logo */
+        .tv-logo-img { width: 68px; height: 68px; border-radius: 50%; object-fit: cover; border: 2px solid #fff; }
         
-        /* Main Score Section - SCORE IS NOW CRISP WHITE */
         .tv-score-box { display: flex; flex-direction: column; justify-content: space-between; padding: 10px 22px; background: #070707; flex: 0 0 auto; }
         .tv-team-name { font-size: 16px; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; line-height: 1.2; margin: 0; }
         .tv-score-text { font-size: 50px; font-weight: 900; color: #ffffff; line-height: 1; letter-spacing: -2px; margin-top: auto; }
         
-        /* Overs & Target */
         .tv-overs-box { display: flex; flex-direction: column; justify-content: center; padding: 10px 22px 10px 0; border-right: 2px solid #333; flex: 0 0 auto; background: #070707; }
         .tv-overs-label { font-size: 14px; font-weight: 800; color: #888; letter-spacing: 1.5px; }
         .tv-overs-val { font-weight: 900; color: #fff; margin-left: 6px; font-size: 24px; }
         .tv-target-row { font-size: 13px; font-weight: 800; color: #888; letter-spacing: 1.5px; margin-top: 4px; }
         .tv-target-val { color: #fff; font-size: 18px; font-weight: 900; }
         
-        /* Batsman Panels - Flat and Crisp */
         .tv-pill-container { display: flex; align-items: center; justify-content: center; padding: 0 18px; background: #070707; border-right: 2px solid #333; flex: 0 0 auto; }
         .tv-pill { display: flex; height: 58px; border-radius: 4px; overflow: hidden; border: 2px solid #444; width: 580px; }
         .tv-striker { display: flex; align-items: center; background: #ea580c; padding: 0 18px 0 14px; flex: 1; white-space: nowrap; border-right: 2px solid #222; }
@@ -76,7 +77,6 @@
         .tv-bat-runs { font-weight: 900; font-size: 25px; color: #fff; margin-left: auto; padding-left: 10px; flex: 0 0 auto; }
         .tv-bat-balls { font-weight: 800; font-size: 15px; color: rgba(255,255,255,0.7); margin-left: 4px; flex: 0 0 auto; }
         
-        /* Bowler Section */
         .tv-bowl-box { display: flex; flex-direction: column; justify-content: space-between; padding: 10px 22px; background: #070707; flex: 0 0 auto; }
         .tv-bowl-team { font-size: 16px; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; line-height: 1.2; margin: 0; }
         .tv-bowl-stats { display: flex; align-items: baseline; gap: 12px; margin: 0; }
@@ -96,54 +96,19 @@
 
         .tv-equation { margin-top: 10px; background: #070707; color: #fff; padding: 8px 32px; border-radius: 4px; font-size: 18px; font-weight: 900; letter-spacing: 2px; border: 2px solid #333; text-transform: uppercase; }
 
-        /* ====================================================
-           NEW CINEMATIC CENTER-SCREEN EVENT SPLASH 
-           ==================================================== */
-        .event-splash-container {
-            position: fixed;
-            top: 40%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 10000;
-            pointer-events: none;
-            display: none;
-            justify-content: center;
-            align-items: center;
-        }
-        .event-splash-container.show {
-            display: flex;
-        }
-        .splash-card {
-            background: #111;
-            border: 6px solid #fff;
-            border-radius: 8px;
-            padding: 30px 100px;
-            box-shadow: 15px 15px 0px rgba(0,0,0,1); /* Hard shadow, zero blur */
-            transform: scale(0);
-            animation: slamIn 3.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-        }
-        .splash-text {
-            font-size: 140px;
-            font-weight: 900;
-            color: #fff;
-            text-transform: uppercase;
-            font-style: italic;
-            letter-spacing: 8px;
-            line-height: 1;
-            margin: 0;
-            text-align: center;
-        }
+        /* CINEMATIC CENTER-SCREEN EVENT SPLASH */
+        .event-splash-container { position: fixed; top: 40%; left: 50%; transform: translate(-50%, -50%); z-index: 10000; pointer-events: none; display: none; justify-content: center; align-items: center; }
+        .event-splash-container.show { display: flex; }
+        .splash-card { background: #111; border: 6px solid #fff; border-radius: 8px; padding: 30px 100px; box-shadow: 15px 15px 0px rgba(0,0,0,1); transform: scale(0); animation: slamIn 3.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+        .splash-text { font-size: 140px; font-weight: 900; color: #fff; text-transform: uppercase; font-style: italic; letter-spacing: 8px; line-height: 1; margin: 0; text-align: center; }
         
-        @keyframes slamIn {
-            0% { transform: scale(5) rotate(-5deg); opacity: 0; }
-            15% { transform: scale(1) rotate(-5deg); opacity: 1; }
-            80% { transform: scale(1.05) rotate(-5deg); opacity: 1; }
-            100% { transform: scale(0) rotate(-5deg); opacity: 0; }
-        }
+        @keyframes slamIn { 0% { transform: scale(5) rotate(-5deg); opacity: 0; } 15% { transform: scale(1) rotate(-5deg); opacity: 1; } 80% { transform: scale(1.05) rotate(-5deg); opacity: 1; } 100% { transform: scale(0) rotate(-5deg); opacity: 0; } }
 
-        /* Splash Colors */
+        /* Splash Theme Colors */
         .splash-four .splash-card { border-color: #10b981; }
         .splash-six .splash-card { border-color: #a855f7; }
+        .splash-wide .splash-card { border-color: #3b82f6; background: #1e3a8a; }
+        .splash-noball .splash-card { border-color: #f43f5e; background: #881337; }
         .splash-wicket .splash-card { border-color: #ef4444; background: #7f1d1d; }
         .splash-milestone .splash-card { border-color: #f59e0b; background: #b45309; }
 
@@ -163,6 +128,9 @@
             <h1 id="obs-event-text" class="splash-text">SIX!</h1>
         </div>
     </div>
+
+    <!-- FREE HIT INDICATOR -->
+    <div id="obs-free-hit" class="hidden tv-free-hit">FREE HIT</div>
 
     <!-- Main Score Bar -->
     <div class="tv-main-bar">
@@ -245,7 +213,7 @@
                 <div class="card border-0 shadow-sm rounded-3">
                     <div class="card-body p-3">
                         <h2 class="text-uppercase mb-3" style="font-size: 13px; font-weight: 800; letter-spacing: 1px; color: #555; border-bottom: 1px solid #eee; padding-bottom: 8px;">
-                            <i class="bi bi-gear-fill text-warning"></i> Match Setup (With Colors)
+                            <i class="bi bi-gear-fill text-warning"></i> Match Setup
                         </h2>
                         <div class="row g-3">
                             <div class="col-6 col-md-3">
@@ -258,7 +226,7 @@
                             <div class="col-6 col-md-3">
                                 <label class="form-label small fw-bold text-muted text-uppercase mb-1">Bowling Team</label>
                                 <div class="d-flex gap-1">
-                                    <input type="color" id="in-bowl-color" class="form-control form-control-color p-1" value="#86efac" style="width: 38px;" onchange="window.pushMatchSetup()">
+                                    <input type="color" id="in-bowl-color" class="form-control form-control-color p-1" value="#059669" style="width: 38px;" onchange="window.pushMatchSetup()">
                                     <input type="text" id="in-bowl" maxlength="15" class="form-control fw-bold text-center text-uppercase" value="OPPONENT" onchange="window.pushMatchSetup()" oninput="this.value = this.value.toUpperCase()">
                                 </div>
                             </div>
@@ -294,29 +262,34 @@
         </div>
 
         <div class="row g-3 mb-3">
+            <!-- Preview Box (Left) -->
             <div class="col-12 col-lg-5">
                 <div class="card border-0 shadow-sm rounded-3 h-100">
                     <div class="card-header bg-light d-flex justify-content-between align-items-center py-2" style="font-size: 11px; font-weight: 700; text-transform: uppercase; color: #777;">
                         <span><i class="bi bi-tv"></i> Broadcast Preview</span>
                         <span class="text-danger"><i class="bi bi-circle-fill" style="font-size: 8px;"></i> Live</span>
                     </div>
-                    <div class="card-body p-3 d-flex justify-content-center align-items-center" style="background: #1a1a2e; min-height: 160px;">
-                        <div class="rounded-3 overflow-hidden" style="border: 1px solid #333; max-width: 100%;">
+                    <div class="card-body p-3 d-flex justify-content-center align-items-center position-relative" style="background: #1a1a2e; min-height: 160px;">
+                        
+                        <!-- Small Free Hit Indicator in Preview -->
+                        <div id="prev-free-hit" class="hidden position-absolute text-white fw-bold bg-danger rounded-top" style="top: 40px; font-size: 10px; padding: 2px 10px; letter-spacing: 1px;">FREE HIT</div>
+                        
+                        <div class="rounded-3 overflow-hidden" style="border: 1px solid #333; max-width: 100%; position: relative; z-index: 2; margin-top: 10px;">
                             <div class="d-flex align-items-center">
                                 <div class="d-flex align-items-center gap-1 px-2 py-1" style="background: var(--navy);">
                                     <img id="prev-bat-logo" src="" alt="" class="logo-img hidden" style="width: 24px; height: 24px;">
                                     <span id="prev-bat" class="text-white" style="font-weight: 900; font-size: 14px;">THUN</span>
                                 </div>
-                                <div class="px-2 py-1 d-flex align-items-baseline gap-1" style="background: var(--gold); color: var(--navy);">
+                                <div class="px-2 py-1 d-flex align-items-baseline gap-1" style="background: #000; color: #fff;">
                                     <span id="prev-wickets" style="font-weight: 900; font-size: 22px;">0</span>
                                     <span style="font-weight: 700; opacity: 0.5;">-</span>
                                     <span id="prev-score" style="font-weight: 900; font-size: 16px;">0</span>
                                 </div>
-                                <div class="px-2 py-1 text-white" style="background: var(--navy);">
+                                <div class="px-2 py-1 text-white" style="background: #222;">
                                     <span id="prev-overs" style="font-weight: 900; font-size: 14px;">0.0</span>
                                 </div>
                             </div>
-                            <div class="px-2 py-1 d-flex justify-content-between align-items-center" style="background: var(--dark-navy); font-size: 10px;">
+                            <div class="px-2 py-1 d-flex justify-content-between align-items-center" style="background: #111; font-size: 10px;">
                                 <span class="text-warning fw-bold" id="prev-striker">*Batsman 0(0)</span>
                                 <span class="text-white-50" id="prev-bowler">Bowler 0-0</span>
                             </div>
@@ -325,6 +298,7 @@
                 </div>
             </div>
 
+            <!-- Player Setup (Right) -->
             <div class="col-12 col-lg-7">
                 <div class="card border-0 shadow-sm rounded-3 h-100">
                     <div class="card-body p-3">
@@ -377,9 +351,16 @@
                 <div class="card border-0 shadow-sm rounded-3">
                     <div class="card-body p-3 p-md-4">
                         <h2 class="text-uppercase mb-3 d-flex justify-content-between align-items-center" style="font-size: 13px; font-weight: 800; letter-spacing: 1px; color: #555; border-bottom: 1px solid #eee; padding-bottom: 8px;">
-                            <span><i class="bi bi-controller text-success"></i> Scoring Pad</span>
+                            <span class="d-flex align-items-center"><i class="bi bi-controller text-success me-2"></i> Scoring Pad</span>
+                            
+                            <!-- MANUAL FREE HIT TOGGLE -->
+                            <div class="d-flex align-items-center ms-auto form-check form-switch mb-0">
+                                <input class="form-check-input" type="checkbox" id="in-free-hit" onchange="window.toggleFreeHit()" style="width: 36px; height: 18px;">
+                                <label class="form-check-label fw-bold text-danger ms-2" style="font-size: 11px; margin-top: 2px;">FREE HIT</label>
+                            </div>
                         </h2>
-                        <div class="row g-2 mb-2">
+                        
+                        <div class="row g-2 mb-2 mt-2">
                             <div class="col-3"><button onclick="window.scoreAction('dot')" class="score-btn btn w-100 fw-bold text-secondary border" style="background:#f1f5f9; font-size: 18px; padding: 20px 0;">DOT</button></div>
                             <div class="col-3"><button onclick="window.scoreAction('runs', 1)" class="score-btn btn w-100 fw-bold" style="background:#eff6ff; color:#1d4ed8; border:2px solid #93c5fd; font-size: 24px; padding: 18px 0;">1</button></div>
                             <div class="col-3"><button onclick="window.scoreAction('runs', 2)" class="score-btn btn w-100 fw-bold" style="background:#eff6ff; color:#1d4ed8; border:2px solid #93c5fd; font-size: 24px; padding: 18px 0;">2</button></div>
@@ -512,7 +493,8 @@
         striker: { name: '', runs: 0, balls: 0, fours: 0, sixes: 0 },
         nonStriker: { name: '', runs: 0, balls: 0, fours: 0, sixes: 0 },
         bowler: { name: '', runs: 0, wickets: 0, balls: 0 },
-        bowlerStats: {}, recentBalls: [], currentOverBalls: [], lastUpdateTs: 0, currentEvent: null
+        bowlerStats: {}, recentBalls: [], currentOverBalls: [], lastUpdateTs: 0, currentEvent: null,
+        isFreeHit: false // NEW
     };
 
     let undoStack = [];
@@ -561,6 +543,7 @@
                 matchState.battingTeamLogo = data.battingTeamLogo || null; matchState.bowlingTeamLogo = data.bowlingTeamLogo || null;
                 matchState.batTeamColor = data.batTeamColor || '#F4D03F'; matchState.bowlTeamColor = data.bowlTeamColor || '#059669';
                 matchState.bowlerStats = data.bowlerStats || {}; 
+                matchState.isFreeHit = data.isFreeHit || false; // NEW
 
                 const strike = data.strike || 1;
                 if (strike === 1) {
@@ -599,7 +582,7 @@
             bowlName: matchState.bowler.name, bowlO: Math.floor(matchState.bowler.balls / 6) + '.' + (matchState.bowler.balls % 6),
             bowlM: 0, bowlR: matchState.bowler.runs, bowlW: matchState.bowler.wickets, bowlBalls: matchState.bowler.balls,
             bowlerStats: matchState.bowlerStats, recentBalls: matchState.recentBalls, currentOverBalls: matchState.currentOverBalls, 
-            currentEvent: matchState.currentEvent, lastUpdateTs: matchState.lastUpdateTs
+            currentEvent: matchState.currentEvent, isFreeHit: matchState.isFreeHit, lastUpdateTs: matchState.lastUpdateTs
         };
         set(scoreRef, dbData);
     }
@@ -613,17 +596,20 @@
     }
 
     window.triggerEvent = (type, message) => { matchState.currentEvent = { id: Date.now(), type: type, message: message }; };
+    window.toggleFreeHit = () => { saveUndoSnapshot(); matchState.isFreeHit = document.getElementById('in-free-hit').checked; pushStateToFirebase(); updateUI(matchState); };
 
     window.scoreAction = (type, value = 0) => {
         saveUndoSnapshot();
         
         if (type === 'dot') {
+            matchState.isFreeHit = false; // Clear free hit on dot ball
             matchState.striker.balls += 1; matchState.bowler.balls += 1;
             matchState.recentBalls.push({ type: 'dot', value: 0, label: '' }); matchState.currentOverBalls.push({ type: 'dot', value: 0, label: '' });
             incrementBall(); 
         } else if (type === 'runs') {
-            const oldRuns = matchState.striker.runs; const newRuns = oldRuns + value; let eventFired = false;
+            matchState.isFreeHit = false; // Clear free hit on runs
             
+            const oldRuns = matchState.striker.runs; const newRuns = oldRuns + value; let eventFired = false;
             if (oldRuns < 50 && newRuns >= 50 && newRuns < 100) { window.triggerEvent('milestone', `${matchState.striker.name} - FIFTY!`); eventFired = true; } 
             else if (oldRuns < 100 && newRuns >= 100) { window.triggerEvent('milestone', `${matchState.striker.name} - CENTURY!`); eventFired = true; }
             if (!eventFired) { if (value === 4) window.triggerEvent('four', 'FOUR!'); if (value === 6) window.triggerEvent('six', 'SIX!'); }
@@ -633,21 +619,28 @@
             matchState.recentBalls.push({ type: ballType, value, label: value }); matchState.currentOverBalls.push({ type: ballType, value, label: value });
             incrementBall(); if (value % 2 === 1) swapStrike();
         } else if (type === 'wide') {
+            window.triggerEvent('wide', 'WIDE!'); 
+            // Does NOT clear Free Hit
             const extraRuns = value - 1; matchState.runs += value; matchState.bowler.runs += value;
             const label = 'WD' + (value > 1 ? '+' + (value-1) : '');
             matchState.recentBalls.push({ type: 'extra', value, label }); matchState.currentOverBalls.push({ type: 'extra', value, label });
             if (extraRuns % 2 === 1) swapStrike();
         } else if (type === 'noball') {
+            window.triggerEvent('noball', 'NO BALL!');
+            matchState.isFreeHit = true; // ACTIVATES FREE HIT
+
             const extraRuns = value - 1; matchState.runs += value; matchState.bowler.runs += value;
             const label = 'NB' + (value > 1 ? '+' + (value-1) : '');
             matchState.recentBalls.push({ type: 'extra', value, label }); matchState.currentOverBalls.push({ type: 'extra', value, label });
             if (extraRuns % 2 === 1) swapStrike();
         } else if (type === 'bye' || type === 'legbye') {
+            matchState.isFreeHit = false; // Clear on bye
             matchState.runs += value; matchState.striker.balls += 1; matchState.bowler.balls += 1;
             const label = type === 'bye' ? (value + 'B') : (value + 'LB');
             matchState.recentBalls.push({ type: 'extra', value, label }); matchState.currentOverBalls.push({ type: 'extra', value, label });
             incrementBall(); if (value % 2 === 1) swapStrike();
         } else if (type === 'wicket') {
+            matchState.isFreeHit = false; // Clear on wicket (e.g. run out)
             window.triggerEvent('wicket', 'WICKET!');
             matchState.wickets += 1; matchState.striker.balls += 1; matchState.bowler.balls += 1; matchState.bowler.wickets += 1;
             matchState.recentBalls.push({ type: 'wicket', value: 0, label: 'W' }); matchState.currentOverBalls.push({ type: 'wicket', value: 0, label: 'W' });
@@ -710,20 +703,13 @@
     window.confirmExtra = (totalRuns) => { if (pendingExtraType) window.scoreAction(pendingExtraType, totalRuns); window.hideExtraModal(); };
     window.showResetModal = () => { document.getElementById('reset-modal').classList.remove('hidden'); };
     window.hideResetModal = () => { document.getElementById('reset-modal').classList.add('hidden'); };
-    
-    // RESET BUG FIX - Explicitly clears UI and data arrays
     window.confirmReset = () => {
         saveUndoSnapshot();
         matchState.runs = 0; matchState.wickets = 0; matchState.completedOvers = 0; matchState.balls = 0; matchState.target = null;
         matchState.striker = { name: '', runs: 0, balls: 0, fours: 0, sixes: 0 }; matchState.nonStriker = { name: '', runs: 0, balls: 0, fours: 0, sixes: 0 }; matchState.bowler = { name: '', runs: 0, wickets: 0, balls: 0 };
-        matchState.bowlerStats = {}; 
-        matchState.recentBalls = []; 
-        matchState.currentOverBalls = [];
-        
-        // Force the local UI containers to empty immediately
+        matchState.bowlerStats = {}; matchState.recentBalls = []; matchState.currentOverBalls = []; matchState.isFreeHit = false;
         if(document.getElementById('obs-over-tracker')) document.getElementById('obs-over-tracker').innerHTML = '';
         if(document.getElementById('control-recent-balls')) document.getElementById('control-recent-balls').innerHTML = '<span class="text-muted small">No balls bowled yet</span>';
-        
         updateUI(matchState); pushStateToFirebase(); window.hideResetModal();
     };
 
@@ -767,9 +753,12 @@
             setText('obs-bat-team', data.battingTeam); setText('obs-bowl-team', data.bowlingTeam);
             setText('obs-score', data.runs); setText('obs-wickets', data.wickets); setText('obs-overs', oversString);
 
-            // TEAM COLORS - APPLIED TO THE LOGO BOX BACKGROUNDS FOR A CRISP LOOK
             document.getElementById('obs-bat-logo-box').style.backgroundColor = data.batTeamColor || '#000';
             document.getElementById('obs-bowl-logo-box').style.backgroundColor = data.bowlTeamColor || '#000';
+
+            // Free Hit logic
+            if (data.isFreeHit) { document.getElementById('obs-free-hit').classList.remove('hidden'); }
+            else { document.getElementById('obs-free-hit').classList.add('hidden'); }
 
             if (data.currentEvent && data.currentEvent.id !== lastPlayedEventId) {
                 lastPlayedEventId = data.currentEvent.id;
@@ -815,6 +804,11 @@
             updateInputIfNotFocused('in-target', data.target || ''); updateInputIfNotFocused('in-total-overs', data.totalOvers);
             updateInputIfNotFocused('in-innings', String(data.innings)); updateInputIfNotFocused('in-striker-name', data.striker.name);
             updateInputIfNotFocused('in-nonstriker-name', data.nonStriker.name); updateInputIfNotFocused('in-bowler-name', data.bowler.name);
+
+            // Free Hit logic
+            document.getElementById('in-free-hit').checked = data.isFreeHit;
+            if (data.isFreeHit) { document.getElementById('prev-free-hit').classList.remove('hidden'); }
+            else { document.getElementById('prev-free-hit').classList.add('hidden'); }
 
             setText('in-striker-runs', data.striker.runs); setText('in-striker-balls', data.striker.balls);
             setText('in-nonstriker-runs', data.nonStriker.runs); setText('in-nonstriker-balls', data.nonStriker.balls);
