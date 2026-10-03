@@ -81,7 +81,6 @@
         .over-break-container { position: fixed; top: 46%; left: 50%; transform: translate(-50%, -40%); width: 88vw; height: 75vh; display: flex; gap: 20px; z-index: 9000; opacity: 0; transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); pointer-events: none; }
         .over-break-container.show { transform: translate(-50%, -50%); opacity: 1; }
         
-        /* Left: Scorecard Panel */
         .ob-scorecard { flex: 1.2; background: rgba(8, 14, 33, 0.95); border: 2px solid #333; border-radius: 12px; display: flex; flex-direction: column; padding: 25px; color: #fff; box-shadow: 10px 10px 30px rgba(0,0,0,0.8); }
         .ob-header { display: flex; align-items: center; gap: 15px; border-bottom: 3px solid #F4D03F; padding-bottom: 15px; margin-bottom: 10px; }
         .ob-logo { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid #fff; }
@@ -93,7 +92,6 @@
         .ob-active-row { background: rgba(244, 208, 63, 0.15); border-radius: 4px; }
         .ob-footer { margin-top: auto; display: flex; justify-content: space-between; background: rgba(0,0,0,0.6); padding: 15px 25px; border-radius: 8px; font-weight: 900; font-size: 22px; border: 1px solid #333; text-transform: uppercase; }
         
-        /* Right: Sponsor Panel */
         .ob-sponsor { flex: 0.8; background: linear-gradient(135deg, #070707, #111); border: 4px solid #F4D03F; border-radius: 12px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 30px; box-shadow: 10px 10px 30px rgba(0,0,0,0.8); }
         .bb-title { font-size: 60px; font-weight: 900; color: #F4D03F; text-transform: uppercase; letter-spacing: 2px; margin: 0; text-shadow: 0 4px 10px rgba(0,0,0,0.8); }
         .bb-subtitle { font-size: 24px; color: #86efac; font-weight: 700; margin: 10px 0 25px; letter-spacing: 2px; text-transform: uppercase; }
@@ -115,7 +113,6 @@
     <!-- SPLIT SCREEN SCORECARD & SPONSOR -->
     <div id="obs-over-break-bg" class="over-break-bg"></div>
     <div id="obs-over-break-container" class="over-break-container">
-        <!-- SCORECARD -->
         <div class="ob-scorecard">
             <div class="ob-header">
                 <img id="ob-scorecard-logo" class="ob-logo hidden"> 
@@ -123,18 +120,15 @@
             </div>
             <table class="ob-table">
                 <thead><tr><th>BATTER</th><th>STATUS</th><th style="text-align:center;">R</th><th style="text-align:center;">B</th></tr></thead>
-                <tbody id="ob-table-body">
-                    <!-- JS injects rows here -->
-                </tbody>
+                <tbody id="ob-table-body"></tbody>
             </table>
             <div class="ob-footer">
                <span>EXTRAS: <span id="ob-extras">0</span></span>
                <span>TOTAL: <span id="ob-total">0/0</span></span>
             </div>
         </div>
-        <!-- SPONSOR -->
         <div class="ob-sponsor">
-            <h1 id="bb-title" class="bb-title">SPONSOR NAME</h1><h3 id="bb-subtitle" class="bb-subtitle">Sponsor Subtitle</h3><div class="bb-divider"></div><div id="bb-services" class="bb-services"></div><div id="bb-contact" class="bb-contact">CONTACT INFO</div>
+            <h1 id="bb-title" class="bb-title">BATBUDDY SPORTS</h1><h3 id="bb-subtitle" class="bb-subtitle">Cricket Gear & Bat Repairs</h3><div class="bb-divider"></div><div id="bb-services" class="bb-services"></div><div id="bb-contact" class="bb-contact">CONNECT WITH US</div>
         </div>
     </div>
 
@@ -173,6 +167,9 @@
 
     <div class="container-fluid py-3" style="max-width: 1000px;">
         
+        <!-- AUTO-COMPLETE TEAMS LIST -->
+        <datalist id="team-list"></datalist>
+
         <!-- SCREEN 1: PRE-MATCH SETUP -->
         <div id="panel-setup">
             <div class="row g-3 mb-3">
@@ -181,8 +178,20 @@
                         <div class="card-body p-4">
                             <h2 class="text-uppercase mb-4 text-center" style="font-size: 18px; font-weight: 900; letter-spacing: 2px; color: #333;">Match Configuration</h2>
                             <div class="row g-3">
-                                <div class="col-6 col-md-3"><label class="form-label small fw-bold text-muted text-uppercase mb-1">Batting Team</label><div class="d-flex gap-1"><input type="color" id="in-bat-color" class="form-control form-control-color p-1" value="#F4D03F" style="width: 38px;" onchange="window.pushMatchSetup()"><input type="text" id="in-bat" maxlength="15" class="form-control fw-bold text-center text-uppercase" value="THUNDERS" onchange="window.handleTeamNameChange('batting')" oninput="this.value = this.value.toUpperCase()"></div></div>
-                                <div class="col-6 col-md-3"><label class="form-label small fw-bold text-muted text-uppercase mb-1">Bowling Team</label><div class="d-flex gap-1"><input type="color" id="in-bowl-color" class="form-control form-control-color p-1" value="#059669" style="width: 38px;" onchange="window.pushMatchSetup()"><input type="text" id="in-bowl" maxlength="15" class="form-control fw-bold text-center text-uppercase" value="OPPONENT" onchange="window.handleTeamNameChange('bowling')" oninput="this.value = this.value.toUpperCase()"></div></div>
+                                <div class="col-6 col-md-3">
+                                    <label class="form-label small fw-bold text-muted text-uppercase mb-1">Batting Team</label>
+                                    <div class="d-flex gap-1">
+                                        <input type="color" id="in-bat-color" class="form-control form-control-color p-1" value="#F4D03F" style="width: 38px;" onchange="window.pushMatchSetup()">
+                                        <input type="text" id="in-bat" list="team-list" maxlength="15" class="form-control fw-bold text-center text-uppercase" placeholder="e.g. THUNDERS" oninput="this.value = this.value.toUpperCase(); window.handleTeamNameChange('batting');">
+                                    </div>
+                                </div>
+                                <div class="col-6 col-md-3">
+                                    <label class="form-label small fw-bold text-muted text-uppercase mb-1">Bowling Team</label>
+                                    <div class="d-flex gap-1">
+                                        <input type="color" id="in-bowl-color" class="form-control form-control-color p-1" value="#059669" style="width: 38px;" onchange="window.pushMatchSetup()">
+                                        <input type="text" id="in-bowl" list="team-list" maxlength="15" class="form-control fw-bold text-center text-uppercase" placeholder="e.g. LIONS" oninput="this.value = this.value.toUpperCase(); window.handleTeamNameChange('bowling');">
+                                    </div>
+                                </div>
                                 <div class="col-6 col-md-3"><label class="form-label small fw-bold text-muted text-uppercase mb-1">Toss Won By</label><select id="in-toss-winner" class="form-select fw-bold" onchange="window.pushMatchSetup()"><option value="">Select...</option></select></div>
                                 <div class="col-6 col-md-3"><label class="form-label small fw-bold text-muted text-uppercase mb-1">Decision</label><select id="in-toss-decision" class="form-select fw-bold" onchange="window.pushMatchSetup()"><option value="BAT">Batting</option><option value="BOWL">Bowling</option></select></div>
                             </div>
@@ -201,14 +210,14 @@
                     <div class="card border-0 shadow-sm rounded-3">
                         <div class="card-body p-4">
                             <h2 class="text-uppercase mb-2 text-center" style="font-size: 16px; font-weight: 800; letter-spacing: 1px; color: #555;"><i class="bi bi-people-fill text-primary"></i> Team Squads (Auto-Saves)</h2>
-                            <p class="small text-muted mb-4 text-center">Type a known team name above to auto-load their squad, or enter new players below to save them to the database.</p>
+                            <p class="small text-muted mb-4 text-center">Type a team name above to auto-load players, or fill them in below to save them permanently to Firebase.</p>
                             <div class="row">
                                 <div class="col-6">
-                                    <h6 id="label-bat-squad" class="fw-bold text-uppercase text-center" style="color: var(--gold);">THUNDERS Squad</h6>
+                                    <h6 id="label-bat-squad" class="fw-bold text-uppercase text-center" style="color: var(--gold);">BATTING SQUAD</h6>
                                     <div id="bat-squad-inputs" class="d-flex flex-column gap-1"></div>
                                 </div>
                                 <div class="col-6">
-                                    <h6 id="label-bowl-squad" class="fw-bold text-uppercase text-center" style="color: var(--green);">OPPONENT Squad</h6>
+                                    <h6 id="label-bowl-squad" class="fw-bold text-uppercase text-center" style="color: var(--green);">BOWLING SQUAD</h6>
                                     <div id="bowl-squad-inputs" class="d-flex flex-column gap-1"></div>
                                 </div>
                             </div>
@@ -216,12 +225,11 @@
                     </div>
                 </div>
             </div>
-            <button onclick="window.toggleView('scoring')" class="btn btn-success btn-lg w-100 fw-bold shadow py-3 mb-5" style="font-size: 20px; letter-spacing: 2px;">START / RESUME MATCH</button>
+            <button onclick="window.startAndResumeMatch()" class="btn btn-success btn-lg w-100 fw-bold shadow py-3 mb-5" style="font-size: 20px; letter-spacing: 2px;">START / RESUME MATCH</button>
         </div>
 
         <!-- SCREEN 2: LIVE SCORING DASHBOARD -->
         <div id="panel-scoring" class="hidden">
-            
             <div class="row g-3 mb-3">
                 <div class="col-12">
                     <div class="card border-0 shadow-sm rounded-3 bg-dark text-white">
@@ -229,7 +237,7 @@
                             <h2 class="text-uppercase mb-3" style="font-size: 13px; font-weight: 800; letter-spacing: 1px; color: #aaa; border-bottom: 1px solid #333; padding-bottom: 8px;"><i class="bi bi-film text-info"></i> Media & Breaks</h2>
                             <div class="d-flex gap-2 align-items-end">
                                 <div class="flex-grow-1">
-                                    <label class="form-label small fw-bold text-uppercase mb-1" style="color: #888;">Select Full-Screen Video (must be in GitHub repo)</label>
+                                    <label class="form-label small fw-bold text-uppercase mb-1" style="color: #888;">Select Full-Screen Video</label>
                                     <select id="in-video-file" class="form-select fw-bold bg-secondary text-white border-0">
                                         <option value="batbuddy-promo.mp4">BatBuddy Sports Promo</option>
                                         <option value="drinks.mp4">Drinks Break Reel</option>
@@ -251,7 +259,7 @@
                             <div id="prev-free-hit" class="hidden position-absolute text-white fw-bold bg-danger rounded-top" style="top: 40px; font-size: 10px; padding: 2px 10px; letter-spacing: 1px;">FREE HIT</div>
                             <div class="rounded-3 overflow-hidden" style="border: 1px solid #333; max-width: 100%; position: relative; z-index: 2; margin-top: 10px;">
                                 <div class="d-flex align-items-center">
-                                    <div class="d-flex align-items-center gap-1 px-2 py-1" style="background: var(--navy);"><img id="prev-bat-logo" src="" class="logo-img hidden" style="width: 24px; height: 24px;"><span id="prev-bat" class="text-white" style="font-weight: 900; font-size: 14px;">THUN</span></div>
+                                    <div class="d-flex align-items-center gap-1 px-2 py-1" style="background: var(--navy);"><img id="prev-bat-logo" src="" class="logo-img hidden" style="width: 24px; height: 24px;"><span id="prev-bat" class="text-white" style="font-weight: 900; font-size: 14px;">TEAM</span></div>
                                     <div class="px-2 py-1 d-flex align-items-baseline gap-1" style="background: #000; color: #fff;"><span id="prev-wickets" style="font-weight: 900; font-size: 22px;">0</span><span style="font-weight: 700; opacity: 0.5;">-</span><span id="prev-score" style="font-weight: 900; font-size: 16px;">0</span></div>
                                     <div class="px-2 py-1 text-white" style="background: #222;"><span id="prev-overs" style="font-weight: 900; font-size: 14px;">0.0</span></div>
                                 </div>
@@ -392,24 +400,33 @@
     
     let db, scoreRef, teamsRef;
     let matchState = {
-        battingTeam: 'THUNDERS', bowlingTeam: 'OPPONENT', battingTeamLogo: null, bowlingTeamLogo: null, batTeamColor: '#F4D03F', bowlTeamColor: '#059669', 
+        battingTeam: '', bowlingTeam: '', battingTeamLogo: null, bowlingTeamLogo: null, batTeamColor: '#F4D03F', bowlTeamColor: '#059669', 
         runs: 0, wickets: 0, completedOvers: 0, balls: 0, totalOvers: 20, target: null, innings: 1, toss: { winner: '', decision: 'BAT' },
         battingSquad: Array(12).fill(''), bowlingSquad: Array(12).fill(''),
         striker: { name: '', runs: 0, balls: 0, fours: 0, sixes: 0 }, nonStriker: { name: '', runs: 0, balls: 0, fours: 0, sixes: 0 }, bowler: { name: '', runs: 0, wickets: 0, balls: 0 },
         battingStats: {}, bowlerStats: {}, totalExtras: 0, recentBalls: [], currentOverBalls: [], lastUpdateTs: 0, currentEvent: null, isFreeHit: false, activeVideo: null
     };
 
-    const AUTO_SPONSORS = [ { title: "BATBUDDY SPORTS", subtitle: "Premium Cricket Equipment & Repairs", services: ["Handle Replacements", "Weight Reduction", "Bat Modifications", "Gear Sales"], contact: "Based in Wollert | Connect on Social Media" } ];
+    let allSavedTeams = {};
+    const AUTO_SPONSORS = [ { title: "BATBUDDY SPORTS", subtitle: "Cricket Gear & Bat Repairs", services: ["Handle Repairs", "Refurbishments", "Custom Stickers", "Gear Sales"], contact: "Based in Wollert | Connect on Social Media" } ];
     let sponsorIndex = 0; let undoStack = []; const MAX_UNDO = 50; let currentMode = 'control'; let lastPlayedEventId = 0; let lastSeenOver = -1; let currentlyPlayingVideo = null;
 
     window.toggleView = (view) => {
-        if(view === 'scoring') { document.getElementById('panel-setup').classList.add('hidden'); document.getElementById('panel-scoring').classList.remove('hidden'); document.getElementById('btn-back-setup').classList.remove('hidden'); } 
-        else { document.getElementById('panel-setup').classList.remove('hidden'); document.getElementById('panel-scoring').classList.add('hidden'); document.getElementById('btn-back-setup').classList.add('hidden'); }
+        if(view === 'scoring') { 
+            document.getElementById('panel-setup').classList.add('hidden'); 
+            document.getElementById('panel-scoring').classList.remove('hidden'); 
+            document.getElementById('btn-back-setup').classList.remove('hidden'); 
+        } else { 
+            document.getElementById('panel-setup').classList.remove('hidden'); 
+            document.getElementById('panel-scoring').classList.add('hidden'); 
+            document.getElementById('btn-back-setup').classList.add('hidden'); 
+        }
     };
 
     function buildSquadInputs() {
         const batDiv = document.getElementById('bat-squad-inputs'); const bowlDiv = document.getElementById('bowl-squad-inputs');
         if(!batDiv || !bowlDiv) return;
+        batDiv.innerHTML = ''; bowlDiv.innerHTML = '';
         for(let i=0; i<12; i++) {
             batDiv.innerHTML += `<input type="text" id="bat-sq-${i}" class="form-control squad-input fw-bold text-uppercase" placeholder="Player ${i+1}" onchange="window.saveSquadsToFirebase()" oninput="this.value = this.value.toUpperCase()">`;
             bowlDiv.innerHTML += `<input type="text" id="bowl-sq-${i}" class="form-control squad-input fw-bold text-uppercase" placeholder="Player ${i+1}" onchange="window.saveSquadsToFirebase()" oninput="this.value = this.value.toUpperCase()">`;
@@ -424,35 +441,104 @@
 
     function init() {
         checkURLMode();
-        try { const app = initializeApp(firebaseConfig); db = getDatabase(app); scoreRef = ref(db, DB_NODE); teamsRef = ref(db, TEAMS_NODE); updateSyncStatus(true, "Live"); setupRealtimeListener(); } 
-        catch (error) { updateSyncStatus(false, "Error"); setupLocalFallback(); }
+        try { 
+            const app = initializeApp(firebaseConfig); 
+            db = getDatabase(app); 
+            scoreRef = ref(db, DB_NODE); 
+            teamsRef = ref(db, TEAMS_NODE); 
+            updateSyncStatus(true, "Live"); 
+            setupRealtimeListener(); 
+            loadTeamDirectory();
+        } catch (error) { updateSyncStatus(false, "Error"); setupLocalFallback(); }
     }
 
-    window.handleTeamNameChange = async (teamType) => {
-        if(!db) return; const inputId = teamType === 'batting' ? 'in-bat' : 'in-bowl'; const teamName = document.getElementById(inputId).value.trim().toUpperCase(); if(!teamName) return;
-        try {
-            const snapshot = await get(ref(db, TEAMS_NODE + '/' + teamName));
-            if (snapshot.exists()) {
-                const squad = snapshot.val().squad || Array(12).fill('');
-                if (teamType === 'batting') matchState.battingSquad = squad; else matchState.bowlingSquad = squad;
-                updateUI(matchState);
-            } else {
-                if (teamType === 'batting') matchState.battingSquad = Array(12).fill(''); else matchState.bowlingSquad = Array(12).fill('');
-                updateUI(matchState);
+    // Load full team history into auto-complete dropdown
+    function loadTeamDirectory() {
+        if(!db) return;
+        onValue(teamsRef, (snapshot) => {
+            const data = snapshot.val();
+            const datalist = document.getElementById('team-list');
+            if(data && datalist) {
+                allSavedTeams = data;
+                datalist.innerHTML = '';
+                Object.keys(data).forEach(tName => {
+                    datalist.innerHTML += `<option value="${tName}">`;
+                });
             }
-        } catch (e) { console.error(e); }
-        window.pushMatchSetup();
+        });
+    }
+
+    // Auto-populates 12 squad inputs when team name matches database
+    window.handleTeamNameChange = (teamType) => {
+        const inputId = teamType === 'batting' ? 'in-bat' : 'in-bowl';
+        const teamName = (document.getElementById(inputId).value || '').trim().toUpperCase();
+        if(!teamName) return;
+
+        if (allSavedTeams[teamName] && allSavedTeams[teamName].squad) {
+            const loadedSquad = allSavedTeams[teamName].squad;
+            if (teamType === 'batting') {
+                matchState.battingTeam = teamName;
+                matchState.battingSquad = loadedSquad;
+                for(let i=0; i<12; i++) {
+                    const el = document.getElementById(`bat-sq-${i}`);
+                    if(el) el.value = loadedSquad[i] || '';
+                }
+            } else {
+                matchState.bowlingTeam = teamName;
+                matchState.bowlingSquad = loadedSquad;
+                for(let i=0; i<12; i++) {
+                    const el = document.getElementById(`bowl-sq-${i}`);
+                    if(el) el.value = loadedSquad[i] || '';
+                }
+            }
+            updateDropdowns();
+            pushStateToFirebase();
+        } else {
+            if (teamType === 'batting') matchState.battingTeam = teamName;
+            else matchState.bowlingTeam = teamName;
+            pushStateToFirebase();
+        }
     };
 
+    // Saves squad to Firebase permanently without overwriting valid data with empty arrays
     window.saveSquadsToFirebase = () => {
-        if(!db) return; const batName = document.getElementById('in-bat').value.trim().toUpperCase(); const bowlName = document.getElementById('in-bowl').value.trim().toUpperCase();
+        if(!db) return;
+        const batName = (document.getElementById('in-bat').value || '').trim().toUpperCase();
+        const bowlName = (document.getElementById('in-bowl').value || '').trim().toUpperCase();
+
+        let batHasPlayers = false;
+        let bowlHasPlayers = false;
+
         for(let i=0; i<12; i++) { 
-            matchState.battingSquad[i] = (document.getElementById(`bat-sq-${i}`).value || '').toUpperCase(); 
-            matchState.bowlingSquad[i] = (document.getElementById(`bowl-sq-${i}`).value || '').toUpperCase(); 
+            const bVal = (document.getElementById(`bat-sq-${i}`)?.value || '').toUpperCase();
+            const bwVal = (document.getElementById(`bowl-sq-${i}`)?.value || '').toUpperCase();
+            matchState.battingSquad[i] = bVal;
+            matchState.bowlingSquad[i] = bwVal;
+            if (bVal.trim()) batHasPlayers = true;
+            if (bwVal.trim()) bowlHasPlayers = true;
         }
-        if (batName) set(ref(db, TEAMS_NODE + '/' + batName), { squad: matchState.battingSquad });
-        if (bowlName) set(ref(db, TEAMS_NODE + '/' + bowlName), { squad: matchState.bowlingSquad });
-        pushStateToFirebase(); updateDropdowns();
+
+        if (batName && batHasPlayers) set(ref(db, TEAMS_NODE + '/' + batName), { squad: matchState.battingSquad });
+        if (bowlName && bowlHasPlayers) set(ref(db, TEAMS_NODE + '/' + bowlName), { squad: matchState.bowlingSquad });
+        
+        pushStateToFirebase(); 
+        updateDropdowns();
+    };
+
+    // Auto-populates active players when transitioning to scoring screen
+    window.startAndResumeMatch = () => {
+        window.saveSquadsToFirebase();
+        
+        const validBats = matchState.battingSquad.filter(n => n.trim() !== '');
+        const validBowls = matchState.bowlingSquad.filter(n => n.trim() !== '');
+
+        if (!matchState.striker.name && validBats[0]) matchState.striker.name = validBats[0];
+        if (!matchState.nonStriker.name && validBats[1]) matchState.nonStriker.name = validBats[1];
+        if (!matchState.bowler.name && validBowls[0]) matchState.bowler.name = validBowls[0];
+
+        syncBatterStats();
+        pushStateToFirebase();
+        window.toggleView('scoring');
     };
 
     function setupRealtimeListener() {
@@ -462,7 +548,7 @@
             if (data) {
                 const oldRuns = matchState.runs; const oldWickets = matchState.wickets;
                 matchState.runs = data.runs || 0; matchState.wickets = data.wickets || 0; matchState.completedOvers = data.overs || 0; matchState.balls = data.balls || 0;
-                matchState.battingTeam = data.team || 'THUNDERS'; matchState.bowlingTeam = data.bowlingTeam || 'OPPONENT'; matchState.target = data.target ? parseInt(data.target) : null;
+                matchState.battingTeam = data.team || ''; matchState.bowlingTeam = data.bowlingTeam || ''; matchState.target = data.target ? parseInt(data.target) : null;
                 matchState.totalOvers = data.totalOvers || 20; matchState.innings = data.innings || 1; matchState.toss = data.toss || { winner: '', decision: 'BAT' };
                 matchState.battingSquad = data.battingSquad || Array(12).fill(''); matchState.bowlingSquad = data.bowlingSquad || Array(12).fill('');
                 matchState.battingTeamLogo = data.battingTeamLogo || null; matchState.bowlingTeamLogo = data.bowlingTeamLogo || null; matchState.batTeamColor = data.batTeamColor || '#F4D03F'; matchState.bowlTeamColor = data.bowlTeamColor || '#059669'; 
@@ -548,8 +634,8 @@
     
     window.pushMatchSetup = () => { 
         saveUndoSnapshot(); 
-        matchState.battingTeam = (document.getElementById('in-bat').value || "TEAM").toUpperCase(); 
-        matchState.bowlingTeam = (document.getElementById('in-bowl').value || "OPP").toUpperCase(); 
+        matchState.battingTeam = (document.getElementById('in-bat').value || '').toUpperCase(); 
+        matchState.bowlingTeam = (document.getElementById('in-bowl').value || '').toUpperCase(); 
         matchState.batTeamColor = document.getElementById('in-bat-color').value; matchState.bowlTeamColor = document.getElementById('in-bowl-color').value; 
         matchState.toss.winner = document.getElementById('in-toss-winner').value; matchState.toss.decision = document.getElementById('in-toss-decision').value;
         const targetVal = document.getElementById('in-target').value; matchState.target = targetVal ? parseInt(targetVal) : null; matchState.totalOvers = parseInt(document.getElementById('in-total-overs').value) || 20; matchState.innings = parseInt(document.getElementById('in-innings').value) || 1; 
@@ -572,15 +658,20 @@
     
     function updateDropdowns() {
         if(currentMode !== 'control') return;
-        const tossW = document.getElementById('in-toss-winner'); const currentToss = tossW.value;
-        tossW.innerHTML = `<option value="">Select...</option><option value="${matchState.battingTeam}">${matchState.battingTeam}</option><option value="${matchState.bowlingTeam}">${matchState.bowlingTeam}</option>`; tossW.value = matchState.toss.winner || currentToss;
+        const tossW = document.getElementById('in-toss-winner'); 
+        const currentToss = tossW.value;
+        tossW.innerHTML = `<option value="">Select...</option><option value="${matchState.battingTeam}">${matchState.battingTeam}</option><option value="${matchState.bowlingTeam}">${matchState.bowlingTeam}</option>`; 
+        tossW.value = matchState.toss.winner || currentToss;
         
         const batHTML = `<option value="">Select...</option>` + matchState.battingSquad.filter(n=>n.trim()).map(n => `<option value="${n.toUpperCase()}">${n.toUpperCase()}</option>`).join('');
         const bowlHTML = `<option value="">Select...</option>` + matchState.bowlingSquad.filter(n=>n.trim()).map(n => `<option value="${n.toUpperCase()}">${n.toUpperCase()}</option>`).join('');
         
         const updateSel = (id, html, val) => { const el = document.getElementById(id); if(el) { el.innerHTML = html; el.value = val; } };
-        updateSel('in-striker-name', batHTML, matchState.striker.name); updateSel('in-nonstriker-name', batHTML, matchState.nonStriker.name); updateSel('modal-batsman-name', batHTML, '');
-        updateSel('in-bowler-name', bowlHTML, matchState.bowler.name); updateSel('modal-bowler-name', bowlHTML, '');
+        updateSel('in-striker-name', batHTML, matchState.striker.name); 
+        updateSel('in-nonstriker-name', batHTML, matchState.nonStriker.name); 
+        updateSel('modal-batsman-name', batHTML, '');
+        updateSel('in-bowler-name', bowlHTML, matchState.bowler.name); 
+        updateSel('modal-bowler-name', bowlHTML, '');
         
         const fielderHTML = `<option value="">None / Unassisted</option>` + matchState.bowlingSquad.filter(n=>n.trim()).map(n => `<option value="${n.toUpperCase()}">${n.toUpperCase()}</option>`).join('');
         updateSel('modal-wicket-fielder', fielderHTML, '');
@@ -695,8 +786,14 @@
         const oversString = `${data.completedOvers}.${data.balls}`;
 
         if (currentMode === 'overlay') {
-            setText('obs-bat-team', data.battingTeam); setText('obs-bowl-team', data.bowlingTeam); setText('obs-score', data.runs); setText('obs-wickets', data.wickets); setText('obs-overs', oversString);
-            document.getElementById('obs-bat-logo-box').style.backgroundColor = data.batTeamColor || '#000'; document.getElementById('obs-bowl-logo-box').style.backgroundColor = data.bowlTeamColor || '#000';
+            setText('obs-bat-team', data.battingTeam || 'TEAM'); 
+            setText('obs-bowl-team', data.bowlingTeam || 'TEAM'); 
+            setText('obs-score', data.runs); 
+            setText('obs-wickets', data.wickets); 
+            setText('obs-overs', oversString);
+            
+            document.getElementById('obs-bat-logo-box').style.backgroundColor = data.batTeamColor || '#000'; 
+            document.getElementById('obs-bowl-logo-box').style.backgroundColor = data.bowlTeamColor || '#000';
 
             if (data.isFreeHit) { document.getElementById('obs-free-hit').classList.remove('hidden'); } else { document.getElementById('obs-free-hit').classList.add('hidden'); }
 
@@ -740,7 +837,8 @@
         }
 
         if (currentMode === 'control') {
-            updateInputIfNotFocused('in-bat', data.battingTeam); updateInputIfNotFocused('in-bowl', data.bowlingTeam);
+            updateInputIfNotFocused('in-bat', data.battingTeam || ''); 
+            updateInputIfNotFocused('in-bowl', data.bowlingTeam || '');
             updateInputIfNotFocused('in-bat-color', data.batTeamColor || '#F4D03F'); updateInputIfNotFocused('in-bowl-color', data.bowlTeamColor || '#059669');
             updateInputIfNotFocused('in-runs', data.runs); updateInputIfNotFocused('in-wickets', data.wickets);
             updateInputIfNotFocused('in-overs', data.completedOvers); updateInputIfNotFocused('in-balls', data.balls);
@@ -752,8 +850,8 @@
             document.getElementById('in-free-hit').checked = data.isFreeHit;
             if (data.isFreeHit) { document.getElementById('prev-free-hit').classList.remove('hidden'); } else { document.getElementById('prev-free-hit').classList.add('hidden'); }
 
-            document.getElementById('label-bat-squad').innerText = `${data.battingTeam} SQUAD`;
-            document.getElementById('label-bowl-squad').innerText = `${data.bowlingTeam} SQUAD`;
+            document.getElementById('label-bat-squad').innerText = `${data.battingTeam || 'BATTING'} SQUAD`;
+            document.getElementById('label-bowl-squad').innerText = `${data.bowlingTeam || 'BOWLING'} SQUAD`;
             
             for(let i=0; i<12; i++) {
                 updateInputIfNotFocused(`bat-sq-${i}`, data.battingSquad[i] || '');
@@ -763,7 +861,7 @@
 
             setText('in-striker-runs', data.striker.runs); setText('in-striker-balls', data.striker.balls); setText('in-nonstriker-runs', data.nonStriker.runs); setText('in-nonstriker-balls', data.nonStriker.balls);
             setText('in-bowler-overs', `${Math.floor(data.bowler.balls/6)}.${data.bowler.balls%6}`); setText('in-bowler-runs', data.bowler.runs); setText('in-bowler-wickets', data.bowler.wickets);
-            setText('prev-bat', data.battingTeam); setText('prev-score', data.runs); setText('prev-wickets', data.wickets); setText('prev-overs', oversString);
+            setText('prev-bat', data.battingTeam || 'TEAM'); setText('prev-score', data.runs); setText('prev-wickets', data.wickets); setText('prev-overs', oversString);
             setText('prev-striker', `*${data.striker.name || 'Batsman'} ${data.striker.runs}(${data.striker.balls})`); setText('prev-bowler', `${data.bowler.name || 'Bowler'} ${data.bowler.wickets}-${data.bowler.runs}`);
             
             if (data.battingTeamLogo) { document.getElementById('prev-bat-logo').src = data.battingTeamLogo; document.getElementById('prev-bat-logo').classList.remove('hidden'); } else document.getElementById('prev-bat-logo').classList.add('hidden');
