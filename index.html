@@ -20,6 +20,10 @@
         .value-updated { animation: pulseText 0.5s ease-out; }
         @keyframes pulseText { 0% { transform: scale(1); color: #f4d03f; } 50% { transform: scale(1.1); color: #fff; } 100% { transform: scale(1); } }
 
+        /* ERROR TOAST */
+        .error-toast { position: fixed; top: -100px; left: 50%; transform: translateX(-50%); background: var(--crimson); color: white; padding: 15px 30px; border-radius: 8px; font-weight: 800; z-index: 10000; box-shadow: 0 4px 15px rgba(0,0,0,0.3); transition: top 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: flex; align-items: center; gap: 10px; }
+        .error-toast.show { top: 20px; }
+
         /* TV GRAPHIC BASE */
         .tv-wrapper { width: max-content; display: flex; flex-direction: column; align-items: center; z-index: 9999; position: relative; }
         @keyframes pulseFreeHit { 0% { background: #dc2626; box-shadow: 0 -2px 10px rgba(220,38,38,0.2); } 100% { background: #b91c1c; box-shadow: 0 -8px 20px rgba(220,38,38,0.8); } }
@@ -105,6 +109,11 @@
     </style>
 </head>
 <body>
+
+<div id="error-toast" class="error-toast">
+    <i class="bi bi-exclamation-triangle-fill"></i>
+    <span id="error-toast-msg">Error</span>
+</div>
 
 <!-- ==================== OVERLAY VIEW ==================== -->
 <div id="overlay-view" class="hidden tv-wrapper">
@@ -413,7 +422,14 @@
     const AUTO_SPONSORS = [ { title: "BATBUDDY SPORTS", subtitle: "Cricket Gear & Bat Repairs", services: ["Handle Repairs", "Refurbishments", "Custom Stickers", "Gear Sales"], contact: "Based in Wollert | Connect on Social Media" } ];
     let sponsorIndex = 0; let undoStack = []; const MAX_UNDO = 50; let currentMode = 'control'; let lastPlayedEventId = 0; let lastSeenOver = -1; let currentlyPlayingVideo = null;
 
-    // THE CRASH FIX: Firebase destroys lists if they have empty spots. This reconstructs them perfectly.
+    function showErrorToast(msg) {
+        const toast = document.getElementById('error-toast');
+        document.getElementById('error-toast-msg').innerText = msg;
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 3000);
+    }
+
+    // THE CRASH FIX: Prevents Firebase from corrupting the squad lists if empty spaces exist.
     function normalizeSquad(sq) {
         let arr = Array(12).fill('');
         if (!sq) return arr;
@@ -533,10 +549,14 @@
         pushStateToFirebase(); updateDropdowns();
     };
 
+    // ERROR CHECK 1: Verifies team names before transitioning to the scoring panel.
     window.startAndResumeMatch = () => {
+        const batName = (document.getElementById('in-bat').value || '').trim();
+        const bowlName = (document.getElementById('in-bowl').value || '').trim();
+        if(!batName || !bowlName) { showErrorToast("Please enter names for both teams!"); return; }
+
         window.saveSquadsToFirebase();
         
-        // Use robust filtering to prevent crashes
         const validBats = matchState.battingSquad.filter(n => n && n.trim() !== '');
         const validBowls = matchState.bowlingSquad.filter(n => n && n.trim() !== '');
 
@@ -556,11 +576,7 @@
                 matchState.runs = data.runs || 0; matchState.wickets = data.wickets || 0; matchState.completedOvers = data.overs || 0; matchState.balls = data.balls || 0;
                 matchState.battingTeam = data.team || ''; matchState.bowlingTeam = data.bowlingTeam || ''; matchState.target = data.target ? parseInt(data.target) : null;
                 matchState.totalOvers = data.totalOvers || 20; matchState.innings = data.innings || 1; matchState.toss = data.toss || { winner: '', decision: 'BAT' };
-                
-                // Normalizing lists fetched from Firebase
-                matchState.battingSquad = normalizeSquad(data.battingSquad); 
-                matchState.bowlingSquad = normalizeSquad(data.bowlingSquad);
-                
+                matchState.battingSquad = normalizeSquad(data.battingSquad); matchState.bowlingSquad = normalizeSquad(data.bowlingSquad);
                 matchState.battingTeamLogo = data.battingTeamLogo || null; matchState.bowlingTeamLogo = data.bowlingTeamLogo || null; matchState.batTeamColor = data.batTeamColor || '#F4D03F'; matchState.bowlTeamColor = data.bowlTeamColor || '#059669'; 
                 matchState.bowlerStats = data.bowlerStats || {}; matchState.battingStats = data.battingStats || {}; matchState.totalExtras = data.totalExtras || 0;
                 matchState.isFreeHit = data.isFreeHit || false; matchState.activeVideo = data.activeVideo || null;
@@ -611,7 +627,10 @@
         }
     }
 
+    // ERROR CHECK 2: Verifies active players exist before allowing a score update.
     window.scoreAction = (type, value = 0) => {
+        if(!matchState.striker.name || !matchState.nonStriker.name || !matchState.bowler.name) { showErrorToast("Select active batters and a bowler first!"); return; }
+        
         saveUndoSnapshot();
         if (type === 'dot') {
             matchState.isFreeHit = false; matchState.striker.balls += 1; matchState.bowler.balls += 1; syncBatterStats();
@@ -691,7 +710,10 @@
     window.hideBowlerModal = () => { document.getElementById('bowler-modal').classList.add('hidden'); };
     window.confirmNewBowler = () => { const n = (document.getElementById('modal-bowler-name').value || '').toUpperCase(); if (n) { saveUndoSnapshot(); window.switchBowlerLogic(n); updateUI(matchState); pushStateToFirebase(); } window.hideBowlerModal(); };
     
-    window.showBatsmanModal = () => { updateDropdowns(); document.getElementById('batsman-modal').classList.remove('hidden'); };
+    window.showBatsmanModal = () => { 
+        if(!matchState.striker.name || !matchState.bowler.name) { showErrorToast("Need a Striker and Bowler active to record a wicket!"); return; }
+        updateDropdowns(); document.getElementById('batsman-modal').classList.remove('hidden'); 
+    };
     window.hideBatsmanModal = () => { document.getElementById('batsman-modal').classList.add('hidden'); };
     window.confirmWicket = () => { 
         saveUndoSnapshot();
