@@ -89,6 +89,7 @@
         .over-break-container { position: fixed; top: 46%; left: 50%; transform: translate(-50%, -40%); width: 88vw; height: 75vh; display: flex; gap: 20px; z-index: 9000; opacity: 0; transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); pointer-events: none; }
         .over-break-container.show { transform: translate(-50%, -50%); opacity: 1; }
         
+        /* Left: Scorecard Panel (Light & Frosted) */
         .ob-scorecard { flex: 1.2; background: rgba(255, 255, 255, 0.88); backdrop-filter: blur(8px); border: 2px solid rgba(255,255,255,0.5); border-radius: 12px; display: flex; flex-direction: column; padding: 25px; color: #111; box-shadow: 0 15px 40px rgba(0,0,0,0.3); }
         .ob-header { display: flex; align-items: center; gap: 15px; border-bottom: 4px solid #F4D03F; padding-bottom: 12px; margin-bottom: 10px; }
         .ob-logo { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
@@ -101,22 +102,21 @@
         .ob-active-row { background: rgba(244, 208, 63, 0.25); border-radius: 4px; }
         .ob-footer { margin-top: auto; display: flex; justify-content: space-between; background: rgba(244, 208, 63, 0.95); padding: 15px 25px; border-radius: 8px; font-weight: 900; font-size: 22px; border: 1px solid rgba(0,0,0,0.1); text-transform: uppercase; color: #000; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
         
-        /* BATBUDDY SPORTS FLYER PANEL */
+        /* Right: BatBuddy Sports Professional Sponsor Panel */
         .ob-sponsor { flex: 0.8; background: #0B132B; border: 4px solid #F4D03F; border-radius: 12px; display: flex; flex-direction: column; align-items: center; padding: 25px; box-shadow: 0 15px 40px rgba(0,0,0,0.5); color: #fff; position: relative; overflow: hidden; }
         .ob-sponsor-badge { background: #F4D03F; color: #000; font-weight: 900; font-size: 13px; letter-spacing: 2px; padding: 6px 16px; border-radius: 20px; margin-bottom: 15px; text-transform: uppercase; box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
         .bb-logo-text { font-family: 'Oswald', sans-serif; font-size: 38px; font-weight: 700; letter-spacing: 2px; margin: 0; color: #fff; }
         .bb-services-title { font-family: 'Oswald', sans-serif; font-size: 48px; font-weight: 700; margin: 0 0 15px 0; text-align: center; text-transform: uppercase; line-height: 1.1; color: #fff; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
         .bb-services-title span { color: #d4af37; }
-        .bb-subline { background: #fff; color: #0B132B; padding: 4px 15px; font-weight: 800; font-style: italic; font-size: 14px; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px; border-radius: 2px; }
+        .bb-subline { background: #fff; color: #0B132B; padding: 4px 15px; font-weight: 800; font-style: italic; font-size: 14px; margin-bottom: 25px; text-transform: uppercase; letter-spacing: 1px; border-radius: 2px; }
         
-        .bb-pricelist { width: 90%; border: 2px solid #d4af37; border-radius: 12px; padding: 15px 20px; margin-bottom: auto; background: rgba(0,0,0,0.4); }
-        .bb-price-item { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed rgba(255,255,255,0.2); padding: 7px 0; font-size: 17px; font-weight: 600; }
-        .bb-price-item:last-child { border-bottom: none; }
-        .bb-price-item i { color: #d4af37; margin-right: 10px; font-size: 15px; }
-        .bb-price { background: #d4af37; color: #000; padding: 2px 10px; border-radius: 4px; font-weight: 900; font-size: 16px; }
+        /* Beautiful CSS Grid for Services without prices */
+        .bb-services-grid { width: 95%; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: auto; background: rgba(0,0,0,0.4); padding: 25px 20px; border: 2px solid #d4af37; border-radius: 12px; }
+        .bb-grid-item { font-size: 19px; font-weight: 700; display: flex; align-items: center; gap: 12px; color: #fff; text-transform: uppercase; }
+        .bb-grid-item i { color: #d4af37; font-size: 22px; }
         
-        .bb-footer-bar { display: flex; gap: 15px; align-items: center; justify-content: center; background: #000; padding: 12px 20px; border-radius: 8px; width: 100%; font-size: 20px; font-weight: 800; border-bottom: 3px solid #d4af37; margin-bottom: 10px; margin-top: 15px; }
-        .bb-tagline { font-size: 13px; font-weight: 800; letter-spacing: 4px; color: #aaa; text-transform: uppercase; margin-bottom: 5px; }
+        .bb-footer-bar { display: flex; gap: 15px; align-items: center; justify-content: center; background: #000; padding: 15px 20px; border-radius: 8px; width: 100%; font-size: 22px; font-weight: 800; border-bottom: 3px solid #d4af37; margin-bottom: 10px; margin-top: 20px; }
+        .bb-tagline { font-size: 14px; font-weight: 800; letter-spacing: 4px; color: #aaa; text-transform: uppercase; margin-bottom: 5px; }
 
         .score-btn { transition: all 0.12s; user-select: none; } .score-btn:active { transform: scale(0.95); } .modal-backdrop-custom { background: rgba(0,0,0,0.8); backdrop-filter: blur(4px); }
         .squad-input { font-size: 11px; padding: 4px; }
@@ -142,6 +142,7 @@
     
     <div id="obs-over-break-bg" class="over-break-bg"></div>
     <div id="obs-over-break-container" class="over-break-container">
+        <!-- SCORECARD -->
         <div class="ob-scorecard">
             <div class="ob-header">
                 <img id="ob-scorecard-logo" class="ob-logo hidden"> 
@@ -157,22 +158,20 @@
             </div>
         </div>
         
-        <!-- BATBUDDY SPORTS FLYER -->
+        <!-- PRO BATBUDDY SPORTS SPONSOR PANEL -->
         <div class="ob-sponsor">
             <div class="ob-sponsor-badge">Proud Sponsor</div>
             <h1 class="bb-logo-text">BATBUDDY SPORTS</h1>
             <h2 class="bb-services-title">BAT REPAIR<br><span>SERVICES</span></h2>
             <div class="bb-subline">Professional Care. Peak Performance.</div>
             
-            <div class="bb-pricelist">
-                <div class="bb-price-item"><span><i class="bi bi-hammer"></i> Re-handle</span> <span class="bb-price">$100</span></div>
-                <div class="bb-price-item"><span><i class="bi bi-bandaid"></i> Minor toe repair</span> <span class="bb-price">$30</span></div>
-                <div class="bb-price-item"><span><i class="bi bi-bandaid-fill"></i> Major toe repair</span> <span class="bb-price">$60</span></div>
-                <div class="bb-price-item"><span><i class="bi bi-link"></i> Binding</span> <span class="bb-price">$20</span></div>
-                <div class="bb-price-item"><span><i class="bi bi-arrow-down-right"></i> Minor Weight reduction</span> <span class="bb-price">$50</span></div>
-                <div class="bb-price-item"><span><i class="bi bi-arrow-down-square-fill"></i> Major weight reduction</span> <span class="bb-price">$70</span></div>
-                <div class="bb-price-item"><span><i class="bi bi-tools"></i> Handle reshaping</span> <span class="bb-price">$50</span></div>
-                <div class="bb-price-item"><span><i class="bi bi-x-circle"></i> Shoulder cracks</span> <span class="bb-price">$50</span></div>
+            <div class="bb-services-grid">
+                <div class="bb-grid-item"><i class="bi bi-hammer"></i> Handle Replacements</div>
+                <div class="bb-grid-item"><i class="bi bi-tools"></i> Bat Refurbishments</div>
+                <div class="bb-grid-item"><i class="bi bi-bandaid"></i> Toe & Edge Repairs</div>
+                <div class="bb-grid-item"><i class="bi bi-arrow-down-right-square"></i> Weight Reduction</div>
+                <div class="bb-grid-item"><i class="bi bi-palette"></i> Custom Sticker Designs</div>
+                <div class="bb-grid-item"><i class="bi bi-bag-check"></i> Cricket Gear Sales</div>
             </div>
             
             <div class="bb-footer-bar">
@@ -238,7 +237,7 @@
                                     <label class="form-label small fw-bold text-muted text-uppercase mb-1">Away Team</label>
                                     <div class="d-flex gap-1">
                                         <input type="color" id="in-away-color" class="form-control form-control-color p-1" value="#059669" style="width: 38px;">
-                                        <input type="text" id="in-away-team" list="team-list" maxlength="15" class="form-control fw-bold text-center text-uppercase" placeholder="AWAY TEAM" oninput="this.value = this.value.toUpperCase(); updateTossDropdown();" onchange="handleTeamNameChange('bowling')">
+                                        <input type="text" id="in-away-team" list="team-list" maxlength="15" class="form-control fw-bold text-center text-uppercase" placeholder="AWAY TEAM" oninput="this.value = this.value.toUpperCase(); updateTossDropdown();" onchange="handleAwayTeamChange()">
                                     </div>
                                 </div>
                                 <div class="col-6 col-md-3">
@@ -260,6 +259,10 @@
                                 <div class="col-6 col-md-4"><label class="form-label small fw-bold text-muted text-uppercase mb-1">Target (2nd Inn)</label><input type="number" id="in-target" class="form-control fw-bold text-center"></div>
                                 <div class="col-6 col-md-4"><label class="form-label small fw-bold text-muted text-uppercase mb-1">Total Overs</label><input type="number" id="in-total-overs" class="form-control fw-bold text-center" value="20"></div>
                                 <div class="col-12 col-md-4"><label class="form-label small fw-bold text-muted text-uppercase mb-1">Innings</label><select id="in-innings" class="form-select fw-bold"><option value="1">1st Innings</option><option value="2">2nd Innings</option></select></div>
+                            </div>
+                            <div class="row g-3 mt-3">
+                                <div class="col-6"><label class="form-label small fw-bold text-muted text-uppercase mb-1">Home Team Logo</label><input type="file" id="in-home-logo" accept="image/*" class="form-control form-control-sm" onchange="handleLogoUpload('home')"></div>
+                                <div class="col-6"><label class="form-label small fw-bold text-muted text-uppercase mb-1">Away Team Logo</label><input type="file" id="in-away-logo" accept="image/*" class="form-control form-control-sm" onchange="handleLogoUpload('away')"></div>
                             </div>
                         </div>
                     </div>
@@ -466,6 +469,7 @@
     let db, scoreRef, teamsRef;
     let matchState = {
         homeTeam: 'THUNDERS', awayTeam: '', homeColor: '#F4D03F', awayColor: '#059669',
+        homeTeamLogo: null, awayTeamLogo: null,
         battingTeam: 'THUNDERS', bowlingTeam: '', battingTeamLogo: null, bowlingTeamLogo: null, batTeamColor: '#F4D03F', bowlTeamColor: '#059669', 
         runs: 0, wickets: 0, completedOvers: 0, balls: 0, totalOvers: 20, target: null, innings: 1, toss: { winner: '', decision: 'BAT' },
         homeSquad: Array(12).fill(''), awaySquad: Array(12).fill(''),
@@ -477,8 +481,6 @@
     let allSavedTeams = {};
     let undoStack = []; const MAX_UNDO = 50; let currentMode = 'control'; let lastPlayedEventId = 0; let lastSeenOver = -1; let currentlyPlayingVideo = null;
     let pendingExtraType = null;
-    let sponsorIndex = 0;
-    const AUTO_SPONSORS = [ { title: "BATBUDDY SPORTS", subtitle: "Cricket Gear & Bat Repairs", services: ["Handle Repairs", "Refurbishments", "Custom Stickers", "Gear Sales"], contact: "Based in Wollert | Connect on Social Media" } ];
 
     function safeKey(str) { return (str || '').replace(/[.#$\[\]\/]/g, '_'); }
     function showErrorToast(msg) { const toast = document.getElementById('error-toast'); document.getElementById('error-toast-msg').innerText = msg; toast.classList.add('show'); setTimeout(() => toast.classList.remove('show'), 3000); }
@@ -514,6 +516,17 @@
             if(data && datalist) {
                 allSavedTeams = data; datalist.innerHTML = '';
                 Object.keys(data).forEach(tName => { datalist.innerHTML += `<option value="${tName}">`; });
+                
+                // Auto-load Thunders on boot if they exist
+                if(allSavedTeams['THUNDERS'] && matchState.homeSquad.every(p => p === '')) {
+                    matchState.homeSquad = normalizeSquad(allSavedTeams['THUNDERS'].squad);
+                    if(currentMode === 'control') {
+                        for(let i=0; i<12; i++) {
+                            const el = document.getElementById(`home-sq-${i}`);
+                            if(el && !el.value) el.value = matchState.homeSquad[i] || '';
+                        }
+                    }
+                }
             }
         });
     }
@@ -529,29 +542,24 @@
     }
     window.updateTossDropdown = updateTossDropdown;
 
-    async function handleTeamNameChange(teamType) {
+    function handleAwayTeamChange() {
         if(!db) return;
-        const inputId = teamType === 'batting' ? 'in-bat' : 'in-away-team';
-        const teamName = (document.getElementById(inputId).value || '').trim().toUpperCase();
+        const teamName = (document.getElementById('in-away-team').value || '').trim().toUpperCase();
         updateTossDropdown();
         if(!teamName) return;
 
         if (allSavedTeams[teamName] && allSavedTeams[teamName].squad) {
             const loadedSquad = normalizeSquad(allSavedTeams[teamName].squad);
-            if (teamType === 'batting') {
-                matchState.battingTeam = teamName; matchState.battingSquad = loadedSquad;
-                for(let i=0; i<12; i++) { const el = document.getElementById(`bat-sq-${i}`); if(el) el.value = loadedSquad[i] || ''; }
-            } else {
-                matchState.awayTeam = teamName; matchState.awaySquad = loadedSquad;
-                for(let i=0; i<12; i++) { const el = document.getElementById(`away-sq-${i}`); if(el) el.value = loadedSquad[i] || ''; }
-            }
-            updateDropdowns(); pushStateToFirebase();
+            matchState.awayTeam = teamName; matchState.awaySquad = loadedSquad;
+            for(let i=0; i<12; i++) { const el = document.getElementById(`away-sq-${i}`); if(el) el.value = loadedSquad[i] || ''; }
         } else {
-            if (teamType === 'batting') matchState.battingTeam = teamName; else matchState.awayTeam = teamName;
-            pushStateToFirebase();
+            // New team: Wipe the slate clean!
+            matchState.awayTeam = teamName; matchState.awaySquad = Array(12).fill('');
+            for(let i=0; i<12; i++) { const el = document.getElementById(`away-sq-${i}`); if(el) el.value = ''; }
         }
+        updateDropdowns(); pushStateToFirebase();
     }
-    window.handleTeamNameChange = handleTeamNameChange;
+    window.handleAwayTeamChange = handleAwayTeamChange;
 
     function saveSquadsToFirebase() {
         if(!db) return;
@@ -572,6 +580,25 @@
         pushStateToFirebase(); updateDropdowns();
     }
     window.saveSquadsToFirebase = saveSquadsToFirebase;
+
+    function handleLogoUpload(team) {
+        const input = team === 'home' ? document.getElementById('in-home-logo') : document.getElementById('in-away-logo');
+        const file = input.files[0]; if (!file) return;
+        const img = new Image(); const reader = new FileReader();
+        reader.onload = (e) => {
+            img.src = e.target.result;
+            img.onload = () => {
+                const canvas = document.createElement('canvas'); let w = img.width, h = img.height;
+                if (w > h) { if (w > 200) { h = h * 200 / w; w = 200; } } else { if (h > 200) { w = w * 200 / h; h = 200; } }
+                canvas.width = w; canvas.height = h; canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+                saveUndoSnapshot();
+                if (team === 'home') matchState.homeTeamLogo = canvas.toDataURL('image/png', 0.7); 
+                else matchState.awayTeamLogo = canvas.toDataURL('image/png', 0.7);
+                pushStateToFirebase();
+            };
+        }; reader.readAsDataURL(file);
+    }
+    window.handleLogoUpload = handleLogoUpload;
 
     function syncBatterStats() {
         const sName = (matchState.striker.name || '').trim();
@@ -605,19 +632,19 @@
 
             if (matchState.toss.winner === 'THUNDERS') {
                 if (matchState.toss.decision === 'BAT') {
-                    matchState.battingTeam = 'THUNDERS'; matchState.battingSquad = [...matchState.homeSquad]; matchState.batTeamColor = matchState.homeColor;
-                    matchState.bowlingTeam = awayName; matchState.bowlingSquad = [...matchState.awaySquad]; matchState.bowlTeamColor = matchState.awayColor;
+                    matchState.battingTeam = 'THUNDERS'; matchState.battingSquad = [...matchState.homeSquad]; matchState.batTeamColor = matchState.homeColor; matchState.battingTeamLogo = matchState.homeTeamLogo;
+                    matchState.bowlingTeam = awayName; matchState.bowlingSquad = [...matchState.awaySquad]; matchState.bowlTeamColor = matchState.awayColor; matchState.bowlingTeamLogo = matchState.awayTeamLogo;
                 } else {
-                    matchState.battingTeam = awayName; matchState.battingSquad = [...matchState.awaySquad]; matchState.batTeamColor = matchState.awayColor;
-                    matchState.bowlingTeam = 'THUNDERS'; matchState.bowlingSquad = [...matchState.homeSquad]; matchState.bowlTeamColor = matchState.homeColor;
+                    matchState.battingTeam = awayName; matchState.battingSquad = [...matchState.awaySquad]; matchState.batTeamColor = matchState.awayColor; matchState.battingTeamLogo = matchState.awayTeamLogo;
+                    matchState.bowlingTeam = 'THUNDERS'; matchState.bowlingSquad = [...matchState.homeSquad]; matchState.bowlTeamColor = matchState.homeColor; matchState.bowlingTeamLogo = matchState.homeTeamLogo;
                 }
             } else {
                 if (matchState.toss.decision === 'BAT') {
-                    matchState.battingTeam = awayName; matchState.battingSquad = [...matchState.awaySquad]; matchState.batTeamColor = matchState.awayColor;
-                    matchState.bowlingTeam = 'THUNDERS'; matchState.bowlingSquad = [...matchState.homeSquad]; matchState.bowlTeamColor = matchState.homeColor;
+                    matchState.battingTeam = awayName; matchState.battingSquad = [...matchState.awaySquad]; matchState.batTeamColor = matchState.awayColor; matchState.battingTeamLogo = matchState.awayTeamLogo;
+                    matchState.bowlingTeam = 'THUNDERS'; matchState.bowlingSquad = [...matchState.homeSquad]; matchState.bowlTeamColor = matchState.homeColor; matchState.bowlingTeamLogo = matchState.homeTeamLogo;
                 } else {
-                    matchState.battingTeam = 'THUNDERS'; matchState.battingSquad = [...matchState.homeSquad]; matchState.batTeamColor = matchState.homeColor;
-                    matchState.bowlingTeam = awayName; matchState.bowlingSquad = [...matchState.awaySquad]; matchState.bowlTeamColor = matchState.awayColor;
+                    matchState.battingTeam = 'THUNDERS'; matchState.battingSquad = [...matchState.homeSquad]; matchState.batTeamColor = matchState.homeColor; matchState.battingTeamLogo = matchState.homeTeamLogo;
+                    matchState.bowlingTeam = awayName; matchState.bowlingSquad = [...matchState.awaySquad]; matchState.bowlTeamColor = matchState.awayColor; matchState.bowlingTeamLogo = matchState.awayTeamLogo;
                 }
             }
 
@@ -633,25 +660,6 @@
     }
     window.startAndResumeMatch = startAndResumeMatch;
 
-    function pushStateToFirebase() {
-        if (!db) return; matchState.lastUpdateTs = Date.now();
-        const bName = (matchState.bowler.name || '').trim().toUpperCase();
-        if (bName) { matchState.bowlerStats[safeKey(bName)] = { runs: matchState.bowler.runs, wickets: matchState.bowler.wickets, balls: matchState.bowler.balls }; }
-        const dbData = {
-            homeTeam: matchState.homeTeam, awayTeam: matchState.awayTeam, homeColor: matchState.homeColor, awayColor: matchState.awayColor,
-            homeSquad: matchState.homeSquad, awaySquad: matchState.awaySquad,
-            runs: matchState.runs, wickets: matchState.wickets, overs: matchState.completedOvers, balls: matchState.balls,
-            battingTeam: matchState.battingTeam, bowlingTeam: matchState.bowlingTeam, target: matchState.target || '', totalOvers: matchState.totalOvers, innings: matchState.innings, toss: matchState.toss,
-            battingSquad: matchState.battingSquad, bowlingSquad: matchState.bowlingSquad,
-            battingTeamLogo: matchState.battingTeamLogo || null, bowlingTeamLogo: matchState.bowlingTeamLogo || null, batTeamColor: matchState.batTeamColor, bowlTeamColor: matchState.bowlTeamColor,
-            b1Name: matchState.striker.name, b1Runs: matchState.striker.runs, b1Balls: matchState.striker.balls, b2Name: matchState.nonStriker.name, b2Runs: matchState.nonStriker.runs, b2Balls: matchState.nonStriker.balls,
-            strike: 1, bowlName: matchState.bowler.name, bowlO: Math.floor(matchState.bowler.balls / 6) + '.' + (matchState.bowler.balls % 6), bowlM: 0, bowlR: matchState.bowler.runs, bowlW: matchState.bowler.wickets, bowlBalls: matchState.bowler.balls,
-            bowlerStats: matchState.bowlerStats, battingStats: matchState.battingStats, totalExtras: matchState.totalExtras,
-            recentBalls: matchState.recentBalls, currentOverBalls: matchState.currentOverBalls, currentEvent: matchState.currentEvent, isFreeHit: matchState.isFreeHit, activeVideo: matchState.activeVideo, lastUpdateTs: matchState.lastUpdateTs
-        };
-        set(scoreRef, dbData);
-    }
-
     function setupRealtimeListener() {
         if (!db) return;
         onValue(scoreRef, (snapshot) => {
@@ -662,6 +670,7 @@
                 matchState.homeTeam = data.homeTeam || 'THUNDERS'; matchState.awayTeam = data.awayTeam || '';
                 matchState.homeColor = data.homeColor || '#F4D03F'; matchState.awayColor = data.awayColor || '#059669';
                 matchState.homeSquad = normalizeSquad(data.homeSquad); matchState.awaySquad = normalizeSquad(data.awaySquad);
+                matchState.homeTeamLogo = data.homeTeamLogo || null; matchState.awayTeamLogo = data.awayTeamLogo || null;
 
                 matchState.runs = data.runs || 0; matchState.wickets = data.wickets || 0; matchState.completedOvers = data.overs || 0; matchState.balls = data.balls || 0;
                 matchState.battingTeam = data.battingTeam || ''; matchState.bowlingTeam = data.bowlingTeam || ''; matchState.target = data.target ? parseInt(data.target) : null;
@@ -697,6 +706,25 @@
         } catch (error) { updateSyncStatus(false, "Error"); setupLocalFallback(); }
     }
 
+    function pushStateToFirebase() {
+        if (!db) return; matchState.lastUpdateTs = Date.now();
+        const bName = (matchState.bowler.name || '').trim().toUpperCase();
+        if (bName) { matchState.bowlerStats[safeKey(bName)] = { runs: matchState.bowler.runs, wickets: matchState.bowler.wickets, balls: matchState.bowler.balls }; }
+        const dbData = {
+            homeTeam: matchState.homeTeam, awayTeam: matchState.awayTeam, homeColor: matchState.homeColor, awayColor: matchState.awayColor,
+            homeSquad: matchState.homeSquad, awaySquad: matchState.awaySquad, homeTeamLogo: matchState.homeTeamLogo || null, awayTeamLogo: matchState.awayTeamLogo || null,
+            runs: matchState.runs, wickets: matchState.wickets, overs: matchState.completedOvers, balls: matchState.balls,
+            battingTeam: matchState.battingTeam, bowlingTeam: matchState.bowlingTeam, target: matchState.target || '', totalOvers: matchState.totalOvers, innings: matchState.innings, toss: matchState.toss,
+            battingSquad: matchState.battingSquad, bowlingSquad: matchState.bowlingSquad,
+            battingTeamLogo: matchState.battingTeamLogo || null, bowlingTeamLogo: matchState.bowlingTeamLogo || null, batTeamColor: matchState.batTeamColor, bowlTeamColor: matchState.bowlTeamColor,
+            b1Name: matchState.striker.name, b1Runs: matchState.striker.runs, b1Balls: matchState.striker.balls, b2Name: matchState.nonStriker.name, b2Runs: matchState.nonStriker.runs, b2Balls: matchState.nonStriker.balls,
+            strike: 1, bowlName: matchState.bowler.name, bowlO: Math.floor(matchState.bowler.balls / 6) + '.' + (matchState.bowler.balls % 6), bowlM: 0, bowlR: matchState.bowler.runs, bowlW: matchState.bowler.wickets, bowlBalls: matchState.bowler.balls,
+            bowlerStats: matchState.bowlerStats, battingStats: matchState.battingStats, totalExtras: matchState.totalExtras,
+            recentBalls: matchState.recentBalls, currentOverBalls: matchState.currentOverBalls, currentEvent: matchState.currentEvent, isFreeHit: matchState.isFreeHit, activeVideo: matchState.activeVideo, lastUpdateTs: matchState.lastUpdateTs
+        };
+        set(scoreRef, dbData);
+    }
+
     function saveUndoSnapshot() { undoStack.push(JSON.parse(JSON.stringify(matchState))); if (undoStack.length > MAX_UNDO) undoStack.shift(); updateUndoButton(); }
     function undoLastAction() { if (undoStack.length === 0) return; matchState = undoStack.pop(); updateUI(matchState); pushStateToFirebase(); updateUndoButton(); } window.undoLastAction = undoLastAction;
     function updateUndoButton() { const btn = document.getElementById('undo-btn'); if (!btn) return; if (undoStack.length > 0) { btn.disabled = false; btn.classList.add('undo-available'); } else { btn.disabled = true; btn.classList.remove('undo-available'); } }
@@ -705,28 +733,6 @@
     function triggerVideoStop() { saveUndoSnapshot(); matchState.activeVideo = null; pushStateToFirebase(); } window.triggerVideoStop = triggerVideoStop;
     function triggerEvent(type, message) { matchState.currentEvent = { id: Date.now(), type: type, message: message }; } window.triggerEvent = triggerEvent;
     function toggleFreeHit() { saveUndoSnapshot(); matchState.isFreeHit = document.getElementById('in-free-hit').checked; pushStateToFirebase(); updateUI(matchState); } window.toggleFreeHit = toggleFreeHit;
-
-    function incrementBall() { matchState.balls += 1; if (matchState.balls >= 6) { matchState.completedOvers += 1; matchState.balls = 0; matchState.currentOverBalls = []; swapStrike(); if (currentMode === 'control') showBowlerModal(); } }
-    function swapStrike() { const temp = matchState.striker; matchState.striker = matchState.nonStriker; matchState.nonStriker = temp; }
-    
-    function swapBatsmen() { saveUndoSnapshot(); swapStrike(); updateUI(matchState); pushStateToFirebase(); } window.swapBatsmen = swapBatsmen;
-    function switchBowlerLogic(newName) { 
-        const nextName = (newName || '').trim().toUpperCase(); const key = safeKey(nextName);
-        if (matchState.bowlerStats[key]) { const stats = matchState.bowlerStats[key]; matchState.bowler = { name: nextName, runs: stats.runs, wickets: stats.wickets, balls: stats.balls }; } 
-        else { matchState.bowler = { name: nextName, runs: 0, wickets: 0, balls: 0 }; } 
-    } window.switchBowlerLogic = switchBowlerLogic;
-    
-    function pushPlayerNames() { 
-        saveUndoSnapshot(); 
-        matchState.striker.name = (document.getElementById('in-striker-name').value || '').toUpperCase(); 
-        matchState.nonStriker.name = (document.getElementById('in-nonstriker-name').value || '').toUpperCase(); 
-        const newBowlName = (document.getElementById('in-bowler-name').value || '').toUpperCase(); 
-        if (newBowlName !== matchState.bowler.name) { switchBowlerLogic(newBowlName); } else { matchState.bowler.name = newBowlName; } 
-        syncBatterStats(); pushStateToFirebase(); updateUI(matchState); 
-    } window.pushPlayerNames = pushPlayerNames;
-    
-    function pushManualOverride() { saveUndoSnapshot(); matchState.runs = parseInt(document.getElementById('in-runs').value) || 0; matchState.wickets = parseInt(document.getElementById('in-wickets').value) || 0; matchState.completedOvers = parseInt(document.getElementById('in-overs').value) || 0; matchState.balls = parseInt(document.getElementById('in-balls').value) || 0; updateUI(matchState); pushStateToFirebase(); } window.pushManualOverride = pushManualOverride;
-    function newBowler() { saveUndoSnapshot(); const n = (document.getElementById('in-bowler-name').value || '').toUpperCase(); if (n) { switchBowlerLogic(n); updateUI(matchState); pushStateToFirebase(); } } window.newBowler = newBowler;
 
     function scoreAction(type, value = 0) {
         try {
@@ -756,6 +762,28 @@
             if (matchState.recentBalls.length > 6) matchState.recentBalls = matchState.recentBalls.slice(-6); updateUI(matchState); pushStateToFirebase();
         } catch (error) { document.getElementById('dev-error-console').style.display = 'block'; document.getElementById('dev-error-text').innerText += `\n\nSCORE ACTION CRASH:\nMsg: ${error.message}\nStack: ${error.stack}`; }
     } window.scoreAction = scoreAction;
+
+    function incrementBall() { matchState.balls += 1; if (matchState.balls >= 6) { matchState.completedOvers += 1; matchState.balls = 0; matchState.currentOverBalls = []; swapStrike(); if (currentMode === 'control') showBowlerModal(); } }
+    function swapStrike() { const temp = matchState.striker; matchState.striker = matchState.nonStriker; matchState.nonStriker = temp; }
+    
+    function swapBatsmen() { saveUndoSnapshot(); swapStrike(); updateUI(matchState); pushStateToFirebase(); } window.swapBatsmen = swapBatsmen;
+    function switchBowlerLogic(newName) { 
+        const nextName = (newName || '').trim().toUpperCase(); const key = safeKey(nextName);
+        if (matchState.bowlerStats[key]) { const stats = matchState.bowlerStats[key]; matchState.bowler = { name: nextName, runs: stats.runs, wickets: stats.wickets, balls: stats.balls }; } 
+        else { matchState.bowler = { name: nextName, runs: 0, wickets: 0, balls: 0 }; } 
+    } window.switchBowlerLogic = switchBowlerLogic;
+    
+    function pushPlayerNames() { 
+        saveUndoSnapshot(); 
+        matchState.striker.name = (document.getElementById('in-striker-name').value || '').toUpperCase(); 
+        matchState.nonStriker.name = (document.getElementById('in-nonstriker-name').value || '').toUpperCase(); 
+        const newBowlName = (document.getElementById('in-bowler-name').value || '').toUpperCase(); 
+        if (newBowlName !== matchState.bowler.name) { switchBowlerLogic(newBowlName); } else { matchState.bowler.name = newBowlName; } 
+        syncBatterStats(); pushStateToFirebase(); updateUI(matchState); 
+    } window.pushPlayerNames = pushPlayerNames;
+    
+    function pushManualOverride() { saveUndoSnapshot(); matchState.runs = parseInt(document.getElementById('in-runs').value) || 0; matchState.wickets = parseInt(document.getElementById('in-wickets').value) || 0; matchState.completedOvers = parseInt(document.getElementById('in-overs').value) || 0; matchState.balls = parseInt(document.getElementById('in-balls').value) || 0; updateUI(matchState); pushStateToFirebase(); } window.pushManualOverride = pushManualOverride;
+    function newBowler() { saveUndoSnapshot(); const n = (document.getElementById('in-bowler-name').value || '').toUpperCase(); if (n) { switchBowlerLogic(n); updateUI(matchState); pushStateToFirebase(); } } window.newBowler = newBowler;
 
     function updateDropdowns() {
         if(currentMode !== 'control') return;
