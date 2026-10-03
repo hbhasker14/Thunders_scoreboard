@@ -24,6 +24,10 @@
         .error-toast { position: fixed; top: -100px; left: 50%; transform: translateX(-50%); background: var(--crimson); color: white; padding: 15px 30px; border-radius: 8px; font-weight: 800; z-index: 10000; box-shadow: 0 4px 15px rgba(0,0,0,0.3); transition: top 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: flex; align-items: center; gap: 10px; }
         .error-toast.show { top: 20px; }
 
+        /* DEV CRASH LOG SCREEN */
+        #dev-error-console { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.95); color: #0f0; z-index: 999999; padding: 20px; overflow-y: scroll; font-family: monospace; }
+        #dev-error-console h3 { color: #ff4444; font-weight: bold; margin-bottom: 20px; }
+
         /* TV GRAPHIC BASE */
         .tv-wrapper { width: max-content; display: flex; flex-direction: column; align-items: center; z-index: 9999; position: relative; }
         @keyframes pulseFreeHit { 0% { background: #dc2626; box-shadow: 0 -2px 10px rgba(220,38,38,0.2); } 100% { background: #b91c1c; box-shadow: 0 -8px 20px rgba(220,38,38,0.8); } }
@@ -109,6 +113,13 @@
     </style>
 </head>
 <body>
+
+<!-- GLOBAL ERROR CONSOLE FOR DEBUGGING -->
+<div id="dev-error-console">
+    <h3>🚨 SYSTEM CRASH LOG</h3>
+    <button onclick="document.getElementById('dev-error-console').style.display='none'" style="padding: 10px 20px; background: red; color: white; border: none; font-weight: bold; border-radius: 5px; cursor: pointer; margin-bottom: 15px;">CLOSE LOG & IGNORE</button>
+    <pre id="dev-error-text" style="white-space: pre-wrap; word-wrap: break-word;"></pre>
+</div>
 
 <div id="error-toast" class="error-toast">
     <i class="bi bi-exclamation-triangle-fill"></i>
@@ -226,7 +237,7 @@
                     <div class="card border-0 shadow-sm rounded-3">
                         <div class="card-body p-4">
                             <h2 class="text-uppercase mb-2 text-center" style="font-size: 16px; font-weight: 800; letter-spacing: 1px; color: #555;"><i class="bi bi-people-fill text-primary"></i> Current Match Squads</h2>
-                            <p class="small text-muted mb-4 text-center">Enter your 12 players for this specific game.</p>
+                            <p class="small text-muted mb-4 text-center">Enter your players for this specific game. Ensure no spaces are accidentally left empty if you don't have 12 players.</p>
                             <div class="row">
                                 <div class="col-6">
                                     <h6 class="fw-bold text-uppercase text-center" style="color: var(--gold);">THUNDERS SQUAD</h6>
@@ -408,6 +419,17 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script type="module">
+    // GLOBAL ERROR CATCHING ENGINE
+    window.onerror = function(message, source, lineno, colno, error) {
+        document.getElementById('dev-error-console').style.display = 'block';
+        document.getElementById('dev-error-text').innerText += `\n\n🚨 JS ERROR 🚨\nMsg: ${message}\nLine: ${lineno}:${colno}\nTrace: ${error ? error.stack : 'N/A'}`;
+        return true;
+    };
+    window.addEventListener('unhandledrejection', function(event) {
+        document.getElementById('dev-error-console').style.display = 'block';
+        document.getElementById('dev-error-text').innerText += `\n\n🚨 PROMISE ERROR 🚨\nReason: ${event.reason}`;
+    });
+
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
     import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
 
@@ -493,52 +515,62 @@
     };
 
     window.startAndResumeMatch = () => {
-        const awayName = (document.getElementById('in-away-team').value || '').trim().toUpperCase();
-        if(!awayName) { showErrorToast("Please enter the Away Team name!"); return; }
-        
-        matchState.homeTeam = 'THUNDERS';
-        matchState.awayTeam = awayName;
-        matchState.toss.winner = document.getElementById('in-toss-winner').value;
-        matchState.toss.decision = document.getElementById('in-toss-decision').value;
-        
-        if(!matchState.toss.winner) { showErrorToast("Please select who won the toss!"); return; }
+        try {
+            const awayName = (document.getElementById('in-away-team').value || '').trim().toUpperCase();
+            if(!awayName) { showErrorToast("Please enter the Away Team name!"); return; }
+            
+            matchState.homeTeam = 'THUNDERS';
+            matchState.awayTeam = awayName;
+            matchState.toss.winner = document.getElementById('in-toss-winner').value;
+            matchState.toss.decision = document.getElementById('in-toss-decision').value;
+            
+            if(!matchState.toss.winner) { showErrorToast("Please select who won the toss!"); return; }
 
-        matchState.homeColor = document.getElementById('in-home-color').value;
-        matchState.awayColor = document.getElementById('in-away-color').value;
+            matchState.homeColor = document.getElementById('in-home-color').value;
+            matchState.awayColor = document.getElementById('in-away-color').value;
 
-        // Grab manual squads
-        for(let i=0; i<12; i++) { 
-            matchState.homeSquad[i] = (document.getElementById(`home-sq-${i}`)?.value || '').trim().toUpperCase();
-            matchState.awaySquad[i] = (document.getElementById(`away-sq-${i}`)?.value || '').trim().toUpperCase();
-        }
-
-        // SMART TOSS LOGIC
-        if (matchState.toss.winner === 'THUNDERS') {
-            if (matchState.toss.decision === 'BAT') {
-                matchState.battingTeam = 'THUNDERS'; matchState.battingSquad = [...matchState.homeSquad]; matchState.batTeamColor = matchState.homeColor;
-                matchState.bowlingTeam = awayName; matchState.bowlingSquad = [...matchState.awaySquad]; matchState.bowlTeamColor = matchState.awayColor;
-            } else {
-                matchState.battingTeam = awayName; matchState.battingSquad = [...matchState.awaySquad]; matchState.batTeamColor = matchState.awayColor;
-                matchState.bowlingTeam = 'THUNDERS'; matchState.bowlingSquad = [...matchState.homeSquad]; matchState.bowlTeamColor = matchState.homeColor;
+            for(let i=0; i<12; i++) { 
+                const hSq = document.getElementById(`home-sq-${i}`);
+                const aSq = document.getElementById(`away-sq-${i}`);
+                matchState.homeSquad[i] = hSq ? (hSq.value || '').trim().toUpperCase() : '';
+                matchState.awaySquad[i] = aSq ? (aSq.value || '').trim().toUpperCase() : '';
             }
-        } else {
-            if (matchState.toss.decision === 'BAT') {
-                matchState.battingTeam = awayName; matchState.battingSquad = [...matchState.awaySquad]; matchState.batTeamColor = matchState.awayColor;
-                matchState.bowlingTeam = 'THUNDERS'; matchState.bowlingSquad = [...matchState.homeSquad]; matchState.bowlTeamColor = matchState.homeColor;
+
+            if (matchState.toss.winner === 'THUNDERS') {
+                if (matchState.toss.decision === 'BAT') {
+                    matchState.battingTeam = 'THUNDERS'; matchState.battingSquad = [...matchState.homeSquad]; matchState.batTeamColor = matchState.homeColor;
+                    matchState.bowlingTeam = awayName; matchState.bowlingSquad = [...matchState.awaySquad]; matchState.bowlTeamColor = matchState.awayColor;
+                } else {
+                    matchState.battingTeam = awayName; matchState.battingSquad = [...matchState.awaySquad]; matchState.batTeamColor = matchState.awayColor;
+                    matchState.bowlingTeam = 'THUNDERS'; matchState.bowlingSquad = [...matchState.homeSquad]; matchState.bowlTeamColor = matchState.homeColor;
+                }
             } else {
-                matchState.battingTeam = 'THUNDERS'; matchState.battingSquad = [...matchState.homeSquad]; matchState.batTeamColor = matchState.homeColor;
-                matchState.bowlingTeam = awayName; matchState.bowlingSquad = [...matchState.awaySquad]; matchState.bowlTeamColor = matchState.awayColor;
+                if (matchState.toss.decision === 'BAT') {
+                    matchState.battingTeam = awayName; matchState.battingSquad = [...matchState.awaySquad]; matchState.batTeamColor = matchState.awayColor;
+                    matchState.bowlingTeam = 'THUNDERS'; matchState.bowlingSquad = [...matchState.homeSquad]; matchState.bowlTeamColor = matchState.homeColor;
+                } else {
+                    matchState.battingTeam = 'THUNDERS'; matchState.battingSquad = [...matchState.homeSquad]; matchState.batTeamColor = matchState.homeColor;
+                    matchState.bowlingTeam = awayName; matchState.bowlingSquad = [...matchState.awaySquad]; matchState.bowlTeamColor = matchState.awayColor;
+                }
             }
+
+            const validBats = matchState.battingSquad.filter(n => n && n.trim() !== '');
+            const validBowls = matchState.bowlingSquad.filter(n => n && n.trim() !== '');
+
+            // Ensure safe fallbacks to prevent undefined references downstream
+            if ((matchState.striker.name || '').trim() === '' && validBats.length > 0) matchState.striker.name = validBats[0];
+            if ((matchState.nonStriker.name || '').trim() === '' && validBats.length > 1) matchState.nonStriker.name = validBats[1];
+            if ((matchState.bowler.name || '').trim() === '' && validBowls.length > 0) matchState.bowler.name = validBowls[0];
+
+            syncBatterStats(); 
+            pushStateToFirebase(); 
+            window.toggleView('scoring'); 
+            updateDropdowns();
+
+        } catch (error) {
+            document.getElementById('dev-error-console').style.display = 'block';
+            document.getElementById('dev-error-text').innerText += `\n\nSTART MATCH CRASH:\nMsg: ${error.message}\nStack: ${error.stack}`;
         }
-
-        const validBats = matchState.battingSquad.filter(n => n && n.trim() !== '');
-        const validBowls = matchState.bowlingSquad.filter(n => n && n.trim() !== '');
-
-        if (!matchState.striker.name && validBats[0]) matchState.striker.name = validBats[0];
-        if (!matchState.nonStriker.name && validBats[1]) matchState.nonStriker.name = validBats[1];
-        if (!matchState.bowler.name && validBowls[0]) matchState.bowler.name = validBowls[0];
-
-        syncBatterStats(); pushStateToFirebase(); window.toggleView('scoring'); updateDropdowns();
     };
 
     function setupRealtimeListener() {
@@ -575,7 +607,7 @@
 
     function pushStateToFirebase() {
         if (!db) return; matchState.lastUpdateTs = Date.now();
-        if (matchState.bowler.name.trim()) { matchState.bowlerStats[matchState.bowler.name.trim().toUpperCase()] = { runs: matchState.bowler.runs, wickets: matchState.bowler.wickets, balls: matchState.bowler.balls }; }
+        if ((matchState.bowler.name || '').trim()) { matchState.bowlerStats[matchState.bowler.name.trim().toUpperCase()] = { runs: matchState.bowler.runs, wickets: matchState.bowler.wickets, balls: matchState.bowler.balls }; }
         const dbData = {
             homeTeam: matchState.homeTeam, awayTeam: matchState.awayTeam, homeColor: matchState.homeColor, awayColor: matchState.awayColor,
             homeSquad: matchState.homeSquad, awaySquad: matchState.awaySquad,
@@ -601,7 +633,7 @@
     window.toggleFreeHit = () => { saveUndoSnapshot(); matchState.isFreeHit = document.getElementById('in-free-hit').checked; pushStateToFirebase(); updateUI(matchState); };
 
     function syncBatterStats() {
-        if(matchState.striker.name.trim() !== '') {
+        if((matchState.striker.name || '').trim() !== '') {
             if(!matchState.battingStats[matchState.striker.name]) matchState.battingStats[matchState.striker.name] = { runs: 0, balls: 0, status: 'Not Out' };
             matchState.battingStats[matchState.striker.name].runs = matchState.striker.runs;
             matchState.battingStats[matchState.striker.name].balls = matchState.striker.balls;
@@ -609,31 +641,36 @@
     }
 
     window.scoreAction = (type, value = 0) => {
-        if(!matchState.striker.name || !matchState.nonStriker.name || !matchState.bowler.name) { showErrorToast("Select active batters and a bowler first!"); return; }
-        
-        saveUndoSnapshot();
-        if (type === 'dot') {
-            matchState.isFreeHit = false; matchState.striker.balls += 1; matchState.bowler.balls += 1; syncBatterStats();
-            matchState.recentBalls.push({ type: 'dot', value: 0, label: '' }); matchState.currentOverBalls.push({ type: 'dot', value: 0, label: '' }); incrementBall(); 
-        } else if (type === 'runs') {
-            matchState.isFreeHit = false; const oldRuns = matchState.striker.runs; const newRuns = oldRuns + value; let eventFired = false;
-            if (oldRuns < 50 && newRuns >= 50 && newRuns < 100) { window.triggerEvent('milestone', `${matchState.striker.name} - FIFTY!`); eventFired = true; } 
-            else if (oldRuns < 100 && newRuns >= 100) { window.triggerEvent('milestone', `${matchState.striker.name} - CENTURY!`); eventFired = true; }
-            if (!eventFired) { if (value === 4) window.triggerEvent('four', 'FOUR!'); if (value === 6) window.triggerEvent('six', 'SIX!'); }
-            matchState.runs += value; matchState.striker.runs += value; matchState.striker.balls += 1; matchState.bowler.runs += value; matchState.bowler.balls += 1; syncBatterStats();
-            const ballType = value === 4 ? 'four' : value === 6 ? 'six' : 'run';
-            matchState.recentBalls.push({ type: ballType, value, label: value }); matchState.currentOverBalls.push({ type: ballType, value, label: value }); incrementBall(); if (value % 2 === 1) swapStrike();
-        } else if (type === 'wide') {
-            window.triggerEvent('wide', 'WIDE!'); const extraRuns = value - 1; matchState.runs += value; matchState.bowler.runs += value; matchState.totalExtras += value;
-            const label = 'WD' + (value > 1 ? '+' + (value-1) : ''); matchState.recentBalls.push({ type: 'extra', value, label }); matchState.currentOverBalls.push({ type: 'extra', value, label }); if (extraRuns % 2 === 1) swapStrike();
-        } else if (type === 'noball') {
-            window.triggerEvent('noball', 'NO BALL!'); matchState.isFreeHit = true; const extraRuns = value - 1; matchState.runs += value; matchState.bowler.runs += value; matchState.totalExtras += value;
-            const label = 'NB' + (value > 1 ? '+' + (value-1) : ''); matchState.recentBalls.push({ type: 'extra', value, label }); matchState.currentOverBalls.push({ type: 'extra', value, label }); if (extraRuns % 2 === 1) swapStrike();
-        } else if (type === 'bye' || type === 'legbye') {
-            matchState.isFreeHit = false; matchState.runs += value; matchState.striker.balls += 1; matchState.bowler.balls += 1; matchState.totalExtras += value; syncBatterStats();
-            const label = type === 'bye' ? (value + 'B') : (value + 'LB'); matchState.recentBalls.push({ type: 'extra', value, label }); matchState.currentOverBalls.push({ type: 'extra', value, label }); incrementBall(); if (value % 2 === 1) swapStrike();
+        try {
+            if(!matchState.striker.name || !matchState.nonStriker.name || !matchState.bowler.name) { showErrorToast("Select active batters and a bowler first!"); return; }
+            
+            saveUndoSnapshot();
+            if (type === 'dot') {
+                matchState.isFreeHit = false; matchState.striker.balls += 1; matchState.bowler.balls += 1; syncBatterStats();
+                matchState.recentBalls.push({ type: 'dot', value: 0, label: '' }); matchState.currentOverBalls.push({ type: 'dot', value: 0, label: '' }); incrementBall(); 
+            } else if (type === 'runs') {
+                matchState.isFreeHit = false; const oldRuns = matchState.striker.runs; const newRuns = oldRuns + value; let eventFired = false;
+                if (oldRuns < 50 && newRuns >= 50 && newRuns < 100) { window.triggerEvent('milestone', `${matchState.striker.name} - FIFTY!`); eventFired = true; } 
+                else if (oldRuns < 100 && newRuns >= 100) { window.triggerEvent('milestone', `${matchState.striker.name} - CENTURY!`); eventFired = true; }
+                if (!eventFired) { if (value === 4) window.triggerEvent('four', 'FOUR!'); if (value === 6) window.triggerEvent('six', 'SIX!'); }
+                matchState.runs += value; matchState.striker.runs += value; matchState.striker.balls += 1; matchState.bowler.runs += value; matchState.bowler.balls += 1; syncBatterStats();
+                const ballType = value === 4 ? 'four' : value === 6 ? 'six' : 'run';
+                matchState.recentBalls.push({ type: ballType, value, label: value }); matchState.currentOverBalls.push({ type: ballType, value, label: value }); incrementBall(); if (value % 2 === 1) swapStrike();
+            } else if (type === 'wide') {
+                window.triggerEvent('wide', 'WIDE!'); const extraRuns = value - 1; matchState.runs += value; matchState.bowler.runs += value; matchState.totalExtras += value;
+                const label = 'WD' + (value > 1 ? '+' + (value-1) : ''); matchState.recentBalls.push({ type: 'extra', value, label }); matchState.currentOverBalls.push({ type: 'extra', value, label }); if (extraRuns % 2 === 1) swapStrike();
+            } else if (type === 'noball') {
+                window.triggerEvent('noball', 'NO BALL!'); matchState.isFreeHit = true; const extraRuns = value - 1; matchState.runs += value; matchState.bowler.runs += value; matchState.totalExtras += value;
+                const label = 'NB' + (value > 1 ? '+' + (value-1) : ''); matchState.recentBalls.push({ type: 'extra', value, label }); matchState.currentOverBalls.push({ type: 'extra', value, label }); if (extraRuns % 2 === 1) swapStrike();
+            } else if (type === 'bye' || type === 'legbye') {
+                matchState.isFreeHit = false; matchState.runs += value; matchState.striker.balls += 1; matchState.bowler.balls += 1; matchState.totalExtras += value; syncBatterStats();
+                const label = type === 'bye' ? (value + 'B') : (value + 'LB'); matchState.recentBalls.push({ type: 'extra', value, label }); matchState.currentOverBalls.push({ type: 'extra', value, label }); incrementBall(); if (value % 2 === 1) swapStrike();
+            }
+            if (matchState.recentBalls.length > 6) matchState.recentBalls = matchState.recentBalls.slice(-6); updateUI(matchState); pushStateToFirebase();
+        } catch (error) {
+            document.getElementById('dev-error-console').style.display = 'block';
+            document.getElementById('dev-error-text').innerText += `\n\nSCORE ACTION CRASH:\nMsg: ${error.message}\nStack: ${error.stack}`;
         }
-        if (matchState.recentBalls.length > 6) matchState.recentBalls = matchState.recentBalls.slice(-6); updateUI(matchState); pushStateToFirebase();
     };
 
     function incrementBall() { matchState.balls += 1; if (matchState.balls >= 6) { matchState.completedOvers += 1; matchState.balls = 0; matchState.currentOverBalls = []; swapStrike(); if (currentMode === 'control') window.showBowlerModal(); } }
