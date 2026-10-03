@@ -119,10 +119,8 @@
 <div id="overlay-view" class="hidden tv-wrapper">
     <div id="obs-video-container" class="jumbotron-container"><video id="jumbotron-video" playsinline></video></div>
     
-    <!-- SPLIT SCREEN SCORECARD & SPONSOR -->
     <div id="obs-over-break-bg" class="over-break-bg"></div>
     <div id="obs-over-break-container" class="over-break-container">
-        <!-- SCORECARD -->
         <div class="ob-scorecard">
             <div class="ob-header">
                 <img id="ob-scorecard-logo" class="ob-logo hidden"> 
@@ -137,7 +135,6 @@
                <span>TOTAL: <span id="ob-total">0/0</span></span>
             </div>
         </div>
-        <!-- SPONSOR -->
         <div class="ob-sponsor">
             <h1 id="bb-title" class="bb-title">BATBUDDY SPORTS</h1><h3 id="bb-subtitle" class="bb-subtitle">Cricket Gear & Bat Repairs</h3><div class="bb-divider"></div><div id="bb-services" class="bb-services"></div><div id="bb-contact" class="bb-contact">CONNECT WITH US</div>
         </div>
@@ -145,7 +142,6 @@
 
     <div id="obs-event-splash" class="event-splash-container"><div id="obs-event-card" class="splash-card"><h1 id="obs-event-text" class="splash-text">SIX!</h1></div></div>
 
-    <!-- MAIN SCOREBOARD BOTTOM BAR -->
     <div style="position: relative; display: flex; justify-content: center;">
         <div id="obs-free-hit" class="hidden tv-free-hit">FREE HIT</div>
         <div class="tv-main-bar">
@@ -178,9 +174,6 @@
 
     <div class="container-fluid py-3" style="max-width: 1000px;">
         
-        <!-- AUTO-COMPLETE TEAMS LIST -->
-        <datalist id="team-list"></datalist>
-
         <!-- SCREEN 1: PRE-MATCH SETUP -->
         <div id="panel-setup">
             <div class="row g-3 mb-3">
@@ -190,26 +183,38 @@
                             <h2 class="text-uppercase mb-4 text-center" style="font-size: 18px; font-weight: 900; letter-spacing: 2px; color: #333;">Match Configuration</h2>
                             <div class="row g-3">
                                 <div class="col-6 col-md-3">
-                                    <label class="form-label small fw-bold text-muted text-uppercase mb-1">Batting Team</label>
-                                    <div class="d-flex gap-1">
-                                        <input type="color" id="in-bat-color" class="form-control form-control-color p-1" value="#F4D03F" style="width: 38px;" onchange="window.pushMatchSetup()">
-                                        <input type="text" id="in-bat" list="team-list" maxlength="15" class="form-control fw-bold text-center text-uppercase" placeholder="e.g. THUNDERS" oninput="this.value = this.value.toUpperCase();" onchange="window.handleTeamNameChange('batting')">
+                                    <label class="form-label small fw-bold text-muted text-uppercase mb-1">Home Team</label>
+                                    <div class="d-flex gap-2 align-items-center">
+                                        <input type="color" id="in-home-color" class="form-control form-control-color p-1" value="#F4D03F" style="width: 38px;">
+                                        <span class="fw-bold fs-6 text-uppercase" style="letter-spacing: 1px;">THUNDERS</span>
                                     </div>
                                 </div>
                                 <div class="col-6 col-md-3">
-                                    <label class="form-label small fw-bold text-muted text-uppercase mb-1">Bowling Team</label>
+                                    <label class="form-label small fw-bold text-muted text-uppercase mb-1">Away Team</label>
                                     <div class="d-flex gap-1">
-                                        <input type="color" id="in-bowl-color" class="form-control form-control-color p-1" value="#059669" style="width: 38px;" onchange="window.pushMatchSetup()">
-                                        <input type="text" id="in-bowl" list="team-list" maxlength="15" class="form-control fw-bold text-center text-uppercase" placeholder="e.g. LIONS" oninput="this.value = this.value.toUpperCase();" onchange="window.handleTeamNameChange('bowling')">
+                                        <input type="color" id="in-away-color" class="form-control form-control-color p-1" value="#059669" style="width: 38px;">
+                                        <input type="text" id="in-away-team" maxlength="15" class="form-control fw-bold text-center text-uppercase" placeholder="AWAY TEAM" oninput="window.updateTossDropdown()">
                                     </div>
                                 </div>
-                                <div class="col-6 col-md-3"><label class="form-label small fw-bold text-muted text-uppercase mb-1">Toss Won By</label><select id="in-toss-winner" class="form-select fw-bold" onchange="window.pushMatchSetup()"><option value="">Select...</option></select></div>
-                                <div class="col-6 col-md-3"><label class="form-label small fw-bold text-muted text-uppercase mb-1">Decision</label><select id="in-toss-decision" class="form-select fw-bold" onchange="window.pushMatchSetup()"><option value="BAT">Batting</option><option value="BOWL">Bowling</option></select></div>
+                                <div class="col-6 col-md-3">
+                                    <label class="form-label small fw-bold text-muted text-uppercase mb-1">Toss Won By</label>
+                                    <select id="in-toss-winner" class="form-select fw-bold text-uppercase">
+                                        <option value="">Select...</option>
+                                        <option value="THUNDERS">THUNDERS</option>
+                                    </select>
+                                </div>
+                                <div class="col-6 col-md-3">
+                                    <label class="form-label small fw-bold text-muted text-uppercase mb-1">Decision</label>
+                                    <select id="in-toss-decision" class="form-select fw-bold text-uppercase">
+                                        <option value="BAT">Batting</option>
+                                        <option value="BOWL">Bowling</option>
+                                    </select>
+                                </div>
                             </div>
-                            <div class="row g-3 mt-1">
-                                <div class="col-6 col-md-4"><label class="form-label small fw-bold text-muted text-uppercase mb-1">Target (2nd Inn)</label><input type="number" id="in-target" class="form-control fw-bold text-center" onchange="window.pushMatchSetup()"></div>
-                                <div class="col-6 col-md-4"><label class="form-label small fw-bold text-muted text-uppercase mb-1">Total Overs</label><input type="number" id="in-total-overs" class="form-control fw-bold text-center" value="20" onchange="window.pushMatchSetup()"></div>
-                                <div class="col-12 col-md-4"><label class="form-label small fw-bold text-muted text-uppercase mb-1">Innings</label><select id="in-innings" class="form-select fw-bold" onchange="window.pushMatchSetup()"><option value="1">1st Innings</option><option value="2">2nd Innings</option></select></div>
+                            <div class="row g-3 mt-3">
+                                <div class="col-6 col-md-4"><label class="form-label small fw-bold text-muted text-uppercase mb-1">Target (2nd Inn)</label><input type="number" id="in-target" class="form-control fw-bold text-center"></div>
+                                <div class="col-6 col-md-4"><label class="form-label small fw-bold text-muted text-uppercase mb-1">Total Overs</label><input type="number" id="in-total-overs" class="form-control fw-bold text-center" value="20"></div>
+                                <div class="col-12 col-md-4"><label class="form-label small fw-bold text-muted text-uppercase mb-1">Innings</label><select id="in-innings" class="form-select fw-bold"><option value="1">1st Innings</option><option value="2">2nd Innings</option></select></div>
                             </div>
                         </div>
                     </div>
@@ -220,23 +225,23 @@
                 <div class="col-12">
                     <div class="card border-0 shadow-sm rounded-3">
                         <div class="card-body p-4">
-                            <h2 class="text-uppercase mb-2 text-center" style="font-size: 16px; font-weight: 800; letter-spacing: 1px; color: #555;"><i class="bi bi-people-fill text-primary"></i> Team Squads (Auto-Saves)</h2>
-                            <p class="small text-muted mb-4 text-center">Type a team name above to auto-load players, or fill them in below to save them permanently to Firebase.</p>
+                            <h2 class="text-uppercase mb-2 text-center" style="font-size: 16px; font-weight: 800; letter-spacing: 1px; color: #555;"><i class="bi bi-people-fill text-primary"></i> Current Match Squads</h2>
+                            <p class="small text-muted mb-4 text-center">Enter your 12 players for this specific game. This will NOT overwrite or load from past games.</p>
                             <div class="row">
                                 <div class="col-6">
-                                    <h6 id="label-bat-squad" class="fw-bold text-uppercase text-center" style="color: var(--gold);">BATTING SQUAD</h6>
-                                    <div id="bat-squad-inputs" class="d-flex flex-column gap-1"></div>
+                                    <h6 class="fw-bold text-uppercase text-center" style="color: var(--gold);">THUNDERS SQUAD</h6>
+                                    <div id="home-squad-inputs" class="d-flex flex-column gap-1"></div>
                                 </div>
                                 <div class="col-6">
-                                    <h6 id="label-bowl-squad" class="fw-bold text-uppercase text-center" style="color: var(--green);">BOWLING SQUAD</h6>
-                                    <div id="bowl-squad-inputs" class="d-flex flex-column gap-1"></div>
+                                    <h6 id="label-away-squad" class="fw-bold text-uppercase text-center" style="color: var(--green);">AWAY SQUAD</h6>
+                                    <div id="away-squad-inputs" class="d-flex flex-column gap-1"></div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <button onclick="window.startAndResumeMatch()" class="btn btn-success btn-lg w-100 fw-bold shadow py-3 mb-5" style="font-size: 20px; letter-spacing: 2px;">START / RESUME MATCH</button>
+            <button onclick="window.startAndResumeMatch()" class="btn btn-success btn-lg w-100 fw-bold shadow py-3 mb-5" style="font-size: 20px; letter-spacing: 2px;">START MATCH / SYNC DATA</button>
         </div>
 
         <!-- SCREEN 2: LIVE SCORING DASHBOARD -->
@@ -404,21 +409,22 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
-    import { getDatabase, ref, set, get, onValue } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
+    import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
 
     const firebaseConfig = { apiKey: "AIzaSyCo80tL6v0zvoiUN0KfeitImUf5KF5TBXw", authDomain: "thunders-scoreboard-ab3f5.firebaseapp.com", databaseURL: "https://thunders-scoreboard-ab3f5-default-rtdb.asia-southeast1.firebasedatabase.app", projectId: "thunders-scoreboard-ab3f5", storageBucket: "thunders-scoreboard-ab3f5.firebasestorage.app", messagingSenderId: "902061785388", appId: "1:902061785388:web:55ec1301cad2b259aaac89" };
-    const DB_NODE = 'pro_match_data'; const TEAMS_NODE = 'saved_squads';
+    const DB_NODE = 'pro_match_data';
     
-    let db, scoreRef, teamsRef;
+    let db, scoreRef;
     let matchState = {
-        battingTeam: '', bowlingTeam: '', battingTeamLogo: null, bowlingTeamLogo: null, batTeamColor: '#F4D03F', bowlTeamColor: '#059669', 
+        homeTeam: 'THUNDERS', awayTeam: '', homeColor: '#F4D03F', awayColor: '#059669',
+        battingTeam: 'THUNDERS', bowlingTeam: '', battingTeamLogo: null, bowlingTeamLogo: null, batTeamColor: '#F4D03F', bowlTeamColor: '#059669', 
         runs: 0, wickets: 0, completedOvers: 0, balls: 0, totalOvers: 20, target: null, innings: 1, toss: { winner: '', decision: 'BAT' },
+        homeSquad: Array(12).fill(''), awaySquad: Array(12).fill(''),
         battingSquad: Array(12).fill(''), bowlingSquad: Array(12).fill(''),
         striker: { name: '', runs: 0, balls: 0, fours: 0, sixes: 0 }, nonStriker: { name: '', runs: 0, balls: 0, fours: 0, sixes: 0 }, bowler: { name: '', runs: 0, wickets: 0, balls: 0 },
         battingStats: {}, bowlerStats: {}, totalExtras: 0, recentBalls: [], currentOverBalls: [], lastUpdateTs: 0, currentEvent: null, isFreeHit: false, activeVideo: null
     };
 
-    let allSavedTeams = {};
     const AUTO_SPONSORS = [ { title: "BATBUDDY SPORTS", subtitle: "Cricket Gear & Bat Repairs", services: ["Handle Repairs", "Refurbishments", "Custom Stickers", "Gear Sales"], contact: "Based in Wollert | Connect on Social Media" } ];
     let sponsorIndex = 0; let undoStack = []; const MAX_UNDO = 50; let currentMode = 'control'; let lastPlayedEventId = 0; let lastSeenOver = -1; let currentlyPlayingVideo = null;
 
@@ -429,15 +435,11 @@
         setTimeout(() => toast.classList.remove('show'), 3000);
     }
 
-    // THE CRASH FIX: Prevents Firebase from corrupting the squad lists if empty spaces exist.
     function normalizeSquad(sq) {
         let arr = Array(12).fill('');
         if (!sq) return arr;
-        if (Array.isArray(sq)) {
-            for(let i=0; i<12; i++) if(sq[i]) arr[i] = sq[i];
-        } else if (typeof sq === 'object') {
-            Object.keys(sq).forEach(k => { if(sq[k] && k < 12) arr[k] = sq[k]; });
-        }
+        if (Array.isArray(sq)) { for(let i=0; i<12; i++) if(sq[i]) arr[i] = sq[i]; } 
+        else if (typeof sq === 'object') { Object.keys(sq).forEach(k => { if(sq[k] && k < 12) arr[k] = sq[k]; }); }
         return arr;
     }
 
@@ -454,12 +456,12 @@
     };
 
     function buildSquadInputs() {
-        const batDiv = document.getElementById('bat-squad-inputs'); const bowlDiv = document.getElementById('bowl-squad-inputs');
-        if(!batDiv || !bowlDiv) return;
-        batDiv.innerHTML = ''; bowlDiv.innerHTML = '';
+        const homeDiv = document.getElementById('home-squad-inputs'); const awayDiv = document.getElementById('away-squad-inputs');
+        if(!homeDiv || !awayDiv) return;
+        homeDiv.innerHTML = ''; awayDiv.innerHTML = '';
         for(let i=0; i<12; i++) {
-            batDiv.innerHTML += `<input type="text" id="bat-sq-${i}" class="form-control squad-input fw-bold text-uppercase" placeholder="Player ${i+1}" onchange="window.saveSquadsToFirebase()" oninput="this.value = this.value.toUpperCase()">`;
-            bowlDiv.innerHTML += `<input type="text" id="bowl-sq-${i}" class="form-control squad-input fw-bold text-uppercase" placeholder="Player ${i+1}" onchange="window.saveSquadsToFirebase()" oninput="this.value = this.value.toUpperCase()">`;
+            homeDiv.innerHTML += `<input type="text" id="home-sq-${i}" class="form-control squad-input fw-bold text-uppercase" placeholder="Player ${i+1}" oninput="this.value = this.value.toUpperCase()">`;
+            awayDiv.innerHTML += `<input type="text" id="away-sq-${i}" class="form-control squad-input fw-bold text-uppercase" placeholder="Player ${i+1}" oninput="this.value = this.value.toUpperCase()">`;
         }
     }
 
@@ -475,88 +477,60 @@
             const app = initializeApp(firebaseConfig); 
             db = getDatabase(app); 
             scoreRef = ref(db, DB_NODE); 
-            teamsRef = ref(db, TEAMS_NODE); 
             updateSyncStatus(true, "Live"); 
             setupRealtimeListener(); 
-            loadTeamDirectory();
         } catch (error) { updateSyncStatus(false, "Error"); setupLocalFallback(); }
     }
 
-    function loadTeamDirectory() {
-        if(!db) return;
-        onValue(teamsRef, (snapshot) => {
-            const data = snapshot.val();
-            const datalist = document.getElementById('team-list');
-            if(data && datalist) {
-                allSavedTeams = data;
-                datalist.innerHTML = '';
-                Object.keys(data).forEach(tName => {
-                    datalist.innerHTML += `<option value="${tName}">`;
-                });
-            }
-        });
-    }
-
-    window.handleTeamNameChange = async (teamType) => {
-        if(!db) return;
-        const inputId = teamType === 'batting' ? 'in-bat' : 'in-bowl';
-        const teamName = (document.getElementById(inputId).value || '').trim().toUpperCase();
-        if(!teamName) return;
-
-        if (allSavedTeams[teamName] && allSavedTeams[teamName].squad) {
-            const loadedSquad = normalizeSquad(allSavedTeams[teamName].squad);
-            if (teamType === 'batting') {
-                matchState.battingTeam = teamName;
-                matchState.battingSquad = loadedSquad;
-                for(let i=0; i<12; i++) {
-                    const el = document.getElementById(`bat-sq-${i}`);
-                    if(el) el.value = loadedSquad[i] || '';
-                }
-            } else {
-                matchState.bowlingTeam = teamName;
-                matchState.bowlingSquad = loadedSquad;
-                for(let i=0; i<12; i++) {
-                    const el = document.getElementById(`bowl-sq-${i}`);
-                    if(el) el.value = loadedSquad[i] || '';
-                }
-            }
-            updateDropdowns();
-            pushStateToFirebase();
-        } else {
-            if (teamType === 'batting') matchState.battingTeam = teamName;
-            else matchState.bowlingTeam = teamName;
-            pushStateToFirebase();
-        }
+    window.updateTossDropdown = () => {
+        if(currentMode !== 'control') return;
+        const away = (document.getElementById('in-away-team').value || 'AWAY TEAM').toUpperCase();
+        document.getElementById('label-away-squad').innerText = `${away} SQUAD`;
+        const tossSel = document.getElementById('in-toss-winner');
+        const currentVal = tossSel.value;
+        tossSel.innerHTML = `<option value="">Select...</option><option value="THUNDERS">THUNDERS</option><option value="${away}">${away}</option>`;
+        if(currentVal === 'THUNDERS' || currentVal === away) tossSel.value = currentVal;
     };
 
-    window.saveSquadsToFirebase = () => {
-        if(!db) return;
-        const batName = (document.getElementById('in-bat').value || '').trim().toUpperCase();
-        const bowlName = (document.getElementById('in-bowl').value || '').trim().toUpperCase();
-
-        let batHasPlayers = false; let bowlHasPlayers = false;
-
-        for(let i=0; i<12; i++) { 
-            const bVal = (document.getElementById(`bat-sq-${i}`)?.value || '').toUpperCase();
-            const bwVal = (document.getElementById(`bowl-sq-${i}`)?.value || '').toUpperCase();
-            matchState.battingSquad[i] = bVal; matchState.bowlingSquad[i] = bwVal;
-            if (bVal.trim()) batHasPlayers = true; if (bwVal.trim()) bowlHasPlayers = true;
-        }
-
-        if (batName && batHasPlayers) set(ref(db, TEAMS_NODE + '/' + batName), { squad: matchState.battingSquad });
-        if (bowlName && bowlHasPlayers) set(ref(db, TEAMS_NODE + '/' + bowlName), { squad: matchState.bowlingSquad });
-        
-        pushStateToFirebase(); updateDropdowns();
-    };
-
-    // ERROR CHECK 1: Verifies team names before transitioning to the scoring panel.
     window.startAndResumeMatch = () => {
-        const batName = (document.getElementById('in-bat').value || '').trim();
-        const bowlName = (document.getElementById('in-bowl').value || '').trim();
-        if(!batName || !bowlName) { showErrorToast("Please enter names for both teams!"); return; }
-
-        window.saveSquadsToFirebase();
+        const awayName = (document.getElementById('in-away-team').value || '').trim().toUpperCase();
+        if(!awayName) { showErrorToast("Please enter the Away Team name!"); return; }
         
+        matchState.homeTeam = 'THUNDERS';
+        matchState.awayTeam = awayName;
+        matchState.toss.winner = document.getElementById('in-toss-winner').value;
+        matchState.toss.decision = document.getElementById('in-toss-decision').value;
+        
+        if(!matchState.toss.winner) { showErrorToast("Please select who won the toss!"); return; }
+
+        matchState.homeColor = document.getElementById('in-home-color').value;
+        matchState.awayColor = document.getElementById('in-away-color').value;
+
+        // Grab manual squads
+        for(let i=0; i<12; i++) { 
+            matchState.homeSquad[i] = (document.getElementById(`home-sq-${i}`)?.value || '').trim().toUpperCase();
+            matchState.awaySquad[i] = (document.getElementById(`away-sq-${i}`)?.value || '').trim().toUpperCase();
+        }
+
+        // SMART TOSS LOGIC
+        if (matchState.toss.winner === 'THUNDERS') {
+            if (matchState.toss.decision === 'BAT') {
+                matchState.battingTeam = 'THUNDERS'; matchState.battingSquad = [...matchState.homeSquad]; matchState.batTeamColor = matchState.homeColor;
+                matchState.bowlingTeam = awayName; matchState.bowlingSquad = [...matchState.awaySquad]; matchState.bowlTeamColor = matchState.awayColor;
+            } else {
+                matchState.battingTeam = awayName; matchState.battingSquad = [...matchState.awaySquad]; matchState.batTeamColor = matchState.awayColor;
+                matchState.bowlingTeam = 'THUNDERS'; matchState.bowlingSquad = [...matchState.homeSquad]; matchState.bowlTeamColor = matchState.homeColor;
+            }
+        } else {
+            if (matchState.toss.decision === 'BAT') {
+                matchState.battingTeam = awayName; matchState.battingSquad = [...matchState.awaySquad]; matchState.batTeamColor = matchState.awayColor;
+                matchState.bowlingTeam = 'THUNDERS'; matchState.bowlingSquad = [...matchState.homeSquad]; matchState.bowlTeamColor = matchState.homeColor;
+            } else {
+                matchState.battingTeam = 'THUNDERS'; matchState.battingSquad = [...matchState.homeSquad]; matchState.batTeamColor = matchState.homeColor;
+                matchState.bowlingTeam = awayName; matchState.bowlingSquad = [...matchState.awaySquad]; matchState.bowlTeamColor = matchState.awayColor;
+            }
+        }
+
         const validBats = matchState.battingSquad.filter(n => n && n.trim() !== '');
         const validBowls = matchState.bowlingSquad.filter(n => n && n.trim() !== '');
 
@@ -564,7 +538,7 @@
         if (!matchState.nonStriker.name && validBats[1]) matchState.nonStriker.name = validBats[1];
         if (!matchState.bowler.name && validBowls[0]) matchState.bowler.name = validBowls[0];
 
-        syncBatterStats(); pushStateToFirebase(); window.toggleView('scoring');
+        syncBatterStats(); pushStateToFirebase(); window.toggleView('scoring'); updateDropdowns();
     };
 
     function setupRealtimeListener() {
@@ -573,8 +547,13 @@
             const data = snapshot.val();
             if (data) {
                 const oldRuns = matchState.runs; const oldWickets = matchState.wickets;
+                
+                matchState.homeTeam = data.homeTeam || 'THUNDERS'; matchState.awayTeam = data.awayTeam || '';
+                matchState.homeColor = data.homeColor || '#F4D03F'; matchState.awayColor = data.awayColor || '#059669';
+                matchState.homeSquad = normalizeSquad(data.homeSquad); matchState.awaySquad = normalizeSquad(data.awaySquad);
+
                 matchState.runs = data.runs || 0; matchState.wickets = data.wickets || 0; matchState.completedOvers = data.overs || 0; matchState.balls = data.balls || 0;
-                matchState.battingTeam = data.team || ''; matchState.bowlingTeam = data.bowlingTeam || ''; matchState.target = data.target ? parseInt(data.target) : null;
+                matchState.battingTeam = data.battingTeam || ''; matchState.bowlingTeam = data.bowlingTeam || ''; matchState.target = data.target ? parseInt(data.target) : null;
                 matchState.totalOvers = data.totalOvers || 20; matchState.innings = data.innings || 1; matchState.toss = data.toss || { winner: '', decision: 'BAT' };
                 matchState.battingSquad = normalizeSquad(data.battingSquad); matchState.bowlingSquad = normalizeSquad(data.bowlingSquad);
                 matchState.battingTeamLogo = data.battingTeamLogo || null; matchState.bowlingTeamLogo = data.bowlingTeamLogo || null; matchState.batTeamColor = data.batTeamColor || '#F4D03F'; matchState.bowlTeamColor = data.bowlTeamColor || '#059669'; 
@@ -598,8 +577,10 @@
         if (!db) return; matchState.lastUpdateTs = Date.now();
         if (matchState.bowler.name.trim()) { matchState.bowlerStats[matchState.bowler.name.trim().toUpperCase()] = { runs: matchState.bowler.runs, wickets: matchState.bowler.wickets, balls: matchState.bowler.balls }; }
         const dbData = {
+            homeTeam: matchState.homeTeam, awayTeam: matchState.awayTeam, homeColor: matchState.homeColor, awayColor: matchState.awayColor,
+            homeSquad: matchState.homeSquad, awaySquad: matchState.awaySquad,
             runs: matchState.runs, wickets: matchState.wickets, overs: matchState.completedOvers, balls: matchState.balls,
-            team: matchState.battingTeam, bowlingTeam: matchState.bowlingTeam, target: matchState.target || '', totalOvers: matchState.totalOvers, innings: matchState.innings, toss: matchState.toss,
+            battingTeam: matchState.battingTeam, bowlingTeam: matchState.bowlingTeam, target: matchState.target || '', totalOvers: matchState.totalOvers, innings: matchState.innings, toss: matchState.toss,
             battingSquad: matchState.battingSquad, bowlingSquad: matchState.bowlingSquad,
             battingTeamLogo: matchState.battingTeamLogo || null, bowlingTeamLogo: matchState.bowlingTeamLogo || null, batTeamColor: matchState.batTeamColor, bowlTeamColor: matchState.bowlTeamColor,
             b1Name: matchState.striker.name, b1Runs: matchState.striker.runs, b1Balls: matchState.striker.balls, b2Name: matchState.nonStriker.name, b2Runs: matchState.nonStriker.runs, b2Balls: matchState.nonStriker.balls,
@@ -627,7 +608,6 @@
         }
     }
 
-    // ERROR CHECK 2: Verifies active players exist before allowing a score update.
     window.scoreAction = (type, value = 0) => {
         if(!matchState.striker.name || !matchState.nonStriker.name || !matchState.bowler.name) { showErrorToast("Select active batters and a bowler first!"); return; }
         
@@ -661,16 +641,6 @@
     window.swapBatsmen = () => { saveUndoSnapshot(); swapStrike(); updateUI(matchState); pushStateToFirebase(); };
     window.switchBowlerLogic = (newName) => { const nextName = newName.trim().toUpperCase(); if (matchState.bowlerStats[nextName]) { const stats = matchState.bowlerStats[nextName]; matchState.bowler = { name: nextName, runs: stats.runs, wickets: stats.wickets, balls: stats.balls }; } else { matchState.bowler = { name: nextName, runs: 0, wickets: 0, balls: 0 }; } };
     
-    window.pushMatchSetup = () => { 
-        saveUndoSnapshot(); 
-        matchState.battingTeam = (document.getElementById('in-bat').value || '').toUpperCase(); 
-        matchState.bowlingTeam = (document.getElementById('in-bowl').value || '').toUpperCase(); 
-        matchState.batTeamColor = document.getElementById('in-bat-color').value; matchState.bowlTeamColor = document.getElementById('in-bowl-color').value; 
-        matchState.toss.winner = document.getElementById('in-toss-winner').value; matchState.toss.decision = document.getElementById('in-toss-decision').value;
-        const targetVal = document.getElementById('in-target').value; matchState.target = targetVal ? parseInt(targetVal) : null; matchState.totalOvers = parseInt(document.getElementById('in-total-overs').value) || 20; matchState.innings = parseInt(document.getElementById('in-innings').value) || 1; 
-        window.saveSquadsToFirebase();
-    };
-    
     window.pushPlayerNames = () => { 
         saveUndoSnapshot(); 
         matchState.striker.name = (document.getElementById('in-striker-name').value || '').toUpperCase(); 
@@ -689,7 +659,8 @@
         if(currentMode !== 'control') return;
         const tossW = document.getElementById('in-toss-winner'); 
         const currentToss = tossW.value;
-        tossW.innerHTML = `<option value="">Select...</option><option value="${matchState.battingTeam}">${matchState.battingTeam}</option><option value="${matchState.bowlingTeam}">${matchState.bowlingTeam}</option>`; 
+        const away = matchState.awayTeam || 'AWAY TEAM';
+        tossW.innerHTML = `<option value="">Select...</option><option value="THUNDERS">THUNDERS</option><option value="${away}">${away}</option>`; 
         tossW.value = matchState.toss.winner || currentToss;
         
         const batHTML = `<option value="">Select...</option>` + matchState.battingSquad.filter(n=> n && n.trim()).map(n => `<option value="${n.toUpperCase()}">${n.toUpperCase()}</option>`).join('');
@@ -753,23 +724,6 @@
         if(document.getElementById('obs-over-tracker')) document.getElementById('obs-over-tracker').innerHTML = '';
         if(document.getElementById('control-recent-balls')) document.getElementById('control-recent-balls').innerHTML = '<span class="text-muted small">No balls bowled yet</span>';
         updateUI(matchState); pushStateToFirebase(); window.hideResetModal();
-    };
-
-    window.handleLogoUpload = (team) => {
-        const input = team === 'batting' ? document.getElementById('in-bat-logo') : document.getElementById('in-bowl-logo');
-        const file = input.files[0]; if (!file) return;
-        const img = new Image(); const reader = new FileReader();
-        reader.onload = (e) => {
-            img.src = e.target.result;
-            img.onload = () => {
-                const canvas = document.createElement('canvas'); let w = img.width, h = img.height;
-                if (w > h) { if (w > 200) { h = h * 200 / w; w = 200; } } else { if (h > 200) { w = w * 200 / h; h = 200; } }
-                canvas.width = w; canvas.height = h; canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-                saveUndoSnapshot();
-                if (team === 'batting') matchState.battingTeamLogo = canvas.toDataURL('image/png', 0.7); else matchState.bowlingTeamLogo = canvas.toDataURL('image/png', 0.7);
-                updateUI(matchState); pushStateToFirebase();
-            };
-        }; reader.readAsDataURL(file);
     };
 
     function playOverlayEvent(type, message) {
@@ -869,9 +823,8 @@
         }
 
         if (currentMode === 'control') {
-            updateInputIfNotFocused('in-bat', data.battingTeam || ''); 
-            updateInputIfNotFocused('in-bowl', data.bowlingTeam || '');
-            updateInputIfNotFocused('in-bat-color', data.batTeamColor || '#F4D03F'); updateInputIfNotFocused('in-bowl-color', data.bowlTeamColor || '#059669');
+            updateInputIfNotFocused('in-away-team', data.awayTeam || '');
+            updateInputIfNotFocused('in-home-color', data.homeColor || '#F4D03F'); updateInputIfNotFocused('in-away-color', data.awayColor || '#059669');
             updateInputIfNotFocused('in-runs', data.runs); updateInputIfNotFocused('in-wickets', data.wickets);
             updateInputIfNotFocused('in-overs', data.completedOvers); updateInputIfNotFocused('in-balls', data.balls);
             updateInputIfNotFocused('in-target', data.target || ''); updateInputIfNotFocused('in-total-overs', data.totalOvers);
@@ -882,12 +835,12 @@
             document.getElementById('in-free-hit').checked = data.isFreeHit;
             if (data.isFreeHit) { document.getElementById('prev-free-hit').classList.remove('hidden'); } else { document.getElementById('prev-free-hit').classList.add('hidden'); }
 
-            document.getElementById('label-bat-squad').innerText = `${data.battingTeam || 'BATTING'} SQUAD`;
-            document.getElementById('label-bowl-squad').innerText = `${data.bowlingTeam || 'BOWLING'} SQUAD`;
+            document.getElementById('label-away-squad').innerText = `${data.awayTeam || 'AWAY TEAM'} SQUAD`;
+            window.updateTossDropdown();
             
             for(let i=0; i<12; i++) {
-                updateInputIfNotFocused(`bat-sq-${i}`, data.battingSquad[i] || '');
-                updateInputIfNotFocused(`bowl-sq-${i}`, data.bowlingSquad[i] || '');
+                updateInputIfNotFocused(`home-sq-${i}`, data.homeSquad[i] || '');
+                updateInputIfNotFocused(`away-sq-${i}`, data.awaySquad[i] || '');
             }
             updateDropdowns();
 
