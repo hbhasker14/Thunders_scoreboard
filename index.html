@@ -3,12 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Live Cricket Scorer</title>
+    <title>Live Cricket Scorer Pro</title>
 
-    <!-- Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 
     <style>
@@ -30,23 +28,10 @@
         @keyframes pulseFreeHit { 0% { background: #dc2626; box-shadow: 0 -2px 10px rgba(220,38,38,0.2); } 100% { background: #b91c1c; box-shadow: 0 -8px 20px rgba(220,38,38,0.8); } }
         .tv-free-hit { position: absolute; top: -34px; left: 50%; transform: translateX(-50%); color: white; padding: 4px 35px; font-weight: 900; font-size: 20px; border-radius: 8px 8px 0 0; letter-spacing: 3px; border: 2px solid #222; border-bottom: none; z-index: 5; animation: pulseFreeHit 0.8s infinite alternate; text-shadow: 0 2px 4px rgba(0,0,0,0.5); text-transform: uppercase; }
 
-        /* ====================================================
-           MASSIVE OVER-BREAK SPONSOR BILLBOARD 
-           ==================================================== */
-        .billboard-overlay-bg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.6); z-index: 8000; opacity: 0; pointer-events: none; transition: opacity 0.5s ease; }
-        .billboard-overlay-bg.show { opacity: 1; }
+        /* SPONSOR ROTATOR (BETWEEN OVERS) */
+        .tv-auto-sponsor { position: absolute; top: 0; left: 50%; transform: translateX(-50%) translateY(0); color: #000; background: linear-gradient(90deg, #F4D03F, #f59e0b); padding: 6px 50px; font-weight: 900; font-size: 22px; border-radius: 8px 8px 0 0; letter-spacing: 2px; border: 2px solid #222; border-bottom: none; z-index: 4; text-transform: uppercase; opacity: 0; transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); white-space: nowrap; }
+        .tv-auto-sponsor.show { transform: translateX(-50%) translateY(-40px); opacity: 1; }
 
-        .billboard-container { position: fixed; top: 42%; left: 50%; transform: translate(-50%, -50%) scale(0.8); width: 65vw; height: 60vh; background: linear-gradient(135deg, #070707 0%, #111 100%); border: 4px solid #F4D03F; border-radius: 16px; box-shadow: 0 25px 60px rgba(0,0,0,0.9); display: flex; flex-direction: column; justify-content: center; align-items: center; opacity: 0; z-index: 9000; pointer-events: none; transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); text-align: center; padding: 40px; }
-        .billboard-container.show { transform: translate(-50%, -50%) scale(1); opacity: 1; }
-        
-        .bb-title { font-size: 80px; font-weight: 900; color: #F4D03F; text-transform: uppercase; letter-spacing: 4px; margin: 0; text-shadow: 0 4px 10px rgba(0,0,0,0.8); }
-        .bb-subtitle { font-size: 30px; color: #fff; font-weight: 700; margin: 10px 0 35px; letter-spacing: 2px; text-transform: uppercase; color: #86efac; }
-        .bb-divider { width: 180px; height: 4px; background: #444; margin-bottom: 40px; }
-        .bb-services { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; width: 85%; margin-bottom: 40px; }
-        .bb-service-tag { background: #1a1a1a; color: #e5e5e5; font-size: 26px; font-weight: 800; padding: 15px 35px; border-radius: 8px; border: 2px solid #333; text-transform: uppercase; }
-        .bb-contact { font-size: 24px; font-weight: 800; color: #000; letter-spacing: 2px; background: #F4D03F; padding: 15px 50px; border-radius: 50px; text-transform: uppercase; }
-
-        /* SCOREBOARD BARS */
         .tv-main-bar { display: flex; background: #070707; color: #fff; height: 94px; border-radius: 6px; border: 2px solid #222; overflow: hidden; align-items: stretch; width: max-content; z-index: 10; position: relative; }
         .tv-logo-box { padding: 0 16px; background: #000; display: flex; align-items: center; border-right: 2px solid #333; flex: 0 0 auto; width: 94px; justify-content: center; }
         .tv-logo-box-right { padding: 0 16px; background: #000; display: flex; align-items: center; border-left: 2px solid #333; flex: 0 0 auto; width: 94px; justify-content: center; }
@@ -92,43 +77,40 @@
         @keyframes slamIn { 0% { transform: scale(5) rotate(-5deg); opacity: 0; } 15% { transform: scale(1) rotate(-5deg); opacity: 1; } 80% { transform: scale(1.05) rotate(-5deg); opacity: 1; } 100% { transform: scale(0) rotate(-5deg); opacity: 0; } }
         .splash-four .splash-card { border-color: #10b981; } .splash-six .splash-card { border-color: #a855f7; } .splash-wide .splash-card { border-color: #3b82f6; background: #1e3a8a; } .splash-noball .splash-card { border-color: #f43f5e; background: #881337; } .splash-wicket .splash-card { border-color: #ef4444; background: #7f1d1d; } .splash-milestone .splash-card { border-color: #f59e0b; background: #b45309; }
 
-        /* FULL SCREEN VIDEO PLAYER (JUMBOTRON) */
+        /* FULL SCREEN VIDEO PLAYER */
         .jumbotron-container { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #000; z-index: 20000; display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: opacity 0.5s ease; }
         .jumbotron-container.active { opacity: 1; pointer-events: all; }
         #jumbotron-video { width: 100%; height: 100%; object-fit: contain; }
 
+        /* OVER-BREAK BILLBOARD */
+        .billboard-overlay-bg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.6); z-index: 8000; opacity: 0; pointer-events: none; transition: opacity 0.5s ease; }
+        .billboard-overlay-bg.show { opacity: 1; }
+        .billboard-container { position: fixed; top: 42%; left: 50%; transform: translate(-50%, -50%) scale(0.8); width: 65vw; height: 60vh; background: linear-gradient(135deg, #070707 0%, #111 100%); border: 4px solid #F4D03F; border-radius: 16px; box-shadow: 0 25px 60px rgba(0,0,0,0.9); display: flex; flex-direction: column; justify-content: center; align-items: center; opacity: 0; z-index: 9000; pointer-events: none; transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); text-align: center; padding: 40px; }
+        .billboard-container.show { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+        .bb-title { font-size: 80px; font-weight: 900; color: #F4D03F; text-transform: uppercase; letter-spacing: 4px; margin: 0; text-shadow: 0 4px 10px rgba(0,0,0,0.8); }
+        .bb-subtitle { font-size: 30px; color: #fff; font-weight: 700; margin: 10px 0 35px; letter-spacing: 2px; text-transform: uppercase; color: #86efac; }
+        .bb-divider { width: 180px; height: 4px; background: #444; margin-bottom: 40px; }
+        .bb-services { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; width: 85%; margin-bottom: 40px; }
+        .bb-service-tag { background: #1a1a1a; color: #e5e5e5; font-size: 26px; font-weight: 800; padding: 15px 35px; border-radius: 8px; border: 2px solid #333; text-transform: uppercase; }
+        .bb-contact { font-size: 24px; font-weight: 800; color: #000; letter-spacing: 2px; background: #F4D03F; padding: 15px 50px; border-radius: 50px; text-transform: uppercase; }
+
         .score-btn { transition: all 0.12s; user-select: none; } .score-btn:active { transform: scale(0.95); } .modal-backdrop-custom { background: rgba(0,0,0,0.8); backdrop-filter: blur(4px); }
+        .squad-input { font-size: 11px; padding: 4px; }
     </style>
 </head>
 <body>
 
 <!-- ==================== OVERLAY VIEW ==================== -->
 <div id="overlay-view" class="hidden tv-wrapper">
-    
-    <!-- FULL SCREEN BREAK VIDEO -->
-    <div id="obs-video-container" class="jumbotron-container">
-        <video id="jumbotron-video" playsinline></video>
-    </div>
-
-    <!-- MASSIVE OVER-BREAK SPONSOR BILLBOARD -->
+    <div id="obs-video-container" class="jumbotron-container"><video id="jumbotron-video" playsinline></video></div>
     <div id="obs-billboard-bg" class="billboard-overlay-bg"></div>
     <div id="obs-sponsor-billboard" class="billboard-container">
-        <h1 id="bb-title" class="bb-title">SPONSOR NAME</h1>
-        <h3 id="bb-subtitle" class="bb-subtitle">Sponsor Subtitle</h3>
-        <div class="bb-divider"></div>
-        <div id="bb-services" class="bb-services">
-            <!-- Services injected here -->
-        </div>
-        <div id="bb-contact" class="bb-contact">CONTACT INFO</div>
+        <h1 id="bb-title" class="bb-title">SPONSOR NAME</h1><h3 id="bb-subtitle" class="bb-subtitle">Sponsor Subtitle</h3><div class="bb-divider"></div><div id="bb-services" class="bb-services"></div><div id="bb-contact" class="bb-contact">CONTACT INFO</div>
     </div>
-
-    <!-- EVENT SPLASH SCREEN -->
     <div id="obs-event-splash" class="event-splash-container"><div id="obs-event-card" class="splash-card"><h1 id="obs-event-text" class="splash-text">SIX!</h1></div></div>
 
-    <!-- MAIN SCOREBOARD -->
     <div style="position: relative; display: flex; justify-content: center;">
         <div id="obs-free-hit" class="hidden tv-free-hit">FREE HIT</div>
-        
         <div class="tv-main-bar">
             <div id="obs-bat-logo-box" class="tv-logo-box"><img id="obs-bat-logo" class="tv-logo-img hidden"></div>
             <div class="tv-score-box"><div id="obs-bat-team" class="tv-team-name">TEAM</div><div class="tv-score-text"><span id="obs-wickets">0</span>-<span id="obs-score">0</span></div></div>
@@ -138,7 +120,6 @@
             <div id="obs-bowl-logo-box" class="tv-logo-box-right"><img id="obs-bowl-logo" class="tv-logo-img hidden"></div>
         </div>
     </div>
-    
     <div id="obs-equation-ribbon" class="hidden tv-equation"><span id="obs-eq-text"></span></div>
 </div>
 
@@ -151,6 +132,7 @@
                 <div><h1 class="text-white text-uppercase mb-0" style="font-size: 16px; font-weight: 900; letter-spacing: 2px;">Live Scorer</h1><div class="d-flex align-items-center gap-1" style="font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;"><span id="sync-indicator" class="rounded-circle bg-danger animate-pulse" style="width: 8px; height: 8px; display: inline-block;"></span><span id="sync-text" class="text-white-50">Connecting...</span></div></div>
             </div>
             <div class="d-flex gap-2">
+                <button id="btn-back-setup" onclick="window.toggleView('setup')" class="btn btn-primary btn-sm fw-bold hidden" style="background: var(--green); border: none;"><i class="bi bi-gear-fill"></i> <span class="d-none d-sm-inline">Setup</span></button>
                 <button id="undo-btn" onclick="window.undoLastAction()" class="btn btn-warning btn-sm fw-bold d-flex align-items-center gap-1" disabled><i class="bi bi-arrow-counterclockwise"></i> <span class="d-none d-sm-inline">Undo</span></button>
                 <button onclick="window.showResetModal()" class="btn btn-danger btn-sm fw-bold"><i class="bi bi-arrow-repeat"></i> <span class="d-none d-sm-inline">Reset</span></button>
             </div>
@@ -159,141 +141,169 @@
 
     <div class="container-fluid py-3" style="max-width: 1000px;">
         
-        <!-- JUMBOTRON MEDIA CONTROLS -->
-        <div class="row g-3 mb-3">
-            <div class="col-12">
-                <div class="card border-0 shadow-sm rounded-3 bg-dark text-white">
-                    <div class="card-body p-3">
-                        <h2 class="text-uppercase mb-3" style="font-size: 13px; font-weight: 800; letter-spacing: 1px; color: #aaa; border-bottom: 1px solid #333; padding-bottom: 8px;">
-                            <i class="bi bi-film text-info"></i> Media & Breaks
-                        </h2>
-                        <div class="d-flex gap-2 align-items-end">
-                            <div class="flex-grow-1">
-                                <label class="form-label small fw-bold text-uppercase mb-1" style="color: #888;">Select Full-Screen Video Video (must be in GitHub repo)</label>
-                                <select id="in-video-file" class="form-select fw-bold bg-secondary text-white border-0">
-                                    <option value="batbuddy-promo.mp4">BatBuddy Sports Promo</option>
-                                    <option value="drinks.mp4">Drinks Break Reel</option>
-                                    <option value="sponsor2.mp4">Partner Commercial</option>
-                                </select>
+        <!-- SCREEN 1: PRE-MATCH SETUP -->
+        <div id="panel-setup">
+            <!-- MATCH SETUP & TOSS -->
+            <div class="row g-3 mb-3">
+                <div class="col-12">
+                    <div class="card border-0 shadow-sm rounded-3 border-top border-4 border-warning">
+                        <div class="card-body p-4">
+                            <h2 class="text-uppercase mb-4 text-center" style="font-size: 18px; font-weight: 900; letter-spacing: 2px; color: #333;">Match Configuration</h2>
+                            <div class="row g-3">
+                                <div class="col-6 col-md-3"><label class="form-label small fw-bold text-muted text-uppercase mb-1">Batting Team</label><div class="d-flex gap-1"><input type="color" id="in-bat-color" class="form-control form-control-color p-1" value="#F4D03F" style="width: 38px;" onchange="window.pushMatchSetup()"><input type="text" id="in-bat" maxlength="15" class="form-control fw-bold text-center text-uppercase" value="THUNDERS" onchange="window.handleTeamNameChange('batting')" oninput="this.value = this.value.toUpperCase()"></div></div>
+                                <div class="col-6 col-md-3"><label class="form-label small fw-bold text-muted text-uppercase mb-1">Bowling Team</label><div class="d-flex gap-1"><input type="color" id="in-bowl-color" class="form-control form-control-color p-1" value="#059669" style="width: 38px;" onchange="window.pushMatchSetup()"><input type="text" id="in-bowl" maxlength="15" class="form-control fw-bold text-center text-uppercase" value="OPPONENT" onchange="window.handleTeamNameChange('bowling')" oninput="this.value = this.value.toUpperCase()"></div></div>
+                                <div class="col-6 col-md-3"><label class="form-label small fw-bold text-muted text-uppercase mb-1">Toss Won By</label><select id="in-toss-winner" class="form-select fw-bold" onchange="window.pushMatchSetup()"><option value="">Select...</option></select></div>
+                                <div class="col-6 col-md-3"><label class="form-label small fw-bold text-muted text-uppercase mb-1">Decision</label><select id="in-toss-decision" class="form-select fw-bold" onchange="window.pushMatchSetup()"><option value="BAT">Batting</option><option value="BOWL">Bowling</option></select></div>
                             </div>
-                            <button onclick="window.triggerVideoPlay()" class="btn btn-info fw-bold"><i class="bi bi-play-fill"></i> Play to Stream</button>
-                            <button onclick="window.triggerVideoStop()" class="btn btn-outline-light fw-bold"><i class="bi bi-stop-fill"></i> Stop / Resume</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="row g-3 mb-3">
-            <div class="col-12">
-                <div class="card border-0 shadow-sm rounded-3">
-                    <div class="card-body p-3">
-                        <h2 class="text-uppercase mb-3" style="font-size: 13px; font-weight: 800; letter-spacing: 1px; color: #555; border-bottom: 1px solid #eee; padding-bottom: 8px;"><i class="bi bi-gear-fill text-warning"></i> Match Setup</h2>
-                        <div class="row g-3">
-                            <div class="col-6 col-md-3"><label class="form-label small fw-bold text-muted text-uppercase mb-1">Batting Team</label><div class="d-flex gap-1"><input type="color" id="in-bat-color" class="form-control form-control-color p-1" value="#F4D03F" style="width: 38px;" onchange="window.pushMatchSetup()"><input type="text" id="in-bat" maxlength="15" class="form-control fw-bold text-center text-uppercase" value="THUNDERS" onchange="window.pushMatchSetup()" oninput="this.value = this.value.toUpperCase()"></div></div>
-                            <div class="col-6 col-md-3"><label class="form-label small fw-bold text-muted text-uppercase mb-1">Bowling Team</label><div class="d-flex gap-1"><input type="color" id="in-bowl-color" class="form-control form-control-color p-1" value="#059669" style="width: 38px;" onchange="window.pushMatchSetup()"><input type="text" id="in-bowl" maxlength="15" class="form-control fw-bold text-center text-uppercase" value="OPPONENT" onchange="window.pushMatchSetup()" oninput="this.value = this.value.toUpperCase()"></div></div>
-                            <div class="col-6 col-md-3"><label class="form-label small fw-bold text-muted text-uppercase mb-1">Batting Logo</label><input type="file" id="in-bat-logo" accept="image/*" class="form-control form-control-sm" onchange="window.handleLogoUpload('batting')"></div>
-                            <div class="col-6 col-md-3"><label class="form-label small fw-bold text-muted text-uppercase mb-1">Bowling Logo</label><input type="file" id="in-bowl-logo" accept="image/*" class="form-control form-control-sm" onchange="window.handleLogoUpload('bowling')"></div>
-                        </div>
-                        <div class="row g-3 mt-1">
-                            <div class="col-6 col-md-4"><label class="form-label small fw-bold text-muted text-uppercase mb-1">Target (2nd Innings)</label><input type="number" id="in-target" class="form-control fw-bold text-center" placeholder="e.g. 152" onchange="window.pushMatchSetup()"></div>
-                            <div class="col-6 col-md-4"><label class="form-label small fw-bold text-muted text-uppercase mb-1">Total Overs</label><input type="number" id="in-total-overs" class="form-control fw-bold text-center" value="20" onchange="window.pushMatchSetup()"></div>
-                            <div class="col-12 col-md-4"><label class="form-label small fw-bold text-muted text-uppercase mb-1">Innings</label><select id="in-innings" class="form-select fw-bold" onchange="window.pushMatchSetup()"><option value="1">1st Innings</option><option value="2">2nd Innings</option></select></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="row g-3 mb-3">
-            <div class="col-12 col-lg-5">
-                <div class="card border-0 shadow-sm rounded-3 h-100">
-                    <div class="card-header bg-light d-flex justify-content-between align-items-center py-2" style="font-size: 11px; font-weight: 700; text-transform: uppercase; color: #777;"><span><i class="bi bi-tv"></i> Broadcast Preview</span><span class="text-danger"><i class="bi bi-circle-fill" style="font-size: 8px;"></i> Live</span></div>
-                    <div class="card-body p-3 d-flex justify-content-center align-items-center position-relative" style="background: #1a1a2e; min-height: 160px;">
-                        <div id="prev-free-hit" class="hidden position-absolute text-white fw-bold bg-danger rounded-top" style="top: 40px; font-size: 10px; padding: 2px 10px; letter-spacing: 1px;">FREE HIT</div>
-                        <div class="rounded-3 overflow-hidden" style="border: 1px solid #333; max-width: 100%; position: relative; z-index: 2; margin-top: 10px;">
-                            <div class="d-flex align-items-center">
-                                <div class="d-flex align-items-center gap-1 px-2 py-1" style="background: var(--navy);"><img id="prev-bat-logo" src="" class="logo-img hidden" style="width: 24px; height: 24px;"><span id="prev-bat" class="text-white" style="font-weight: 900; font-size: 14px;">THUN</span></div>
-                                <div class="px-2 py-1 d-flex align-items-baseline gap-1" style="background: #000; color: #fff;"><span id="prev-wickets" style="font-weight: 900; font-size: 22px;">0</span><span style="font-weight: 700; opacity: 0.5;">-</span><span id="prev-score" style="font-weight: 900; font-size: 16px;">0</span></div>
-                                <div class="px-2 py-1 text-white" style="background: #222;"><span id="prev-overs" style="font-weight: 900; font-size: 14px;">0.0</span></div>
+                            <div class="row g-3 mt-1">
+                                <div class="col-6 col-md-4"><label class="form-label small fw-bold text-muted text-uppercase mb-1">Target (2nd Inn)</label><input type="number" id="in-target" class="form-control fw-bold text-center" onchange="window.pushMatchSetup()"></div>
+                                <div class="col-6 col-md-4"><label class="form-label small fw-bold text-muted text-uppercase mb-1">Total Overs</label><input type="number" id="in-total-overs" class="form-control fw-bold text-center" value="20" onchange="window.pushMatchSetup()"></div>
+                                <div class="col-12 col-md-4"><label class="form-label small fw-bold text-muted text-uppercase mb-1">Innings</label><select id="in-innings" class="form-select fw-bold" onchange="window.pushMatchSetup()"><option value="1">1st Innings</option><option value="2">2nd Innings</option></select></div>
                             </div>
-                            <div class="px-2 py-1 d-flex justify-content-between align-items-center" style="background: #111; font-size: 10px;"><span class="text-warning fw-bold" id="prev-striker">*Batsman 0(0)</span><span class="text-white-50" id="prev-bowler">Bowler 0-0</span></div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-12 col-lg-7">
-                <div class="card border-0 shadow-sm rounded-3 h-100">
-                    <div class="card-body p-3">
-                        <h2 class="text-uppercase mb-3" style="font-size: 13px; font-weight: 800; letter-spacing: 1px; color: #555; border-bottom: 1px solid #eee; padding-bottom: 8px;"><i class="bi bi-people-fill text-primary"></i> Players</h2>
-                        <div class="row g-2">
-                            <div class="col-12"><div class="d-flex align-items-center gap-2 p-2 rounded" style="background: rgba(244,208,63,0.1); border-left: 3px solid var(--gold);"><i class="bi bi-star-fill text-warning"></i><input type="text" id="in-striker-name" class="form-control form-control-sm fw-bold" placeholder="Striker name" style="max-width: 200px;" onchange="window.pushPlayerNames()"><div class="d-flex gap-1 flex-wrap ms-auto"><span class="badge bg-light text-dark">R: <span id="in-striker-runs">0</span></span><span class="badge bg-light text-dark">B: <span id="in-striker-balls">0</span></span></div></div></div>
-                            <div class="col-12"><div class="d-flex align-items-center gap-2 p-2 rounded" style="background: #f8f9fa; border-left: 3px solid #ccc;"><i class="bi bi-person text-muted"></i><input type="text" id="in-nonstriker-name" class="form-control form-control-sm fw-bold" placeholder="Non-striker name" style="max-width: 200px;" onchange="window.pushPlayerNames()"><div class="d-flex gap-1 flex-wrap ms-auto"><span class="badge bg-light text-dark">R: <span id="in-nonstriker-runs">0</span></span><span class="badge bg-light text-dark">B: <span id="in-nonstriker-balls">0</span></span></div></div></div>
-                            <div class="col-12"><div class="d-flex align-items-center gap-2 p-2 rounded" style="background: rgba(230,57,70,0.08); border-left: 3px solid var(--crimson);"><i class="bi bi-circle-fill text-danger" style="font-size: 10px;"></i><input type="text" id="in-bowler-name" class="form-control form-control-sm fw-bold" placeholder="Bowler name" style="max-width: 180px;" onchange="window.pushPlayerNames()"><button onclick="window.newBowler()" class="btn btn-outline-danger btn-sm fw-bold" style="font-size: 11px;"><i class="bi bi-person-plus"></i> New Bowler</button><div class="d-flex gap-1 flex-wrap ms-auto"><span class="badge bg-light text-dark">O: <span id="in-bowler-overs">0.0</span></span><span class="badge bg-danger text-white">W: <span id="in-bowler-wickets">0</span></span><span class="badge bg-light text-dark">R: <span id="in-bowler-runs">0</span></span></div></div></div>
+
+            <!-- SQUAD BUILDER -->
+            <div class="row g-3 mb-3">
+                <div class="col-12">
+                    <div class="card border-0 shadow-sm rounded-3">
+                        <div class="card-body p-4">
+                            <h2 class="text-uppercase mb-2 text-center" style="font-size: 16px; font-weight: 800; letter-spacing: 1px; color: #555;"><i class="bi bi-people-fill text-primary"></i> Team Squads (Auto-Saves)</h2>
+                            <p class="small text-muted mb-4 text-center">Type a known team name above to auto-load their squad, or enter new players below to save them to the database.</p>
+                            <div class="row">
+                                <div class="col-6">
+                                    <h6 id="label-bat-squad" class="fw-bold text-uppercase text-center" style="color: var(--gold);">THUNDERS Squad</h6>
+                                    <div id="bat-squad-inputs" class="d-flex flex-column gap-1"></div>
+                                </div>
+                                <div class="col-6">
+                                    <h6 id="label-bowl-squad" class="fw-bold text-uppercase text-center" style="color: var(--green);">OPPONENT Squad</h6>
+                                    <div id="bowl-squad-inputs" class="d-flex flex-column gap-1"></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+            
+            <button onclick="window.toggleView('scoring')" class="btn btn-success btn-lg w-100 fw-bold shadow py-3 mb-5" style="font-size: 20px; letter-spacing: 2px;">START / RESUME MATCH</button>
         </div>
 
-        <div class="row g-3">
-            <div class="col-12">
-                <div class="card border-0 shadow-sm rounded-3">
-                    <div class="card-body p-3 p-md-4">
-                        <h2 class="text-uppercase mb-3 d-flex justify-content-between align-items-center" style="font-size: 13px; font-weight: 800; letter-spacing: 1px; color: #555; border-bottom: 1px solid #eee; padding-bottom: 8px;">
-                            <span class="d-flex align-items-center"><i class="bi bi-controller text-success me-2"></i> Scoring Pad</span>
-                            <div class="d-flex align-items-center ms-auto form-check form-switch mb-0"><input class="form-check-input" type="checkbox" id="in-free-hit" onchange="window.toggleFreeHit()" style="width: 36px; height: 18px;"><label class="form-check-label fw-bold text-danger ms-2" style="font-size: 11px; margin-top: 2px;">FREE HIT</label></div>
-                        </h2>
-                        
-                        <div class="row g-2 mb-2 mt-2">
-                            <div class="col-3"><button onclick="window.scoreAction('dot')" class="score-btn btn w-100 fw-bold text-secondary border" style="background:#f1f5f9; font-size: 18px; padding: 20px 0;">DOT</button></div>
-                            <div class="col-3"><button onclick="window.scoreAction('runs', 1)" class="score-btn btn w-100 fw-bold" style="background:#eff6ff; color:#1d4ed8; border:2px solid #93c5fd; font-size: 24px; padding: 18px 0;">1</button></div>
-                            <div class="col-3"><button onclick="window.scoreAction('runs', 2)" class="score-btn btn w-100 fw-bold" style="background:#eff6ff; color:#1d4ed8; border:2px solid #93c5fd; font-size: 24px; padding: 18px 0;">2</button></div>
-                            <div class="col-3"><button onclick="window.scoreAction('runs', 3)" class="score-btn btn w-100 fw-bold" style="background:#eff6ff; color:#1d4ed8; border:2px solid #93c5fd; font-size: 24px; padding: 18px 0;">3</button></div>
-                        </div>
-                        <div class="row g-2 mb-2">
-                            <div class="col-6"><button onclick="window.scoreAction('runs', 4)" class="score-btn btn w-100 fw-bold text-white" style="background:#10b981; font-size: 28px; padding: 24px 0;">FOUR</button></div>
-                            <div class="col-6"><button onclick="window.scoreAction('runs', 6)" class="score-btn btn w-100 fw-bold text-white" style="background:#8b5cf6; font-size: 28px; padding: 24px 0;">SIX!</button></div>
-                        </div>
-                        <div class="row g-2 mb-2">
-                            <div class="col-6 col-md-3"><button onclick="window.showExtraModal('wide')" class="score-btn btn w-100 fw-bold" style="background:#fff7ed; color:#9a3412; border:1px solid #fdba74; padding: 14px 0;">WIDE</button></div>
-                            <div class="col-6 col-md-3"><button onclick="window.showExtraModal('noball')" class="score-btn btn w-100 fw-bold" style="background:#fff7ed; color:#9a3412; border:1px solid #fdba74; padding: 14px 0;">NO BALL</button></div>
-                            <div class="col-6 col-md-3"><button onclick="window.scoreAction('bye', 1)" class="score-btn btn w-100 fw-bold" style="background:#f0fdf4; color:#166534; border:1px solid #86efac; padding: 14px 0;">BYE +1</button></div>
-                            <div class="col-6 col-md-3"><button onclick="window.scoreAction('legbye', 1)" class="score-btn btn w-100 fw-bold" style="background:#f0fdf4; color:#166534; border:1px solid #86efac; padding: 14px 0;">LEG BYE +1</button></div>
-                        </div>
-                        <div class="row g-2">
-                            <div class="col-8"><button onclick="window.scoreAction('wicket')" class="score-btn btn w-100 fw-bold text-white text-uppercase" style="background: var(--crimson); font-size: 22px; padding: 20px 0;"><i class="bi bi-x-circle"></i> WICKET</button></div>
-                            <div class="col-4"><button onclick="window.swapBatsmen()" class="score-btn btn w-100 fw-bold" style="background:#e2e8f0; color:#334155; font-size: 14px; padding: 20px 0;"><i class="bi bi-arrow-left-right"></i> SWAP</button></div>
+        <!-- SCREEN 2: LIVE SCORING DASHBOARD -->
+        <div id="panel-scoring" class="hidden">
+            
+            <div class="row g-3 mb-3">
+                <div class="col-12">
+                    <div class="card border-0 shadow-sm rounded-3 bg-dark text-white">
+                        <div class="card-body p-3">
+                            <h2 class="text-uppercase mb-3" style="font-size: 13px; font-weight: 800; letter-spacing: 1px; color: #aaa; border-bottom: 1px solid #333; padding-bottom: 8px;"><i class="bi bi-film text-info"></i> Media & Breaks</h2>
+                            <div class="d-flex gap-2 align-items-end">
+                                <div class="flex-grow-1">
+                                    <label class="form-label small fw-bold text-uppercase mb-1" style="color: #888;">Select Full-Screen Video (must be in GitHub repo)</label>
+                                    <select id="in-video-file" class="form-select fw-bold bg-secondary text-white border-0">
+                                        <option value="batbuddy-promo.mp4">BatBuddy Sports Promo</option>
+                                        <option value="drinks.mp4">Drinks Break Reel</option>
+                                    </select>
+                                </div>
+                                <button onclick="window.triggerVideoPlay()" class="btn btn-info fw-bold"><i class="bi bi-play-fill"></i> Play</button>
+                                <button onclick="window.triggerVideoStop()" class="btn btn-outline-light fw-bold"><i class="bi bi-stop-fill"></i> Stop</button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="row g-3 mt-1">
-            <div class="col-12 col-lg-6">
-                <div class="card border-0 shadow-sm rounded-3">
-                    <div class="card-body p-3">
-                        <h3 class="text-uppercase mb-2" style="font-size: 12px; font-weight: 800; color: #555;"><i class="bi bi-clock-history"></i> This Over</h3>
-                        <div id="control-recent-balls" class="d-flex flex-wrap gap-1 align-items-center" style="min-height: 36px; background: #222; padding: 8px; border-radius: 6px;"></div>
+            <div class="row g-3 mb-3">
+                <div class="col-12 col-lg-5">
+                    <div class="card border-0 shadow-sm rounded-3 h-100">
+                        <div class="card-header bg-light d-flex justify-content-between align-items-center py-2" style="font-size: 11px; font-weight: 700; text-transform: uppercase; color: #777;"><span><i class="bi bi-tv"></i> Broadcast Preview</span><span class="text-danger"><i class="bi bi-circle-fill" style="font-size: 8px;"></i> Live</span></div>
+                        <div class="card-body p-3 d-flex justify-content-center align-items-center position-relative" style="background: #1a1a2e; min-height: 160px;">
+                            <div id="prev-free-hit" class="hidden position-absolute text-white fw-bold bg-danger rounded-top" style="top: 40px; font-size: 10px; padding: 2px 10px; letter-spacing: 1px;">FREE HIT</div>
+                            <div class="rounded-3 overflow-hidden" style="border: 1px solid #333; max-width: 100%; position: relative; z-index: 2; margin-top: 10px;">
+                                <div class="d-flex align-items-center">
+                                    <div class="d-flex align-items-center gap-1 px-2 py-1" style="background: var(--navy);"><img id="prev-bat-logo" src="" class="logo-img hidden" style="width: 24px; height: 24px;"><span id="prev-bat" class="text-white" style="font-weight: 900; font-size: 14px;">THUN</span></div>
+                                    <div class="px-2 py-1 d-flex align-items-baseline gap-1" style="background: #000; color: #fff;"><span id="prev-wickets" style="font-weight: 900; font-size: 22px;">0</span><span style="font-weight: 700; opacity: 0.5;">-</span><span id="prev-score" style="font-weight: 900; font-size: 16px;">0</span></div>
+                                    <div class="px-2 py-1 text-white" style="background: #222;"><span id="prev-overs" style="font-weight: 900; font-size: 14px;">0.0</span></div>
+                                </div>
+                                <div class="px-2 py-1 d-flex justify-content-between align-items-center" style="background: #111; font-size: 10px;"><span class="text-warning fw-bold" id="prev-striker">*Batsman 0(0)</span><span class="text-white-50" id="prev-bowler">Bowler 0-0</span></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-12 col-lg-6">
-                <div class="card border-0 shadow-sm rounded-3">
-                    <div class="card-body p-3">
-                        <h3 class="text-uppercase mb-2" style="font-size: 12px; font-weight: 800; color: #555;"><i class="bi bi-pencil-square text-danger"></i> Manual Override</h3>
-                        <div class="row g-2">
-                            <div class="col-3"><label class="form-label small text-muted mb-0">Runs</label><input type="number" id="in-runs" class="form-control form-control-sm fw-bold text-center" onchange="window.pushManualOverride()"></div>
-                            <div class="col-3"><label class="form-label small text-muted mb-0">Wickets</label><input type="number" id="in-wickets" class="form-control form-control-sm fw-bold text-center" onchange="window.pushManualOverride()"></div>
-                            <div class="col-3"><label class="form-label small text-muted mb-0">Overs</label><input type="number" id="in-overs" class="form-control form-control-sm fw-bold text-center" onchange="window.pushManualOverride()"></div>
-                            <div class="col-3"><label class="form-label small text-muted mb-0">Balls</label><input type="number" id="in-balls" class="form-control form-control-sm fw-bold text-center" min="0" max="5" onchange="window.pushManualOverride()"></div>
+                <div class="col-12 col-lg-7">
+                    <div class="card border-0 shadow-sm rounded-3 h-100">
+                        <div class="card-body p-3">
+                            <h2 class="text-uppercase mb-3" style="font-size: 13px; font-weight: 800; letter-spacing: 1px; color: #555; border-bottom: 1px solid #eee; padding-bottom: 8px;"><i class="bi bi-people-fill text-primary"></i> Active Players</h2>
+                            <div class="row g-2">
+                                <div class="col-12"><div class="d-flex align-items-center gap-2 p-2 rounded" style="background: rgba(244,208,63,0.1); border-left: 3px solid var(--gold);"><i class="bi bi-star-fill text-warning"></i><select id="in-striker-name" class="form-select form-select-sm fw-bold" style="max-width: 200px;" onchange="window.pushPlayerNames()"><option value="">Select Striker...</option></select><div class="d-flex gap-1 flex-wrap ms-auto"><span class="badge bg-light text-dark">R: <span id="in-striker-runs">0</span></span><span class="badge bg-light text-dark">B: <span id="in-striker-balls">0</span></span></div></div></div>
+                                <div class="col-12"><div class="d-flex align-items-center gap-2 p-2 rounded" style="background: #f8f9fa; border-left: 3px solid #ccc;"><i class="bi bi-person text-muted"></i><select id="in-nonstriker-name" class="form-select form-select-sm fw-bold" style="max-width: 200px;" onchange="window.pushPlayerNames()"><option value="">Select Non-Striker...</option></select><div class="d-flex gap-1 flex-wrap ms-auto"><span class="badge bg-light text-dark">R: <span id="in-nonstriker-runs">0</span></span><span class="badge bg-light text-dark">B: <span id="in-nonstriker-balls">0</span></span></div></div></div>
+                                <div class="col-12"><div class="d-flex align-items-center gap-2 p-2 rounded" style="background: rgba(230,57,70,0.08); border-left: 3px solid var(--crimson);"><i class="bi bi-circle-fill text-danger" style="font-size: 10px;"></i><select id="in-bowler-name" class="form-select form-select-sm fw-bold" style="max-width: 180px;" onchange="window.pushPlayerNames()"><option value="">Select Bowler...</option></select><button onclick="window.newBowler()" class="btn btn-outline-danger btn-sm fw-bold ms-2" style="font-size: 11px;"><i class="bi bi-person-plus"></i> New Over</button><div class="d-flex gap-1 flex-wrap ms-auto"><span class="badge bg-light text-dark">O: <span id="in-bowler-overs">0.0</span></span><span class="badge bg-danger text-white">W: <span id="in-bowler-wickets">0</span></span><span class="badge bg-light text-dark">R: <span id="in-bowler-runs">0</span></span></div></div></div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <div class="row g-3">
+                <div class="col-12">
+                    <div class="card border-0 shadow-sm rounded-3">
+                        <div class="card-body p-3 p-md-4">
+                            <h2 class="text-uppercase mb-3 d-flex justify-content-between align-items-center" style="font-size: 13px; font-weight: 800; letter-spacing: 1px; color: #555; border-bottom: 1px solid #eee; padding-bottom: 8px;">
+                                <span class="d-flex align-items-center"><i class="bi bi-controller text-success me-2"></i> Scoring Pad</span>
+                                <div class="d-flex align-items-center ms-auto form-check form-switch mb-0"><input class="form-check-input" type="checkbox" id="in-free-hit" onchange="window.toggleFreeHit()" style="width: 36px; height: 18px;"><label class="form-check-label fw-bold text-danger ms-2" style="font-size: 11px; margin-top: 2px;">FREE HIT</label></div>
+                            </h2>
+                            
+                            <div class="row g-2 mb-2 mt-2">
+                                <div class="col-3"><button onclick="window.scoreAction('dot')" class="score-btn btn w-100 fw-bold text-secondary border" style="background:#f1f5f9; font-size: 18px; padding: 20px 0;">DOT</button></div>
+                                <div class="col-3"><button onclick="window.scoreAction('runs', 1)" class="score-btn btn w-100 fw-bold" style="background:#eff6ff; color:#1d4ed8; border:2px solid #93c5fd; font-size: 24px; padding: 18px 0;">1</button></div>
+                                <div class="col-3"><button onclick="window.scoreAction('runs', 2)" class="score-btn btn w-100 fw-bold" style="background:#eff6ff; color:#1d4ed8; border:2px solid #93c5fd; font-size: 24px; padding: 18px 0;">2</button></div>
+                                <div class="col-3"><button onclick="window.scoreAction('runs', 3)" class="score-btn btn w-100 fw-bold" style="background:#eff6ff; color:#1d4ed8; border:2px solid #93c5fd; font-size: 24px; padding: 18px 0;">3</button></div>
+                            </div>
+                            <div class="row g-2 mb-2">
+                                <div class="col-6"><button onclick="window.scoreAction('runs', 4)" class="score-btn btn w-100 fw-bold text-white" style="background:#10b981; font-size: 28px; padding: 24px 0;">FOUR</button></div>
+                                <div class="col-6"><button onclick="window.scoreAction('runs', 6)" class="score-btn btn w-100 fw-bold text-white" style="background:#8b5cf6; font-size: 28px; padding: 24px 0;">SIX!</button></div>
+                            </div>
+                            <div class="row g-2 mb-2">
+                                <div class="col-6 col-md-3"><button onclick="window.showExtraModal('wide')" class="score-btn btn w-100 fw-bold" style="background:#fff7ed; color:#9a3412; border:1px solid #fdba74; padding: 14px 0;">WIDE</button></div>
+                                <div class="col-6 col-md-3"><button onclick="window.showExtraModal('noball')" class="score-btn btn w-100 fw-bold" style="background:#fff7ed; color:#9a3412; border:1px solid #fdba74; padding: 14px 0;">NO BALL</button></div>
+                                <div class="col-6 col-md-3"><button onclick="window.showExtraModal('bye')" class="score-btn btn w-100 fw-bold" style="background:#f0fdf4; color:#166534; border:1px solid #86efac; padding: 14px 0;">BYES</button></div>
+                                <div class="col-6 col-md-3"><button onclick="window.showExtraModal('legbye')" class="score-btn btn w-100 fw-bold" style="background:#f0fdf4; color:#166534; border:1px solid #86efac; padding: 14px 0;">LEG BYES</button></div>
+                            </div>
+                            <div class="row g-2">
+                                <div class="col-8"><button onclick="window.showBatsmanModal()" class="score-btn btn w-100 fw-bold text-white text-uppercase" style="background: var(--crimson); font-size: 22px; padding: 20px 0;"><i class="bi bi-x-circle"></i> WICKET</button></div>
+                                <div class="col-4"><button onclick="window.swapBatsmen()" class="score-btn btn w-100 fw-bold" style="background:#e2e8f0; color:#334155; font-size: 14px; padding: 20px 0;"><i class="bi bi-arrow-left-right"></i> SWAP</button></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-3 mt-1">
+                <div class="col-12 col-lg-6">
+                    <div class="card border-0 shadow-sm rounded-3">
+                        <div class="card-body p-3">
+                            <h3 class="text-uppercase mb-2" style="font-size: 12px; font-weight: 800; color: #555;"><i class="bi bi-clock-history"></i> This Over</h3>
+                            <div id="control-recent-balls" class="d-flex flex-wrap gap-1 align-items-center" style="min-height: 36px; background: #222; padding: 8px; border-radius: 6px;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6">
+                    <div class="card border-0 shadow-sm rounded-3">
+                        <div class="card-body p-3">
+                            <h3 class="text-uppercase mb-2" style="font-size: 12px; font-weight: 800; color: #555;"><i class="bi bi-pencil-square text-danger"></i> Manual Override</h3>
+                            <div class="row g-2">
+                                <div class="col-3"><label class="form-label small text-muted mb-0">Runs</label><input type="number" id="in-runs" class="form-control form-control-sm fw-bold text-center" onchange="window.pushManualOverride()"></div>
+                                <div class="col-3"><label class="form-label small text-muted mb-0">Wickets</label><input type="number" id="in-wickets" class="form-control form-control-sm fw-bold text-center" onchange="window.pushManualOverride()"></div>
+                                <div class="col-3"><label class="form-label small text-muted mb-0">Overs</label><input type="number" id="in-overs" class="form-control form-control-sm fw-bold text-center" onchange="window.pushManualOverride()"></div>
+                                <div class="col-3"><label class="form-label small text-muted mb-0">Balls</label><input type="number" id="in-balls" class="form-control form-control-sm fw-bold text-center" min="0" max="5" onchange="window.pushManualOverride()"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="height: 40px;"></div>
         </div>
-        <div style="height: 40px;"></div>
     </div>
 </div>
 
@@ -301,23 +311,37 @@
 <div id="bowler-modal" class="modal-backdrop-custom hidden position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center" style="z-index: 9999;">
     <div class="bg-white rounded-3 shadow p-4" style="max-width: 400px; width: 90%;">
         <h2 class="mb-1 text-uppercase d-flex align-items-center gap-2" style="font-size: 18px; font-weight: 900; color: var(--crimson);"><i class="bi bi-arrow-repeat"></i> Over Complete</h2>
-        <p class="text-muted small mb-3">Enter the next bowler's name:</p>
-        <input type="text" id="modal-bowler-name" class="form-control form-control-lg fw-bold mb-3" placeholder="e.g. Starc" autofocus>
+        <p class="text-muted small mb-3">Select the next bowler:</p>
+        <select id="modal-bowler-name" class="form-select form-select-lg fw-bold mb-3"></select>
         <div class="d-flex gap-2"><button onclick="window.hideBowlerModal()" class="btn btn-secondary flex-fill fw-bold">Skip</button><button onclick="window.confirmNewBowler()" class="btn btn-primary flex-fill fw-bold">Set Bowler</button></div>
     </div>
 </div>
+
+<!-- SMART WICKET MODAL -->
 <div id="batsman-modal" class="modal-backdrop-custom hidden position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center" style="z-index: 9999;">
     <div class="bg-white rounded-3 shadow p-4" style="max-width: 400px; width: 90%;">
-        <h2 class="mb-1 text-uppercase d-flex align-items-center gap-2" style="font-size: 18px; font-weight: 900; color: var(--crimson);"><i class="bi bi-x-circle"></i> Wicket!</h2>
-        <p class="text-muted small mb-3">Enter the new batsman's name:</p>
-        <input type="text" id="modal-batsman-name" class="form-control form-control-lg fw-bold mb-3" placeholder="e.g. Smith" autofocus>
-        <div class="d-flex gap-2"><button onclick="window.hideBatsmanModal()" class="btn btn-secondary flex-fill fw-bold">Skip</button><button onclick="window.confirmNewBatsman()" class="btn btn-success flex-fill fw-bold">Add Batsman</button></div>
+        <h2 class="mb-2 text-uppercase d-flex align-items-center gap-2" style="font-size: 20px; font-weight: 900; color: var(--crimson);"><i class="bi bi-x-circle"></i> Wicket!</h2>
+        
+        <label class="form-label small fw-bold text-muted text-uppercase mb-1">Dismissal Type</label>
+        <select id="modal-wicket-type" class="form-select fw-bold mb-2">
+            <option value="Bowled">Bowled</option><option value="Caught">Caught</option><option value="Run Out">Run Out</option>
+            <option value="LBW">LBW</option><option value="Stumped">Stumped</option><option value="Hit Wicket">Hit Wicket</option>
+        </select>
+
+        <label class="form-label small fw-bold text-muted text-uppercase mb-1">Fielder Involved</label>
+        <select id="modal-wicket-fielder" class="form-select fw-bold mb-3"><option value="">None / Unassisted</option></select>
+
+        <label class="form-label small fw-bold text-muted text-uppercase mb-1">New Batsman</label>
+        <select id="modal-batsman-name" class="form-select form-select-lg fw-bold mb-3"></select>
+        
+        <div class="d-flex gap-2"><button onclick="window.hideBatsmanModal()" class="btn btn-secondary flex-fill fw-bold">Cancel</button><button onclick="window.confirmWicket()" class="btn btn-danger flex-fill fw-bold">Confirm Wicket</button></div>
     </div>
 </div>
+
 <div id="extra-modal" class="modal-backdrop-custom hidden position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center" style="z-index: 9999;">
     <div class="bg-white rounded-3 shadow p-4" style="max-width: 380px; width: 90%;">
-        <h2 id="extra-modal-title" class="mb-2 text-uppercase d-flex align-items-center gap-2" style="font-size: 18px; font-weight: 900; color: #9a3412;"><i class="bi bi-exclamation-circle"></i> Wide</h2>
-        <p class="text-muted small mb-3">Total runs? (1 = wide only, 2 = wide + 1 run, etc.)</p>
+        <h2 id="extra-modal-title" class="mb-2 text-uppercase d-flex align-items-center gap-2" style="font-size: 18px; font-weight: 900; color: #9a3412;"><i class="bi bi-exclamation-circle"></i> Extra</h2>
+        <p id="extra-modal-desc" class="text-muted small mb-3">Total runs?</p>
         <div class="row g-2 mb-3"><div class="col-3"><button onclick="window.confirmExtra(1)" class="score-btn btn w-100 fw-bold" style="background:#fff7ed; color:#9a3412; border:2px solid #fdba74; font-size: 20px; padding: 16px 0;">1</button></div><div class="col-3"><button onclick="window.confirmExtra(2)" class="score-btn btn w-100 fw-bold" style="background:#fff7ed; color:#9a3412; border:2px solid #fdba74; font-size: 20px; padding: 16px 0;">2</button></div><div class="col-3"><button onclick="window.confirmExtra(3)" class="score-btn btn w-100 fw-bold" style="background:#fff7ed; color:#9a3412; border:2px solid #fdba74; font-size: 20px; padding: 16px 0;">3</button></div><div class="col-3"><button onclick="window.confirmExtra(4)" class="score-btn btn w-100 fw-bold" style="background:#fff7ed; color:#9a3412; border:2px solid #fdba74; font-size: 20px; padding: 16px 0;">4</button></div></div>
         <div class="row g-2 mb-3"><div class="col-6"><button onclick="window.confirmExtra(5)" class="score-btn btn w-100 fw-bold" style="background:#fff7ed; color:#9a3412; border:2px solid #fdba74; font-size: 16px; padding: 14px 0;">5</button></div><div class="col-6"><button onclick="window.confirmExtra(6)" class="score-btn btn w-100 fw-bold" style="background:#fff7ed; color:#9a3412; border:2px solid #fdba74; font-size: 16px; padding: 14px 0;">6 (bound)</button></div></div>
         <button onclick="window.hideExtraModal()" class="btn btn-secondary w-100 fw-bold">Cancel</button>
@@ -333,42 +357,84 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
-    import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
+    import { getDatabase, ref, set, get, onValue } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
 
     const firebaseConfig = { apiKey: "AIzaSyCo80tL6v0zvoiUN0KfeitImUf5KF5TBXw", authDomain: "thunders-scoreboard-ab3f5.firebaseapp.com", databaseURL: "https://thunders-scoreboard-ab3f5-default-rtdb.asia-southeast1.firebasedatabase.app", projectId: "thunders-scoreboard-ab3f5", storageBucket: "thunders-scoreboard-ab3f5.firebasestorage.app", messagingSenderId: "902061785388", appId: "1:902061785388:web:55ec1301cad2b259aaac89" };
-    const DB_NODE = 'pro_match_data';
-    let db, scoreRef;
+    const DB_NODE = 'pro_match_data'; const TEAMS_NODE = 'saved_squads';
+    
+    let db, scoreRef, teamsRef;
     let matchState = {
         battingTeam: 'THUNDERS', bowlingTeam: 'OPPONENT', battingTeamLogo: null, bowlingTeamLogo: null, batTeamColor: '#F4D03F', bowlTeamColor: '#059669', 
-        runs: 0, wickets: 0, completedOvers: 0, balls: 0, totalOvers: 20, target: null, innings: 1,
+        runs: 0, wickets: 0, completedOvers: 0, balls: 0, totalOvers: 20, target: null, innings: 1, toss: { winner: '', decision: 'BAT' },
+        battingSquad: Array(12).fill(''), bowlingSquad: Array(12).fill(''),
         striker: { name: '', runs: 0, balls: 0, fours: 0, sixes: 0 }, nonStriker: { name: '', runs: 0, balls: 0, fours: 0, sixes: 0 }, bowler: { name: '', runs: 0, wickets: 0, balls: 0 },
         bowlerStats: {}, recentBalls: [], currentOverBalls: [], lastUpdateTs: 0, currentEvent: null, isFreeHit: false, activeVideo: null
     };
 
-    // MASSIVE BILLBOARD SPONSOR DATA
-    const AUTO_SPONSORS = [
-        {
-            title: "BATBUDDY SPORTS",
-            subtitle: "Premium Cricket Equipment & Repairs",
-            services: ["Handle Replacements", "Weight Reduction", "Bat Modifications", "Gear Sales"],
-            contact: "Based in Wollert | Connect on Social Media"
+    const AUTO_SPONSORS = [ { title: "BATBUDDY SPORTS", subtitle: "Premium Cricket Equipment & Repairs", services: ["Handle Replacements", "Weight Reduction", "Bat Modifications", "Gear Sales"], contact: "Based in Wollert | Connect on Social Media" } ];
+    let sponsorIndex = 0; let undoStack = []; const MAX_UNDO = 50; let currentMode = 'control'; let lastPlayedEventId = 0; let lastSeenOver = -1; let currentlyPlayingVideo = null;
+
+    // VIEW TOGGLE LOGIC
+    window.toggleView = (view) => {
+        if(view === 'scoring') {
+            document.getElementById('panel-setup').classList.add('hidden');
+            document.getElementById('panel-scoring').classList.remove('hidden');
+            document.getElementById('btn-back-setup').classList.remove('hidden');
+        } else {
+            document.getElementById('panel-setup').classList.remove('hidden');
+            document.getElementById('panel-scoring').classList.add('hidden');
+            document.getElementById('btn-back-setup').classList.add('hidden');
         }
-    ];
-    let sponsorIndex = 0;
-    
-    let undoStack = []; const MAX_UNDO = 50; let currentMode = 'control'; let lastPlayedEventId = 0; let lastSeenOver = -1; let currentlyPlayingVideo = null;
+    };
+
+    function buildSquadInputs() {
+        const batDiv = document.getElementById('bat-squad-inputs'); const bowlDiv = document.getElementById('bowl-squad-inputs');
+        if(!batDiv || !bowlDiv) return;
+        for(let i=0; i<12; i++) {
+            batDiv.innerHTML += `<input type="text" id="bat-sq-${i}" class="form-control squad-input fw-bold" placeholder="Player ${i+1}" onchange="window.saveSquadsToFirebase()">`;
+            bowlDiv.innerHTML += `<input type="text" id="bowl-sq-${i}" class="form-control squad-input fw-bold" placeholder="Player ${i+1}" onchange="window.saveSquadsToFirebase()">`;
+        }
+    }
 
     function checkURLMode() {
         const params = new URLSearchParams(window.location.search);
         if (params.get('mode') === 'overlay' || params.get('view') === 'overlay') { currentMode = 'overlay'; document.getElementById('overlay-view').classList.remove('hidden'); document.body.classList.add('overlay-mode'); } 
-        else { currentMode = 'control'; document.getElementById('control-panel').classList.remove('hidden'); }
+        else { currentMode = 'control'; document.getElementById('control-panel').classList.remove('hidden'); buildSquadInputs(); }
     }
 
     function init() {
         checkURLMode();
-        try { const app = initializeApp(firebaseConfig); db = getDatabase(app); scoreRef = ref(db, DB_NODE); updateSyncStatus(true, "Live"); setupRealtimeListener(); } 
+        try { const app = initializeApp(firebaseConfig); db = getDatabase(app); scoreRef = ref(db, DB_NODE); teamsRef = ref(db, TEAMS_NODE); updateSyncStatus(true, "Live"); setupRealtimeListener(); } 
         catch (error) { updateSyncStatus(false, "Error"); setupLocalFallback(); }
     }
+
+    window.handleTeamNameChange = async (teamType) => {
+        if(!db) return;
+        const inputId = teamType === 'batting' ? 'in-bat' : 'in-bowl';
+        const teamName = document.getElementById(inputId).value.trim().toUpperCase();
+        if(!teamName) return;
+        try {
+            const snapshot = await get(ref(db, TEAMS_NODE + '/' + teamName));
+            if (snapshot.exists()) {
+                const squad = snapshot.val().squad || Array(12).fill('');
+                if (teamType === 'batting') matchState.battingSquad = squad; else matchState.bowlingSquad = squad;
+                updateUI(matchState);
+            } else {
+                if (teamType === 'batting') matchState.battingSquad = Array(12).fill(''); else matchState.bowlingSquad = Array(12).fill('');
+                updateUI(matchState);
+            }
+        } catch (e) { console.error(e); }
+        window.pushMatchSetup();
+    };
+
+    window.saveSquadsToFirebase = () => {
+        if(!db) return;
+        const batName = document.getElementById('in-bat').value.trim().toUpperCase(); const bowlName = document.getElementById('in-bowl').value.trim().toUpperCase();
+        for(let i=0; i<12; i++) { matchState.battingSquad[i] = document.getElementById(`bat-sq-${i}`).value || ''; matchState.bowlingSquad[i] = document.getElementById(`bowl-sq-${i}`).value || ''; }
+        if (batName) set(ref(db, TEAMS_NODE + '/' + batName), { squad: matchState.battingSquad });
+        if (bowlName) set(ref(db, TEAMS_NODE + '/' + bowlName), { squad: matchState.bowlingSquad });
+        pushStateToFirebase(); updateDropdowns();
+    };
 
     function setupRealtimeListener() {
         if (!db) return;
@@ -379,9 +445,9 @@
                 
                 matchState.runs = data.runs || 0; matchState.wickets = data.wickets || 0; matchState.completedOvers = data.overs || 0; matchState.balls = data.balls || 0;
                 matchState.battingTeam = data.team || 'THUNDERS'; matchState.bowlingTeam = data.bowlingTeam || 'OPPONENT'; matchState.target = data.target ? parseInt(data.target) : null;
-                matchState.totalOvers = data.totalOvers || 20; matchState.innings = data.innings || 1;
-                matchState.battingTeamLogo = data.battingTeamLogo || null; matchState.bowlingTeamLogo = data.bowlingTeamLogo || null;
-                matchState.batTeamColor = data.batTeamColor || '#F4D03F'; matchState.bowlTeamColor = data.bowlTeamColor || '#059669'; matchState.bowlerStats = data.bowlerStats || {}; 
+                matchState.totalOvers = data.totalOvers || 20; matchState.innings = data.innings || 1; matchState.toss = data.toss || { winner: '', decision: 'BAT' };
+                matchState.battingSquad = data.battingSquad || Array(12).fill(''); matchState.bowlingSquad = data.bowlingSquad || Array(12).fill('');
+                matchState.battingTeamLogo = data.battingTeamLogo || null; matchState.bowlingTeamLogo = data.bowlingTeamLogo || null; matchState.batTeamColor = data.batTeamColor || '#F4D03F'; matchState.bowlTeamColor = data.bowlTeamColor || '#059669'; matchState.bowlerStats = data.bowlerStats || {}; 
                 matchState.isFreeHit = data.isFreeHit || false; matchState.activeVideo = data.activeVideo || null;
 
                 const strike = data.strike || 1;
@@ -402,7 +468,8 @@
         if (matchState.bowler.name.trim()) { matchState.bowlerStats[matchState.bowler.name.trim().toUpperCase()] = { runs: matchState.bowler.runs, wickets: matchState.bowler.wickets, balls: matchState.bowler.balls }; }
         const dbData = {
             runs: matchState.runs, wickets: matchState.wickets, overs: matchState.completedOvers, balls: matchState.balls,
-            team: matchState.battingTeam, bowlingTeam: matchState.bowlingTeam, target: matchState.target || '', totalOvers: matchState.totalOvers, innings: matchState.innings,
+            team: matchState.battingTeam, bowlingTeam: matchState.bowlingTeam, target: matchState.target || '', totalOvers: matchState.totalOvers, innings: matchState.innings, toss: matchState.toss,
+            battingSquad: matchState.battingSquad, bowlingSquad: matchState.bowlingSquad,
             battingTeamLogo: matchState.battingTeamLogo || null, bowlingTeamLogo: matchState.bowlingTeamLogo || null, batTeamColor: matchState.batTeamColor, bowlTeamColor: matchState.bowlTeamColor,
             b1Name: matchState.striker.name, b1Runs: matchState.striker.runs, b1Balls: matchState.striker.balls, b2Name: matchState.nonStriker.name, b2Runs: matchState.nonStriker.runs, b2Balls: matchState.nonStriker.balls,
             strike: 1, bowlName: matchState.bowler.name, bowlO: Math.floor(matchState.bowler.balls / 6) + '.' + (matchState.bowler.balls % 6), bowlM: 0, bowlR: matchState.bowler.runs, bowlW: matchState.bowler.wickets, bowlBalls: matchState.bowler.balls,
@@ -442,11 +509,6 @@
         } else if (type === 'bye' || type === 'legbye') {
             matchState.isFreeHit = false; matchState.runs += value; matchState.striker.balls += 1; matchState.bowler.balls += 1;
             const label = type === 'bye' ? (value + 'B') : (value + 'LB'); matchState.recentBalls.push({ type: 'extra', value, label }); matchState.currentOverBalls.push({ type: 'extra', value, label }); incrementBall(); if (value % 2 === 1) swapStrike();
-        } else if (type === 'wicket') {
-            matchState.isFreeHit = false; window.triggerEvent('wicket', 'WICKET!');
-            matchState.wickets += 1; matchState.striker.balls += 1; matchState.bowler.balls += 1; matchState.bowler.wickets += 1;
-            matchState.recentBalls.push({ type: 'wicket', value: 0, label: 'W' }); matchState.currentOverBalls.push({ type: 'wicket', value: 0, label: 'W' });
-            matchState.striker = { name: 'New Batsman', runs: 0, balls: 0, fours: 0, sixes: 0 }; incrementBall(); if (currentMode === 'control') window.showBatsmanModal();
         }
         if (matchState.recentBalls.length > 6) matchState.recentBalls = matchState.recentBalls.slice(-6); updateUI(matchState); pushStateToFirebase();
     };
@@ -455,19 +517,64 @@
     function swapStrike() { const temp = matchState.striker; matchState.striker = matchState.nonStriker; matchState.nonStriker = temp; }
     window.swapBatsmen = () => { saveUndoSnapshot(); swapStrike(); updateUI(matchState); pushStateToFirebase(); };
     window.switchBowlerLogic = (newName) => { const nextName = newName.trim(); const nextNameUpper = nextName.toUpperCase(); if (matchState.bowlerStats[nextNameUpper]) { const stats = matchState.bowlerStats[nextNameUpper]; matchState.bowler = { name: nextName, runs: stats.runs, wickets: stats.wickets, balls: stats.balls }; } else { matchState.bowler = { name: nextName, runs: 0, wickets: 0, balls: 0 }; } };
-    window.pushMatchSetup = () => { saveUndoSnapshot(); matchState.battingTeam = (document.getElementById('in-bat').value || "TEAM").toUpperCase(); matchState.bowlingTeam = (document.getElementById('in-bowl').value || "OPP").toUpperCase(); matchState.batTeamColor = document.getElementById('in-bat-color').value; matchState.bowlTeamColor = document.getElementById('in-bowl-color').value; const targetVal = document.getElementById('in-target').value; matchState.target = targetVal ? parseInt(targetVal) : null; matchState.totalOvers = parseInt(document.getElementById('in-total-overs').value) || 20; matchState.innings = parseInt(document.getElementById('in-innings').value) || 1; updateUI(matchState); pushStateToFirebase(); };
-    window.pushPlayerNames = () => { saveUndoSnapshot(); matchState.striker.name = document.getElementById('in-striker-name').value || ''; matchState.nonStriker.name = document.getElementById('in-nonstriker-name').value || ''; const newBowlName = document.getElementById('in-bowler-name').value || ''; if (newBowlName.toUpperCase() !== matchState.bowler.name.toUpperCase()) { window.switchBowlerLogic(newBowlName); } else { matchState.bowler.name = newBowlName; } pushStateToFirebase(); updateUI(matchState); };
+    
+    window.pushMatchSetup = () => { 
+        saveUndoSnapshot(); 
+        matchState.battingTeam = (document.getElementById('in-bat').value || "TEAM").toUpperCase(); 
+        matchState.bowlingTeam = (document.getElementById('in-bowl').value || "OPP").toUpperCase(); 
+        matchState.batTeamColor = document.getElementById('in-bat-color').value; matchState.bowlTeamColor = document.getElementById('in-bowl-color').value; 
+        matchState.toss.winner = document.getElementById('in-toss-winner').value; matchState.toss.decision = document.getElementById('in-toss-decision').value;
+        const targetVal = document.getElementById('in-target').value; matchState.target = targetVal ? parseInt(targetVal) : null; matchState.totalOvers = parseInt(document.getElementById('in-total-overs').value) || 20; matchState.innings = parseInt(document.getElementById('in-innings').value) || 1; 
+        window.saveSquadsToFirebase();
+    };
+    
+    window.pushPlayerNames = () => { 
+        saveUndoSnapshot(); 
+        matchState.striker.name = document.getElementById('in-striker-name').value || ''; 
+        matchState.nonStriker.name = document.getElementById('in-nonstriker-name').value || ''; 
+        const newBowlName = document.getElementById('in-bowler-name').value || ''; 
+        if (newBowlName.toUpperCase() !== matchState.bowler.name.toUpperCase()) { window.switchBowlerLogic(newBowlName); } else { matchState.bowler.name = newBowlName; } 
+        pushStateToFirebase(); updateUI(matchState); 
+    };
+    
     window.pushManualOverride = () => { saveUndoSnapshot(); matchState.runs = parseInt(document.getElementById('in-runs').value) || 0; matchState.wickets = parseInt(document.getElementById('in-wickets').value) || 0; matchState.completedOvers = parseInt(document.getElementById('in-overs').value) || 0; matchState.balls = parseInt(document.getElementById('in-balls').value) || 0; updateUI(matchState); pushStateToFirebase(); };
     window.newBowler = () => { saveUndoSnapshot(); const n = document.getElementById('in-bowler-name').value.trim(); if (n) { window.switchBowlerLogic(n); updateUI(matchState); pushStateToFirebase(); } };
 
     let pendingExtraType = null;
-    window.showBowlerModal = () => { document.getElementById('bowler-modal').classList.remove('hidden'); setTimeout(() => document.getElementById('modal-bowler-name').focus(), 50); };
+    
+    function updateDropdowns() {
+        if(currentMode !== 'control') return;
+        const tossW = document.getElementById('in-toss-winner'); const currentToss = tossW.value;
+        tossW.innerHTML = `<option value="">Select...</option><option value="${matchState.battingTeam}">${matchState.battingTeam}</option><option value="${matchState.bowlingTeam}">${matchState.bowlingTeam}</option>`; tossW.value = matchState.toss.winner || currentToss;
+        
+        const batHTML = `<option value="">Select...</option>` + matchState.battingSquad.filter(n=>n.trim()).map(n => `<option value="${n}">${n}</option>`).join('');
+        const bowlHTML = `<option value="">Select...</option>` + matchState.bowlingSquad.filter(n=>n.trim()).map(n => `<option value="${n}">${n}</option>`).join('');
+        
+        const updateSel = (id, html, val) => { const el = document.getElementById(id); if(el) { el.innerHTML = html; el.value = val; } };
+        updateSel('in-striker-name', batHTML, matchState.striker.name); updateSel('in-nonstriker-name', batHTML, matchState.nonStriker.name); updateSel('modal-batsman-name', batHTML, '');
+        updateSel('in-bowler-name', bowlHTML, matchState.bowler.name); updateSel('modal-bowler-name', bowlHTML, '');
+        
+        const fielderHTML = `<option value="">None / Unassisted</option>` + matchState.bowlingSquad.filter(n=>n.trim()).map(n => `<option value="${n}">${n}</option>`).join('');
+        updateSel('modal-wicket-fielder', fielderHTML, '');
+    }
+
+    window.showBowlerModal = () => { updateDropdowns(); document.getElementById('bowler-modal').classList.remove('hidden'); setTimeout(() => document.getElementById('modal-bowler-name').focus(), 50); };
     window.hideBowlerModal = () => { document.getElementById('bowler-modal').classList.add('hidden'); };
     window.confirmNewBowler = () => { const n = document.getElementById('modal-bowler-name').value.trim(); if (n) { saveUndoSnapshot(); window.switchBowlerLogic(n); updateUI(matchState); pushStateToFirebase(); } window.hideBowlerModal(); };
-    window.showBatsmanModal = () => { document.getElementById('batsman-modal').classList.remove('hidden'); setTimeout(() => document.getElementById('modal-batsman-name').focus(), 50); };
+    
+    window.showBatsmanModal = () => { updateDropdowns(); document.getElementById('batsman-modal').classList.remove('hidden'); };
     window.hideBatsmanModal = () => { document.getElementById('batsman-modal').classList.add('hidden'); };
-    window.confirmNewBatsman = () => { const n = document.getElementById('modal-batsman-name').value.trim(); if (n) { saveUndoSnapshot(); matchState.striker.name = n; updateUI(matchState); pushStateToFirebase(); } window.hideBatsmanModal(); };
-    window.showExtraModal = (type) => { pendingExtraType = type; document.getElementById('extra-modal').classList.remove('hidden'); document.getElementById('extra-modal-title').innerHTML = '<i class="bi bi-exclamation-circle"></i> ' + (type === 'wide' ? 'Wide' : 'No Ball'); };
+    window.confirmWicket = () => { 
+        saveUndoSnapshot();
+        const newBat = document.getElementById('modal-batsman-name').value.trim();
+        matchState.isFreeHit = false; window.triggerEvent('wicket', 'WICKET!');
+        matchState.wickets += 1; matchState.striker.balls += 1; matchState.bowler.balls += 1; matchState.bowler.wickets += 1;
+        matchState.recentBalls.push({ type: 'wicket', value: 0, label: 'W' }); matchState.currentOverBalls.push({ type: 'wicket', value: 0, label: 'W' });
+        if (newBat) matchState.striker = { name: newBat, runs: 0, balls: 0, fours: 0, sixes: 0 }; else matchState.striker = { name: 'New Batsman', runs: 0, balls: 0, fours: 0, sixes: 0 }; 
+        incrementBall(); updateUI(matchState); pushStateToFirebase(); window.hideBatsmanModal(); 
+    };
+    
+    window.showExtraModal = (type) => { pendingExtraType = type; document.getElementById('extra-modal').classList.remove('hidden'); const titles = { 'wide': 'Wide', 'noball': 'No Ball', 'bye': 'Byes', 'legbye': 'Leg Byes' }; document.getElementById('extra-modal-title').innerHTML = '<i class="bi bi-exclamation-circle"></i> ' + titles[type]; };
     window.hideExtraModal = () => { document.getElementById('extra-modal').classList.add('hidden'); pendingExtraType = null; };
     window.confirmExtra = (totalRuns) => { if (pendingExtraType) window.scoreAction(pendingExtraType, totalRuns); window.hideExtraModal(); };
     window.showResetModal = () => { document.getElementById('reset-modal').classList.remove('hidden'); };
@@ -506,35 +613,15 @@
         setTimeout(() => { splash.classList.remove('show'); }, 3500);
     }
     
-    // MASSIVE BILLBOARD ANIMATION
     function playAutoSponsor() {
-        const billboard = document.getElementById('obs-sponsor-billboard');
-        const bg = document.getElementById('obs-billboard-bg');
+        const billboard = document.getElementById('obs-sponsor-billboard'); const bg = document.getElementById('obs-billboard-bg');
         if(!billboard || !bg) return;
-        
-        const sponsor = AUTO_SPONSORS[sponsorIndex];
-        document.getElementById('bb-title').innerText = sponsor.title;
-        document.getElementById('bb-subtitle').innerText = sponsor.subtitle;
-        document.getElementById('bb-contact').innerText = sponsor.contact;
-        
-        const servicesDiv = document.getElementById('bb-services');
-        servicesDiv.innerHTML = '';
-        sponsor.services.forEach(srv => {
-            const span = document.createElement('span');
-            span.className = 'bb-service-tag';
-            span.innerText = srv;
-            servicesDiv.appendChild(span);
-        });
-
+        const sponsor = AUTO_SPONSORS[sponsorIndex]; document.getElementById('bb-title').innerText = sponsor.title; document.getElementById('bb-subtitle').innerText = sponsor.subtitle; document.getElementById('bb-contact').innerText = sponsor.contact;
+        const servicesDiv = document.getElementById('bb-services'); servicesDiv.innerHTML = '';
+        sponsor.services.forEach(srv => { const span = document.createElement('span'); span.className = 'bb-service-tag'; span.innerText = srv; servicesDiv.appendChild(span); });
         sponsorIndex = (sponsorIndex + 1) % AUTO_SPONSORS.length;
-        
-        bg.classList.add('show');
-        billboard.classList.add('show');
-        
-        setTimeout(() => { 
-            bg.classList.remove('show');
-            billboard.classList.remove('show'); 
-        }, 8000);
+        bg.classList.add('show'); billboard.classList.add('show');
+        setTimeout(() => { bg.classList.remove('show'); billboard.classList.remove('show'); }, 8000);
     }
 
     function updateUI(data) {
@@ -547,26 +634,12 @@
             if (data.isFreeHit) { document.getElementById('obs-free-hit').classList.remove('hidden'); } else { document.getElementById('obs-free-hit').classList.add('hidden'); }
 
             if (data.currentEvent && data.currentEvent.id !== lastPlayedEventId) { lastPlayedEventId = data.currentEvent.id; playOverlayEvent(data.currentEvent.type, data.currentEvent.message); }
+            if (data.completedOvers > lastSeenOver && lastSeenOver !== -1 && data.balls === 0) { playAutoSponsor(); } lastSeenOver = data.completedOvers;
 
-            // Trigger Massive Billboard at the exact end of the over
-            if (data.completedOvers > lastSeenOver && lastSeenOver !== -1 && data.balls === 0) { playAutoSponsor(); }
-            lastSeenOver = data.completedOvers;
-
-            // FULL SCREEN VIDEO LOGIC
-            const vContainer = document.getElementById('obs-video-container');
-            const vPlayer = document.getElementById('jumbotron-video');
+            const vContainer = document.getElementById('obs-video-container'); const vPlayer = document.getElementById('jumbotron-video');
             if (data.activeVideo) {
-                if (currentlyPlayingVideo !== data.activeVideo) {
-                    currentlyPlayingVideo = data.activeVideo;
-                    vPlayer.src = data.activeVideo;
-                    vContainer.classList.add('active');
-                    vPlayer.play().catch(e => console.log("Browser blocked autoplay", e));
-                }
-            } else {
-                currentlyPlayingVideo = null;
-                vContainer.classList.remove('active');
-                vPlayer.pause();
-            }
+                if (currentlyPlayingVideo !== data.activeVideo) { currentlyPlayingVideo = data.activeVideo; vPlayer.src = data.activeVideo; vContainer.classList.add('active'); vPlayer.play().catch(e => console.log(e)); }
+            } else { currentlyPlayingVideo = null; vContainer.classList.remove('active'); vPlayer.pause(); }
 
             if (data.battingTeamLogo) { document.getElementById('obs-bat-logo').src = data.battingTeamLogo; document.getElementById('obs-bat-logo').classList.remove('hidden'); } else document.getElementById('obs-bat-logo').classList.add('hidden');
             if (data.bowlingTeamLogo) { document.getElementById('obs-bowl-logo').src = data.bowlingTeamLogo; document.getElementById('obs-bowl-logo').classList.remove('hidden'); } else document.getElementById('obs-bowl-logo').classList.add('hidden');
@@ -605,16 +678,24 @@
             updateInputIfNotFocused('in-runs', data.runs); updateInputIfNotFocused('in-wickets', data.wickets);
             updateInputIfNotFocused('in-overs', data.completedOvers); updateInputIfNotFocused('in-balls', data.balls);
             updateInputIfNotFocused('in-target', data.target || ''); updateInputIfNotFocused('in-total-overs', data.totalOvers);
-            updateInputIfNotFocused('in-innings', String(data.innings)); updateInputIfNotFocused('in-striker-name', data.striker.name);
-            updateInputIfNotFocused('in-nonstriker-name', data.nonStriker.name); updateInputIfNotFocused('in-bowler-name', data.bowler.name);
+            updateInputIfNotFocused('in-innings', String(data.innings)); 
 
+            document.getElementById('in-toss-winner').value = data.toss.winner || '';
+            document.getElementById('in-toss-decision').value = data.toss.decision || 'BAT';
             document.getElementById('in-free-hit').checked = data.isFreeHit;
             if (data.isFreeHit) { document.getElementById('prev-free-hit').classList.remove('hidden'); } else { document.getElementById('prev-free-hit').classList.add('hidden'); }
 
-            setText('in-striker-runs', data.striker.runs); setText('in-striker-balls', data.striker.balls);
-            setText('in-nonstriker-runs', data.nonStriker.runs); setText('in-nonstriker-balls', data.nonStriker.balls);
-            setText('in-bowler-overs', `${Math.floor(data.bowler.balls/6)}.${data.bowler.balls%6}`); setText('in-bowler-runs', data.bowler.runs); setText('in-bowler-wickets', data.bowler.wickets);
+            document.getElementById('label-bat-squad').innerText = `${data.battingTeam} SQUAD`;
+            document.getElementById('label-bowl-squad').innerText = `${data.bowlingTeam} SQUAD`;
+            
+            for(let i=0; i<12; i++) {
+                updateInputIfNotFocused(`bat-sq-${i}`, data.battingSquad[i] || '');
+                updateInputIfNotFocused(`bowl-sq-${i}`, data.bowlingSquad[i] || '');
+            }
+            updateDropdowns();
 
+            setText('in-striker-runs', data.striker.runs); setText('in-striker-balls', data.striker.balls); setText('in-nonstriker-runs', data.nonStriker.runs); setText('in-nonstriker-balls', data.nonStriker.balls);
+            setText('in-bowler-overs', `${Math.floor(data.bowler.balls/6)}.${data.bowler.balls%6}`); setText('in-bowler-runs', data.bowler.runs); setText('in-bowler-wickets', data.bowler.wickets);
             setText('prev-bat', data.battingTeam); setText('prev-score', data.runs); setText('prev-wickets', data.wickets); setText('prev-overs', oversString);
             setText('prev-striker', `*${data.striker.name || 'Batsman'} ${data.striker.runs}(${data.striker.balls})`); setText('prev-bowler', `${data.bowler.name || 'Bowler'} ${data.bowler.wickets}-${data.bowler.runs}`);
             
