@@ -7,7 +7,7 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Oswald:wght@700&display=swap" rel="stylesheet">
 
     <style>
         :root { --navy: #0B132B; --dark-navy: #070C1A; --gold: #F4D03F; --crimson: #E63946; --green: #1B998B; }
@@ -83,30 +83,44 @@
         .jumbotron-container.active { opacity: 1; pointer-events: all; }
         #jumbotron-video { width: 100%; height: 100%; object-fit: contain; }
 
-        /* SPLIT-SCREEN SCORECARD & SPONSOR (BETWEEN OVERS) */
-        .over-break-bg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.65); z-index: 8000; opacity: 0; transition: opacity 0.5s; pointer-events: none; }
+        /* ===============================================================
+           LIGHT / TRANSPARENT SPLIT-SCREEN SCORECARD (BETWEEN OVERS)
+           =============================================================== */
+        .over-break-bg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.25); z-index: 8000; opacity: 0; transition: opacity 0.5s; pointer-events: none; }
         .over-break-bg.show { opacity: 1; }
         .over-break-container { position: fixed; top: 46%; left: 50%; transform: translate(-50%, -40%); width: 88vw; height: 75vh; display: flex; gap: 20px; z-index: 9000; opacity: 0; transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); pointer-events: none; }
         .over-break-container.show { transform: translate(-50%, -50%); opacity: 1; }
         
-        .ob-scorecard { flex: 1.2; background: rgba(8, 14, 33, 0.95); border: 2px solid #333; border-radius: 12px; display: flex; flex-direction: column; padding: 25px; color: #fff; box-shadow: 10px 10px 30px rgba(0,0,0,0.8); }
-        .ob-header { display: flex; align-items: center; gap: 15px; border-bottom: 3px solid #F4D03F; padding-bottom: 15px; margin-bottom: 10px; }
-        .ob-logo { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid #fff; }
-        .ob-team-title { font-size: 28px; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; }
+        /* Left: Scorecard Panel (Light & Frosted) */
+        .ob-scorecard { flex: 1.2; background: rgba(255, 255, 255, 0.88); backdrop-filter: blur(8px); border: 2px solid rgba(255,255,255,0.5); border-radius: 12px; display: flex; flex-direction: column; padding: 25px; color: #111; box-shadow: 0 15px 40px rgba(0,0,0,0.3); }
+        .ob-header { display: flex; align-items: center; gap: 15px; border-bottom: 4px solid #F4D03F; padding-bottom: 12px; margin-bottom: 10px; }
+        .ob-logo { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
+        .ob-team-title { font-size: 32px; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; color: #0B132B; }
         
         .ob-table { width: 100%; border-collapse: collapse; font-size: 18px; }
-        .ob-table th { color: #888; font-weight: 800; text-align: left; padding: 8px; border-bottom: 1px solid #333; text-transform: uppercase; }
-        .ob-table td { padding: 8px; border-bottom: 1px solid rgba(255,255,255,0.05); text-transform: uppercase; }
-        .ob-active-row { background: rgba(244, 208, 63, 0.15); border-radius: 4px; }
-        .ob-footer { margin-top: auto; display: flex; justify-content: space-between; background: rgba(0,0,0,0.6); padding: 15px 25px; border-radius: 8px; font-weight: 900; font-size: 22px; border: 1px solid #333; text-transform: uppercase; }
+        .ob-table th { color: #555; font-weight: 800; text-align: left; padding: 8px; border-bottom: 2px solid #ccc; text-transform: uppercase; }
+        .ob-table td { padding: 8px; border-bottom: 1px solid rgba(0,0,0,0.08); text-transform: uppercase; font-weight: 700; color: #222; }
+        .ob-table td:nth-child(2), .ob-table td:nth-child(4) { color: #666; font-weight: 600; }
+        .ob-active-row { background: rgba(244, 208, 63, 0.25); border-radius: 4px; }
+        .ob-footer { margin-top: auto; display: flex; justify-content: space-between; background: rgba(244, 208, 63, 0.95); padding: 15px 25px; border-radius: 8px; font-weight: 900; font-size: 22px; border: 1px solid rgba(0,0,0,0.1); text-transform: uppercase; color: #000; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
         
-        .ob-sponsor { flex: 0.8; background: linear-gradient(135deg, #070707, #111); border: 4px solid #F4D03F; border-radius: 12px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 30px; box-shadow: 10px 10px 30px rgba(0,0,0,0.8); }
-        .bb-title { font-size: 60px; font-weight: 900; color: #F4D03F; text-transform: uppercase; letter-spacing: 2px; margin: 0; text-shadow: 0 4px 10px rgba(0,0,0,0.8); }
-        .bb-subtitle { font-size: 24px; color: #86efac; font-weight: 700; margin: 10px 0 25px; letter-spacing: 2px; text-transform: uppercase; }
-        .bb-divider { width: 120px; height: 4px; background: #444; margin-bottom: 25px; }
-        .bb-services { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin-bottom: 30px; }
-        .bb-service-tag { background: #1a1a1a; color: #e5e5e5; font-size: 20px; font-weight: 800; padding: 10px 25px; border-radius: 6px; border: 2px solid #333; text-transform: uppercase; }
-        .bb-contact { font-size: 20px; font-weight: 800; color: #000; letter-spacing: 1px; background: #F4D03F; padding: 12px 30px; border-radius: 50px; text-transform: uppercase; }
+        /* Right: BatBuddy Sports Poster Panel */
+        .ob-sponsor { flex: 0.8; background: #0B132B; border: 4px solid #F4D03F; border-radius: 12px; display: flex; flex-direction: column; align-items: center; padding: 25px; box-shadow: 0 15px 40px rgba(0,0,0,0.5); color: #fff; position: relative; overflow: hidden; }
+        
+        .ob-sponsor-badge { background: #F4D03F; color: #000; font-weight: 900; font-size: 13px; letter-spacing: 2px; padding: 6px 16px; border-radius: 20px; margin-bottom: 15px; text-transform: uppercase; box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
+        .bb-logo-text { font-family: 'Oswald', sans-serif; font-size: 38px; font-weight: 700; letter-spacing: 2px; margin: 0; color: #fff; }
+        .bb-services-title { font-family: 'Oswald', sans-serif; font-size: 48px; font-weight: 700; margin: 0 0 15px 0; text-align: center; text-transform: uppercase; line-height: 1.1; color: #fff; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
+        .bb-services-title span { color: #d4af37; }
+        .bb-subline { background: #fff; color: #0B132B; padding: 4px 15px; font-weight: 800; font-style: italic; font-size: 14px; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px; border-radius: 2px; }
+        
+        .bb-pricelist { width: 90%; border: 2px solid #d4af37; border-radius: 12px; padding: 15px 20px; margin-bottom: auto; background: rgba(0,0,0,0.4); }
+        .bb-price-item { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed rgba(255,255,255,0.2); padding: 7px 0; font-size: 17px; font-weight: 600; }
+        .bb-price-item:last-child { border-bottom: none; }
+        .bb-price-item i { color: #d4af37; margin-right: 10px; font-size: 15px; }
+        .bb-price { background: #d4af37; color: #000; padding: 2px 10px; border-radius: 4px; font-weight: 900; font-size: 16px; }
+        
+        .bb-footer-bar { display: flex; gap: 15px; align-items: center; justify-content: center; background: #000; padding: 12px 20px; border-radius: 8px; width: 100%; font-size: 20px; font-weight: 800; border-bottom: 3px solid #d4af37; margin-bottom: 10px; margin-top: 15px; }
+        .bb-tagline { font-size: 13px; font-weight: 800; letter-spacing: 4px; color: #aaa; text-transform: uppercase; margin-bottom: 5px; }
 
         .score-btn { transition: all 0.12s; user-select: none; } .score-btn:active { transform: scale(0.95); } .modal-backdrop-custom { background: rgba(0,0,0,0.8); backdrop-filter: blur(4px); }
         .squad-input { font-size: 11px; padding: 4px; }
@@ -146,8 +160,31 @@
                <span>TOTAL: <span id="ob-total">0/0</span></span>
             </div>
         </div>
+        
+        <!-- NEW BATBUDDY SPORTS FLYER -->
         <div class="ob-sponsor">
-            <h1 id="bb-title" class="bb-title">BATBUDDY SPORTS</h1><h3 id="bb-subtitle" class="bb-subtitle">Cricket Gear & Bat Repairs</h3><div class="bb-divider"></div><div id="bb-services" class="bb-services"></div><div id="bb-contact" class="bb-contact">CONNECT WITH US</div>
+            <div class="ob-sponsor-badge">Proud Sponsor</div>
+            <h1 class="bb-logo-text">BATBUDDY SPORTS</h1>
+            <h2 class="bb-services-title">BAT REPAIR<br><span>SERVICES</span></h2>
+            <div class="bb-subline">Professional Care. Peak Performance.</div>
+            
+            <div class="bb-pricelist">
+                <div class="bb-price-item"><span><i class="bi bi-hammer"></i> Re-handle</span> <span class="bb-price">$100</span></div>
+                <div class="bb-price-item"><span><i class="bi bi-bandaid"></i> Minor toe repair</span> <span class="bb-price">$30</span></div>
+                <div class="bb-price-item"><span><i class="bi bi-bandaid-fill"></i> Major toe repair</span> <span class="bb-price">$60</span></div>
+                <div class="bb-price-item"><span><i class="bi bi-link"></i> Binding</span> <span class="bb-price">$20</span></div>
+                <div class="bb-price-item"><span><i class="bi bi-arrow-down-right"></i> Minor Weight reduction</span> <span class="bb-price">$50</span></div>
+                <div class="bb-price-item"><span><i class="bi bi-arrow-down-square-fill"></i> Major weight reduction</span> <span class="bb-price">$70</span></div>
+                <div class="bb-price-item"><span><i class="bi bi-tools"></i> Handle reshaping</span> <span class="bb-price">$50</span></div>
+                <div class="bb-price-item"><span><i class="bi bi-x-circle"></i> Shoulder cracks</span> <span class="bb-price">$50</span></div>
+            </div>
+            
+            <div class="bb-footer-bar">
+                <span><i class="bi bi-telephone-fill" style="color:#d4af37;"></i> 0447726388</span>
+                <span style="color:#444;">|</span>
+                <span><i class="bi bi-geo-alt-fill" style="color:#d4af37;"></i> WOLLERT VIC 3750</span>
+            </div>
+            <div class="bb-tagline">YOUR BAT. OUR PASSION.</div>
         </div>
     </div>
 
@@ -185,6 +222,8 @@
 
     <div class="container-fluid py-3" style="max-width: 1000px;">
         
+        <datalist id="team-list"></datalist>
+
         <!-- SCREEN 1: PRE-MATCH SETUP -->
         <div id="panel-setup">
             <div class="row g-3 mb-3">
@@ -204,7 +243,7 @@
                                     <label class="form-label small fw-bold text-muted text-uppercase mb-1">Away Team</label>
                                     <div class="d-flex gap-1">
                                         <input type="color" id="in-away-color" class="form-control form-control-color p-1" value="#059669" style="width: 38px;">
-                                        <input type="text" id="in-away-team" maxlength="15" class="form-control fw-bold text-center text-uppercase" placeholder="AWAY TEAM" oninput="window.updateTossDropdown()">
+                                        <input type="text" id="in-away-team" list="team-list" maxlength="15" class="form-control fw-bold text-center text-uppercase" placeholder="AWAY TEAM" oninput="this.value = this.value.toUpperCase();" onchange="window.handleTeamNameChange('bowling')">
                                     </div>
                                 </div>
                                 <div class="col-6 col-md-3">
@@ -419,6 +458,9 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script type="module">
+    // KEY SANITIZER: Instantly removes characters that crash Firebase
+    function safeKey(str) { return (str || '').replace(/[.#$\[\]\/]/g, '_'); }
+
     // GLOBAL ERROR CATCHING ENGINE
     window.onerror = function(message, source, lineno, colno, error) {
         document.getElementById('dev-error-console').style.display = 'block';
@@ -447,8 +489,8 @@
         battingStats: {}, bowlerStats: {}, totalExtras: 0, recentBalls: [], currentOverBalls: [], lastUpdateTs: 0, currentEvent: null, isFreeHit: false, activeVideo: null
     };
 
-    const AUTO_SPONSORS = [ { title: "BATBUDDY SPORTS", subtitle: "Cricket Gear & Bat Repairs", services: ["Handle Repairs", "Refurbishments", "Custom Stickers", "Gear Sales"], contact: "Based in Wollert | Connect on Social Media" } ];
-    let sponsorIndex = 0; let undoStack = []; const MAX_UNDO = 50; let currentMode = 'control'; let lastPlayedEventId = 0; let lastSeenOver = -1; let currentlyPlayingVideo = null;
+    let allSavedTeams = {};
+    let undoStack = []; const MAX_UNDO = 50; let currentMode = 'control'; let lastPlayedEventId = 0; let lastSeenOver = -1; let currentlyPlayingVideo = null;
 
     function showErrorToast(msg) {
         const toast = document.getElementById('error-toast');
@@ -499,19 +541,79 @@
             const app = initializeApp(firebaseConfig); 
             db = getDatabase(app); 
             scoreRef = ref(db, DB_NODE); 
+            teamsRef = ref(db, TEAMS_NODE); 
             updateSyncStatus(true, "Live"); 
             setupRealtimeListener(); 
+            loadTeamDirectory();
         } catch (error) { updateSyncStatus(false, "Error"); setupLocalFallback(); }
     }
 
-    window.updateTossDropdown = () => {
-        if(currentMode !== 'control') return;
-        const away = (document.getElementById('in-away-team').value || 'AWAY TEAM').toUpperCase();
-        document.getElementById('label-away-squad').innerText = `${away} SQUAD`;
-        const tossSel = document.getElementById('in-toss-winner');
-        const currentVal = tossSel.value;
-        tossSel.innerHTML = `<option value="">Select...</option><option value="THUNDERS">THUNDERS</option><option value="${away}">${away}</option>`;
-        if(currentVal === 'THUNDERS' || currentVal === away) tossSel.value = currentVal;
+    function loadTeamDirectory() {
+        if(!db) return;
+        onValue(teamsRef, (snapshot) => {
+            const data = snapshot.val();
+            const datalist = document.getElementById('team-list');
+            if(data && datalist) {
+                allSavedTeams = data;
+                datalist.innerHTML = '';
+                Object.keys(data).forEach(tName => {
+                    datalist.innerHTML += `<option value="${tName}">`;
+                });
+            }
+        });
+    }
+
+    window.handleTeamNameChange = async (teamType) => {
+        if(!db) return;
+        const inputId = teamType === 'batting' ? 'in-bat' : 'in-away-team';
+        const teamName = (document.getElementById(inputId).value || '').trim().toUpperCase();
+        window.updateTossDropdown();
+        if(!teamName) return;
+
+        if (allSavedTeams[teamName] && allSavedTeams[teamName].squad) {
+            const loadedSquad = normalizeSquad(allSavedTeams[teamName].squad);
+            if (teamType === 'batting') {
+                matchState.battingTeam = teamName;
+                matchState.battingSquad = loadedSquad;
+                for(let i=0; i<12; i++) {
+                    const el = document.getElementById(`bat-sq-${i}`);
+                    if(el) el.value = loadedSquad[i] || '';
+                }
+            } else {
+                matchState.awayTeam = teamName;
+                matchState.awaySquad = loadedSquad;
+                for(let i=0; i<12; i++) {
+                    const el = document.getElementById(`away-sq-${i}`);
+                    if(el) el.value = loadedSquad[i] || '';
+                }
+            }
+            updateDropdowns();
+            pushStateToFirebase();
+        } else {
+            if (teamType === 'batting') matchState.battingTeam = teamName;
+            else matchState.awayTeam = teamName;
+            pushStateToFirebase();
+        }
+    };
+
+    window.saveSquadsToFirebase = () => {
+        if(!db) return;
+        const batName = 'THUNDERS';
+        const bowlName = (document.getElementById('in-away-team').value || '').trim().toUpperCase();
+
+        let batHasPlayers = false; let bowlHasPlayers = false;
+
+        for(let i=0; i<12; i++) { 
+            const bVal = (document.getElementById(`home-sq-${i}`)?.value || '').toUpperCase();
+            const bwVal = (document.getElementById(`away-sq-${i}`)?.value || '').toUpperCase();
+            matchState.homeSquad[i] = bVal; matchState.awaySquad[i] = bwVal;
+            if (bVal.trim()) batHasPlayers = true; if (bwVal.trim()) bowlHasPlayers = true;
+        }
+
+        if (batName && batHasPlayers) set(ref(db, TEAMS_NODE + '/' + batName), { squad: matchState.homeSquad });
+        if (bowlName && bowlHasPlayers) set(ref(db, TEAMS_NODE + '/' + bowlName), { squad: matchState.awaySquad });
+        
+        pushStateToFirebase(); updateDropdowns();
     };
 
     window.startAndResumeMatch = () => {
@@ -607,7 +709,8 @@
 
     function pushStateToFirebase() {
         if (!db) return; matchState.lastUpdateTs = Date.now();
-        if ((matchState.bowler.name || '').trim()) { matchState.bowlerStats[matchState.bowler.name.trim().toUpperCase()] = { runs: matchState.bowler.runs, wickets: matchState.bowler.wickets, balls: matchState.bowler.balls }; }
+        const bName = (matchState.bowler.name || '').trim().toUpperCase();
+        if (bName) { matchState.bowlerStats[safeKey(bName)] = { runs: matchState.bowler.runs, wickets: matchState.bowler.wickets, balls: matchState.bowler.balls }; }
         const dbData = {
             homeTeam: matchState.homeTeam, awayTeam: matchState.awayTeam, homeColor: matchState.homeColor, awayColor: matchState.awayColor,
             homeSquad: matchState.homeSquad, awaySquad: matchState.awaySquad,
@@ -633,10 +736,12 @@
     window.toggleFreeHit = () => { saveUndoSnapshot(); matchState.isFreeHit = document.getElementById('in-free-hit').checked; pushStateToFirebase(); updateUI(matchState); };
 
     function syncBatterStats() {
-        if((matchState.striker.name || '').trim() !== '') {
-            if(!matchState.battingStats[matchState.striker.name]) matchState.battingStats[matchState.striker.name] = { runs: 0, balls: 0, status: 'Not Out' };
-            matchState.battingStats[matchState.striker.name].runs = matchState.striker.runs;
-            matchState.battingStats[matchState.striker.name].balls = matchState.striker.balls;
+        const sName = (matchState.striker.name || '').trim();
+        if(sName !== '') {
+            const key = safeKey(sName);
+            if(!matchState.battingStats[key]) matchState.battingStats[key] = { runs: 0, balls: 0, status: 'Not Out' };
+            matchState.battingStats[key].runs = matchState.striker.runs;
+            matchState.battingStats[key].balls = matchState.striker.balls;
         }
     }
 
@@ -676,7 +781,16 @@
     function incrementBall() { matchState.balls += 1; if (matchState.balls >= 6) { matchState.completedOvers += 1; matchState.balls = 0; matchState.currentOverBalls = []; swapStrike(); if (currentMode === 'control') window.showBowlerModal(); } }
     function swapStrike() { const temp = matchState.striker; matchState.striker = matchState.nonStriker; matchState.nonStriker = temp; }
     window.swapBatsmen = () => { saveUndoSnapshot(); swapStrike(); updateUI(matchState); pushStateToFirebase(); };
-    window.switchBowlerLogic = (newName) => { const nextName = newName.trim().toUpperCase(); if (matchState.bowlerStats[nextName]) { const stats = matchState.bowlerStats[nextName]; matchState.bowler = { name: nextName, runs: stats.runs, wickets: stats.wickets, balls: stats.balls }; } else { matchState.bowler = { name: nextName, runs: 0, wickets: 0, balls: 0 }; } };
+    window.switchBowlerLogic = (newName) => { 
+        const nextName = (newName || '').trim().toUpperCase(); 
+        const key = safeKey(nextName);
+        if (matchState.bowlerStats[key]) { 
+            const stats = matchState.bowlerStats[key]; 
+            matchState.bowler = { name: nextName, runs: stats.runs, wickets: stats.wickets, balls: stats.balls }; 
+        } else { 
+            matchState.bowler = { name: nextName, runs: 0, wickets: 0, balls: 0 }; 
+        } 
+    };
     
     window.pushPlayerNames = () => { 
         saveUndoSnapshot(); 
@@ -738,8 +852,9 @@
         else if (wType === 'Stumped') statusStr = wFielder ? `st ${wFielder} b ${bName}` : `stumped b ${bName}`;
         else if (wType === 'Hit Wicket') statusStr = `hit wicket b ${bName}`;
         
-        if (!matchState.battingStats[matchState.striker.name]) matchState.battingStats[matchState.striker.name] = { runs: matchState.striker.runs, balls: matchState.striker.balls };
-        matchState.battingStats[matchState.striker.name].status = statusStr;
+        const sKey = safeKey(matchState.striker.name);
+        if (!matchState.battingStats[sKey]) matchState.battingStats[sKey] = { runs: matchState.striker.runs, balls: matchState.striker.balls };
+        matchState.battingStats[sKey].status = statusStr;
 
         matchState.isFreeHit = false; window.triggerEvent('wicket', 'WICKET!');
         matchState.wickets += 1; matchState.striker.balls += 1; matchState.bowler.balls += 1; matchState.bowler.wickets += 1;
@@ -784,7 +899,8 @@
             tbody.innerHTML = '';
             matchState.battingSquad.forEach(player => {
                 if (player && player.trim() !== '') {
-                    const stats = matchState.battingStats[player] || { runs: '-', balls: '-', status: 'Yet to bat' };
+                    const key = safeKey(player);
+                    const stats = matchState.battingStats[key] || { runs: '-', balls: '-', status: 'Yet to bat' };
                     const isActive = (player === matchState.striker.name || player === matchState.nonStriker.name);
                     const rowClass = isActive ? 'ob-active-row' : '';
                     const displayStatus = isActive ? 'Not Out' : stats.status;
@@ -795,11 +911,6 @@
             document.getElementById('ob-extras').innerText = matchState.totalExtras || 0;
             document.getElementById('ob-total').innerText = `${matchState.wickets}-${matchState.runs} (${matchState.completedOvers}.${matchState.balls})`;
         }
-
-        const sponsor = AUTO_SPONSORS[sponsorIndex]; document.getElementById('bb-title').innerText = sponsor.title; document.getElementById('bb-subtitle').innerText = sponsor.subtitle; document.getElementById('bb-contact').innerText = sponsor.contact;
-        const servicesDiv = document.getElementById('bb-services'); servicesDiv.innerHTML = '';
-        sponsor.services.forEach(srv => { const span = document.createElement('span'); span.className = 'bb-service-tag'; span.innerText = srv; servicesDiv.appendChild(span); });
-        sponsorIndex = (sponsorIndex + 1) % AUTO_SPONSORS.length;
         
         bg.classList.add('show'); container.classList.add('show');
         setTimeout(() => { bg.classList.remove('show'); container.classList.remove('show'); }, 15000);
