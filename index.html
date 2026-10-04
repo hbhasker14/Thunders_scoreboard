@@ -47,16 +47,17 @@
         .tv-free-hit { position: absolute; top: -34px; left: 50%; transform: translateX(-50%); color: white; padding: 4px 35px; font-weight: 900; font-size: 20px; border-radius: 8px 8px 0 0; letter-spacing: 3px; border: 2px solid #222; border-bottom: none; z-index: 5; animation: pulseFreeHit 0.8s infinite alternate; text-shadow: 0 2px 4px rgba(0,0,0,0.5); text-transform: uppercase; }
 
         /* UNIFIED SCORECARD CONTAINER (MAIN BAR + INTEGRATED TARGET FOOTER) */
-        .tv-scorecard-composite {
-            display: flex;
-            flex-direction: column;
-            border-radius: 8px;
-            overflow: hidden;
-            border: 2px solid #2b2b2b;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
-            background: #070707;
-            width: max-content;
-        }
+        /* UNIFIED SCORECARD CONTAINER (MAIN BAR + INTEGRATED TARGET FOOTER) */
+.tv-scorecard-composite {
+    display: flex;
+    flex-direction: column;
+    border-radius: 6px;
+    overflow: hidden;
+    border: 2px solid #3a3a3a; /* Crisper, slightly lighter border */
+    box-shadow: none; /* SHADOW REMOVED FOR SHARPNESS */
+    background: #070707;
+    width: max-content;
+}
 
         .tv-main-bar { display: flex; color: #fff; height: 94px; align-items: stretch; width: max-content; z-index: 10; position: relative; }
         .tv-logo-box { padding: 0 16px; background: #000; display: flex; align-items: center; border-right: 2px solid #333; flex: 0 0 auto; width: 94px; justify-content: center; }
@@ -96,7 +97,7 @@
             border-radius: 50%; 
             font-weight: 900; 
             font-size: 13px; 
-            box-shadow: 0 2px 4px rgba(0,0,0,0.5); 
+            box-shadow: none; 
         }
         .over-ball.empty { border: 2px dashed #444; background: transparent; color: transparent; }
         .over-ball.dot { background: #ffffff !important; color: #000000 !important; border: 2px solid #fff; font-size: 18px; line-height: 1; }
