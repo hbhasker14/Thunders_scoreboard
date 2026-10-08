@@ -47,7 +47,7 @@
       align-items: stretch;
       position: relative;
       height: 74px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.85);
+      /* Shadow removed per request */
       border-radius: 4px;
       background: transparent;
       transform-origin: bottom center;
@@ -118,7 +118,6 @@
       letter-spacing: 1.5px;
       text-transform: uppercase;
       white-space: nowrap;
-      text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
     }
     .wcl-score-overs {
       display: flex;
@@ -139,48 +138,31 @@
       letter-spacing: 0.5px;
     }
 
-    /* Player Cells */
+    /* Player Cells - Headshots removed, widened for balance */
     .wcl-player-cell {
       display: flex;
       align-items: center;
       height: 100%;
-      padding: 0 10px;
-      gap: 8px;
-    }
-    .wcl-headshot-wrap {
-      width: 44px;
-      height: 52px;
-      border-radius: 4px;
-      overflow: hidden;
-      background: #0f172a;
-      display: flex;
-      align-items: flex-end;
-      justify-content: center;
-      border: 1px solid rgba(255,255,255,0.15);
-    }
-    .wcl-headshot-icon {
-      font-size: 38px;
-      color: #94a3b8;
-      line-height: 1;
-      margin-bottom: -4px;
+      padding: 0 16px;
     }
     .wcl-player-meta {
       display: flex;
       flex-direction: column;
-      min-width: 90px;
+      align-items: center;
+      min-width: 110px;
     }
     .wcl-player-stats {
       display: flex;
-      justify-content: flex-end;
+      justify-content: center;
+      align-items: baseline;
       gap: 6px;
-      font-size: 16px;
+      font-size: 20px;
       font-weight: 900;
       color: #ffffff;
-      padding-right: 4px;
-      margin-bottom: 2px;
+      margin-bottom: 3px;
     }
     .wcl-player-balls {
-      font-size: 13px;
+      font-size: 14px;
       font-weight: 700;
       color: #94a3b8;
     }
@@ -191,11 +173,12 @@
       font-weight: 900;
       letter-spacing: 1px;
       text-transform: uppercase;
-      padding: 3px 8px;
+      padding: 3px 12px;
       border-radius: 2px;
       text-align: center;
       white-space: nowrap;
       border: 1px solid rgba(255,255,255,0.08);
+      width: 100%;
     }
     .wcl-name-badge.striker {
       background: var(--blue-striker) !important;
@@ -218,7 +201,7 @@
       align-items: center;
       justify-content: center;
       padding: 0 16px;
-      margin: 0 2px;
+      margin: 0 4px;
     }
     .wcl-crr-label {
       font-size: 11px;
@@ -316,7 +299,7 @@
     .over-break-bg {
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.45);
+      background: rgba(0,0,0,0.55);
       z-index: 8000;
       opacity: 0;
       transition: opacity 0.5s;
@@ -342,22 +325,25 @@
       transform: translate(-50%, -50%);
       opacity: 1;
     }
+    /* Restyled to match WCL Navy theme */
     .ob-scorecard {
       flex: 1.35;
-      background: rgba(255, 255, 255, 0.96);
+      background: rgba(9, 23, 50, 0.97);
       backdrop-filter: blur(8px);
       border-radius: 12px;
+      border: 2px solid var(--gold-main);
       padding: 22px;
       display: flex;
       flex-direction: column;
-      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.7);
       overflow-y: auto;
+      color: #fff;
     }
     .ob-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 3px solid #f59e0b;
+      border-bottom: 3px solid var(--gold-main);
       padding-bottom: 10px;
       margin-bottom: 12px;
     }
@@ -368,24 +354,26 @@
       margin-bottom: 8px;
     }
     .ob-table th {
-      color: #64748b;
+      color: #94a3b8;
       font-size: 12px;
       text-transform: uppercase;
       text-align: left;
       padding: 5px 6px;
-      border-bottom: 2px solid #cbd5e1;
+      border-bottom: 2px solid #334155;
     }
     .ob-table td {
-      padding: 6px;
+      padding: 8px 6px;
       font-weight: 700;
       text-transform: uppercase;
-      border-bottom: 1px solid #f1f5f9;
+      border-bottom: 1px solid #1e293b;
+      color: #fff;
     }
-    .ob-active-row { background: rgba(245, 158, 11, 0.2); }
+    .ob-active-row { background: rgba(37, 99, 235, 0.2); }
+    
     .ob-sponsor {
       flex: 0.85;
       background: #091732;
-      border: 3px solid #f59e0b;
+      border: 2px solid var(--gold-main);
       border-radius: 12px;
       padding: 24px;
       color: #fff;
@@ -393,6 +381,7 @@
       flex-direction: column;
       align-items: center;
       text-align: center;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.7);
     }
     .bb-title {
       font-family: 'Oswald', sans-serif;
@@ -448,20 +437,20 @@
     </div>
   </div>
 
-  <!-- BETWEEN OVERS SCORECARD & BATBUDDY POPUP -->
+  <!-- BETWEEN OVERS SCORECARD & BATBUDDY POPUP (Restyled to Navy/Gold) -->
   <div id="over-bg" class="over-break-bg"></div>
   <div id="over-container" class="over-break-container">
     <div class="ob-scorecard">
       <div class="ob-header">
-        <h2 id="ob-team-title" style="font-size: 22px; font-weight: 900; text-transform: uppercase; color: #0f172a;">MELBOURNE THUNDERS</h2>
-        <span id="ob-score-title" style="font-size: 20px; font-weight: 900; color: #d97706;">0-0 (0.0 ov)</span>
+        <h2 id="ob-team-title" style="font-size: 22px; font-weight: 900; text-transform: uppercase; color: #ffffff;">MELBOURNE THUNDERS</h2>
+        <span id="ob-score-title" style="font-size: 20px; font-weight: 900; color: #f59e0b;">0-0 (0.0 ov)</span>
       </div>
-      <div style="font-size: 12px; font-weight: 900; color: #475569; text-transform: uppercase; margin-bottom: 4px;">Currently Batting</div>
+      <div style="font-size: 12px; font-weight: 900; color: #93c5fd; text-transform: uppercase; margin-bottom: 4px;">Currently Batting</div>
       <table class="ob-table">
         <thead><tr><th>Batter</th><th style="text-align:center;">R</th><th style="text-align:center;">B</th><th style="text-align:center;">4s</th><th style="text-align:center;">6s</th></tr></thead>
         <tbody id="ob-active-batters"></tbody>
       </table>
-      <div style="font-size: 12px; font-weight: 900; color: #475569; text-transform: uppercase; margin: 10px 0 4px 0;">Bowling Figures</div>
+      <div style="font-size: 12px; font-weight: 900; color: #93c5fd; text-transform: uppercase; margin: 10px 0 4px 0;">Bowling Figures</div>
       <table class="ob-table">
         <thead><tr><th>Bowler</th><th style="text-align:center;">O</th><th style="text-align:center;">M</th><th style="text-align:center;">R</th><th style="text-align:center;">W</th></tr></thead>
         <tbody id="ob-bowlers"></tbody>
@@ -508,18 +497,16 @@
 
       <!-- Batter 1 -->
       <div class="wcl-player-cell">
-        <div class="wcl-headshot-wrap"><i class="bi bi-person-fill wcl-headshot-icon"></i></div>
         <div class="wcl-player-meta">
-          <div class="wcl-player-stats"><span id="b1-runs">0</span><span class="wcl-player-balls" id="b1-balls">0</span></div>
+          <div class="wcl-player-stats"><span id="b1-runs">0</span><span class="wcl-player-balls" id="b1-balls">(0)</span></div>
           <div class="wcl-name-badge striker" id="b1-name">STRIKER</div>
         </div>
       </div>
 
       <!-- Batter 2 -->
       <div class="wcl-player-cell">
-        <div class="wcl-headshot-wrap"><i class="bi bi-person-fill wcl-headshot-icon"></i></div>
         <div class="wcl-player-meta">
-          <div class="wcl-player-stats"><span id="b2-runs">0</span><span class="wcl-player-balls" id="b2-balls">0</span></div>
+          <div class="wcl-player-stats"><span id="b2-runs">0</span><span class="wcl-player-balls" id="b2-balls">(0)</span></div>
           <div class="wcl-name-badge" id="b2-name">NON-STRIKER</div>
         </div>
       </div>
@@ -532,9 +519,8 @@
 
       <!-- Bowler -->
       <div class="wcl-player-cell">
-        <div class="wcl-headshot-wrap"><i class="bi bi-person-fill wcl-headshot-icon"></i></div>
         <div class="wcl-player-meta">
-          <div class="wcl-player-stats" style="font-size: 14px;"><span id="bowl-figs">0-0</span> <span class="wcl-player-balls" id="bowl-overs">0.0</span></div>
+          <div class="wcl-player-stats" style="font-size: 18px;"><span id="bowl-figs">0-0</span> <span class="wcl-player-balls" id="bowl-overs">(0.0)</span></div>
           <div class="wcl-name-badge bowler" id="bowl-name">BOWLER</div>
         </div>
       </div>
@@ -591,13 +577,13 @@
       const b1NameEl = document.getElementById('b1-name');
       const b2NameEl = document.getElementById('b2-name');
 
-      b1NameEl.innerText = (d.b1Name || "BATSMAN 1").split(" ").pop(); // Clean surname style
+      b1NameEl.innerText = (d.b1Name || "BATSMAN 1").split(" ").pop(); 
       document.getElementById('b1-runs').innerText = d.b1Runs || 0;
-      document.getElementById('b1-balls').innerText = d.b1Balls || 0;
+      document.getElementById('b1-balls').innerText = `(${d.b1Balls || 0})`;
 
       b2NameEl.innerText = (d.b2Name || "BATSMAN 2").split(" ").pop();
       document.getElementById('b2-runs').innerText = d.b2Runs || 0;
-      document.getElementById('b2-balls').innerText = d.b2Balls || 0;
+      document.getElementById('b2-balls').innerText = `(${d.b2Balls || 0})`;
 
       if (strike === 1) {
         b1NameEl.classList.add('striker');
@@ -610,7 +596,7 @@
       // Bowler
       document.getElementById('bowl-name').innerText = (d.bowlName || "BOWLER").split(" ").pop();
       document.getElementById('bowl-figs').innerText = `${d.bowlW || 0}-${d.bowlR || 0}`;
-      document.getElementById('bowl-overs').innerText = `${Math.floor((d.bowlBalls||0)/6)}.${(d.bowlBalls||0)%6}`;
+      document.getElementById('bowl-overs').innerText = `(${Math.floor((d.bowlBalls||0)/6)}.${(d.bowlBalls||0)%6})`;
 
       // Logos
       const batLogo = document.getElementById('bat-logo');
@@ -685,13 +671,13 @@
 
       const actTbody = document.getElementById('ob-active-batters');
       actTbody.innerHTML = `
-        <tr class="ob-active-row"><td><strong>▶ ${data.b1Name||'Batter 1'}</strong></td><td style="text-align:center;">${data.b1Runs||0}</td><td style="text-align:center;">${data.b1Balls||0}</td><td style="text-align:center;">${data.b1Fours||0}</td><td style="text-align:center;">${data.b1Sixes||0}</td></tr>
-        <tr><td><strong>${data.b2Name||'Batter 2'}</strong></td><td style="text-align:center;">${data.b2Runs||0}</td><td style="text-align:center;">${data.b2Balls||0}</td><td style="text-align:center;">${data.b2Fours||0}</td><td style="text-align:center;">${data.b2Sixes||0}</td></tr>
+        <tr class="ob-active-row"><td><strong>▶ ${data.b1Name||'Batter 1'}</strong></td><td style="text-align:center;">${data.b1Runs||0}</td><td style="text-align:center; color:#94a3b8;">${data.b1Balls||0}</td><td style="text-align:center; color:#60a5fa;">${data.b1Fours||0}</td><td style="text-align:center; color:#f87171;">${data.b1Sixes||0}</td></tr>
+        <tr><td><strong>${data.b2Name||'Batter 2'}</strong></td><td style="text-align:center;">${data.b2Runs||0}</td><td style="text-align:center; color:#94a3b8;">${data.b2Balls||0}</td><td style="text-align:center; color:#60a5fa;">${data.b2Fours||0}</td><td style="text-align:center; color:#f87171;">${data.b2Sixes||0}</td></tr>
       `;
 
       const bowlTbody = document.getElementById('ob-bowlers');
       bowlTbody.innerHTML = `
-        <tr><td><strong>${data.bowlName||'Bowler'}</strong></td><td style="text-align:center;">${data.bowlO||'0.0'}</td><td style="text-align:center;">${data.bowlM||0}</td><td style="text-align:center;">${data.bowlR||0}</td><td style="text-align:center;">${data.bowlW||0}</td></tr>
+        <tr><td><strong>${data.bowlName||'Bowler'}</strong></td><td style="text-align:center;">${data.bowlO||'0.0'}</td><td style="text-align:center;">${data.bowlM||0}</td><td style="text-align:center;">${data.bowlR||0}</td><td style="text-align:center; color:#f87171;">${data.bowlW||0}</td></tr>
       `;
 
       bg.classList.add('show');
