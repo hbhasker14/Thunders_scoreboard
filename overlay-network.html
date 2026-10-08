@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Network Style Broadcast Overlay</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,600;0,700;0,800;0,900;1,900&family=Oswald:wght@600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Montserrat', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: transparent !important;
+      overflow: hidden;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: center;
+      padding-bottom: 24px;
+    }
+
+    .hidden { display: none !important; }
+
+    /* ================= MAIN LOWER THIRD BAR ================= */
+    .network-bar-container {
+      display: flex;
+      align-items: stretch;
+      height: 80px;
+      background: linear-gradient(90deg, #0e123a 0%, #171c4f 50%, #0e123a 100%);
+      border: 1px solid rgba(255,255,255,0.1);
+      /* SHADOW REMOVED PER REQUEST */
+      box-shadow: none;
+      border-radius: 2px;
+      color: white;
+    }
+
+    /* Batting Team Block */
+    .net-bat-block {
+      display: flex;
+      align-items: center;
+      padding: 0 20px 0 10px;
+    }
+    .net-logo {
+      width: 72px; /* INCREASED LOGO SIZE */
+      height: 72px; /* INCREASED LOGO SIZE */
+      object-fit: contain;
+      border-radius: 50%;
+      background: transparent;
+      margin-right: 12px;
+    }
+    .net-team-meta {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .net-team-name {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      line-height: 1;
+      text-transform: uppercase;
+    }
+    .net-team-overs {
+      font-size: 13px;
+      font-weight: 700;
+      color: #cbd5e1;
+      margin-top: 2px;
+    }
+    .net-team-overs span {
+      font-size: 10px;
+      background: #38bdf8;
+      color: #000;
+      padding: 1px 4px;
+      border-radius: 2px;
+      margin-left: 4px;
+    }
+
+    /* Score Block */
+    .net-score-block {
+      display: flex;
+      align-items: center;
+      padding: 0 25px;
+      border-right: 1px solid rgba(255,255,255,0.2);
+    }
+    .net-score-text {
+      font-size: 46px;
+      font-weight: 900;
+      color: #f97316; /* Bright Orange */
+      line-height: 1;
+      letter-spacing: -2px;
+    }
+
+    /* Batters Stack */
+    .net-batters-block {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 0 20px;
+      min-width: 280px;
+    }
+    .net-batter-row {
+      display: flex;
+      align-items: center;
+      padding: 4px 0;
+    }
+    .net-batter-row.top {
+      border-bottom: 2px solid rgba(255,255,255,0.15);
+    }
+    .net-ind {
+      color: #f97316;
+      font-size: 12px;
+      margin-right: 6px;
+      width: 12px;
+    }
+    .net-ind.invisible {
+      visibility: hidden;
+    }
+    .net-b-name {
+      font-size: 18px;
+      font-weight: 700;
+      text-transform: uppercase;
+      flex: 1;
+      letter-spacing: 0.5px;
+    }
+    .net-b-runs {
+      font-size: 22px;
+      font-weight: 900;
+      width: 35px;
+      text-align: right;
+    }
+    .net-b-balls {
+      font-size: 14px;
+      font-weight: 600;
+      color: #cbd5e1;
+      width: 25px;
+      text-align: right;
+      margin-left: 5px;
+    }
+
+    /* Run Rate Block */
+    .net-rr-block {
+      background: linear-gradient(180deg, #bae6fd 0%, #38bdf8 100%);
+      color: #0f172a;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 0 20px;
+      min-width: 110px;
+    }
+    .net-rr-label {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+    .net-rr-val {
+      font-size: 26px;
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: -0.5px;
+      margin-top: 2px;
+    }
+
+    /* Bowling Team Block */
+    .net-bowl-team-block {
+      display: flex;
+      align-items: center;
+      padding: 0 15px;
+    }
+    .net-v-text {
+      font-size: 20px;
+      font-weight: 400;
+      margin-right: 15px;
+      letter-spacing: 1px;
+    }
+
+    /* Bowler & Over Tracker Stack */
+    .net-bowler-block {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 0 20px 0 10px;
+    }
+    .net-bowler-top {
+      display: flex;
+      align-items: baseline;
+      justify-content: flex-end;
+      margin-bottom: 6px;
+      border-bottom: 2px solid rgba(255,255,255,0.15);
+      padding-bottom: 4px;
+    }
+    .net-bowl-name {
+      font-size: 18px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-right: auto;
+      padding-right: 20px;
+    }
+    .net-bowl-figs {
+      font-size: 22px;
+      font-weight: 900;
+    }
+    .net-bowl-overs {
+      font-size: 14px;
+      font-weight: 600;
+      color: #cbd5e1;
+      margin-left: 8px;
+    }
+    .net-tracker-row {
+      display: flex;
+      gap: 4px;
+      justify-content: flex-end;
+    }
+    .net-box {
+      width: 22px;
+      height: 22px;
+      background: #ffffff;
+      color: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 900;
+      border-radius: 2px;
+    }
+    .net-box.empty {
+      background: #334155;
+      color: transparent;
+    }
+    .net-box.four { background: #3b82f6; color: white; }
+    .net-box.six { background: #ef4444; color: white; }
+    .net-box.wicket { background: #000; color: #ef4444; border: 1px solid #ef4444; }
+
+    /* Target Bar / Free Hit */
+    .net-top-flag {
+      position: absolute;
+      top: -26px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #d97706;
+      color: #ffffff;
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 4px 20px;
+      border-radius: 4px 4px 0 0;
+      white-space: nowrap;
+    }
+    .net-fh-flag {
+      position: absolute;
+      top: -26px;
+      left: 20px;
+      background: #dc2626;
+      color: white;
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 2px;
+      padding: 4px 16px;
+      border-radius: 4px 4px 0 0;
+      animation: flashHit 0.8s infinite alternate;
+    }
+    @keyframes flashHit {
+      0% { opacity: 0.8; }
+      100% { opacity: 1; filter: brightness(1.2); }
+    }
+
+    /* ================= EVENT SPLASH ================= */
+    .event-splash {
+      position: fixed; top: 40%; left: 50%; transform: translate(-50%, -50%);
+      z-index: 10000; display: none; justify-content: center; align-items: center;
+    }
+    .event-splash.show { display: flex; }
+    .event-card {
+      background: #091732; border: 4px solid #fff; padding: 20px 70px;
+      border-radius: 8px; box-shadow: 10px 10px 0 #000;
+      animation: slam 3.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    }
+    .event-text {
+      font-size: 100px; font-weight: 900; font-style: italic; color: #fff;
+      text-transform: uppercase; letter-spacing: 6px; line-height: 1;
+    }
+    @keyframes slam {
+      0% { transform: scale(4); opacity: 0; }
+      15% { transform: scale(1); opacity: 1; }
+      85% { transform: scale(1.05); opacity: 1; }
+      100% { transform: scale(0); opacity: 0; }
+    }
+    .splash-four .event-card { border-color: #2563eb; }
+    .splash-six .event-card { border-color: #dc2626; }
+    .splash-wicket .event-card { border-color: #ef4444; background: #7f1d1d; }
+
+    /* ================= BETWEEN OVERS SCOREBOARD (NAVY/GOLD) ================= */
+    .over-break-bg {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.65);
+      z-index: 8000; opacity: 0; transition: opacity 0.5s; pointer-events: none;
+    }
+    .over-break-bg.show { opacity: 1; }
+    .over-break-container {
+      position: fixed; top: 50%; left: 50%; transform: translate(-50%, -45%);
+      width: 92vw; max-width: 1300px; height: 78vh; display: flex; gap: 20px;
+      z-index: 9000; opacity: 0; transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      pointer-events: none;
+    }
+    .over-break-container.show { transform: translate(-50%, -50%); opacity: 1; }
+    .ob-scorecard {
+      flex: 1.35; background: rgba(9, 23, 50, 0.97); backdrop-filter: blur(8px);
+      border-radius: 12px; border: 2px solid #f59e0b; padding: 22px;
+      display: flex; flex-direction: column; box-shadow: 0 20px 50px rgba(0,0,0,0.7);
+      overflow-y: auto; color: #fff;
+    }
+    .ob-header {
+      display: flex; justify-content: space-between; align-items: center;
+      border-bottom: 3px solid #f59e0b; padding-bottom: 10px; margin-bottom: 12px;
+    }
+    .ob-table { width: 100%; border-collapse: collapse; font-size: 14px; margin-bottom: 8px; }
+    .ob-table th { color: #94a3b8; font-size: 12px; text-transform: uppercase; text-align: left; padding: 5px 6px; border-bottom: 2px solid #334155; }
+    .ob-table td { padding: 8px 6px; font-weight: 700; text-transform: uppercase; border-bottom: 1px solid #1e293b; color: #fff; }
+    .ob-active-row { background: rgba(37, 99, 235, 0.2); }
+    .ob-sponsor {
+      flex: 0.85; background: #091732; border: 2px solid #f59e0b; border-radius: 12px;
+      padding: 24px; color: #fff; display: flex; flex-direction: column; align-items: center;
+      text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.7);
+    }
+    .bb-title { font-family: 'Oswald', sans-serif; font-size: 32px; font-weight: 700; color: #fff; margin: 10px 0 4px 0; }
+    .bb-sub { font-family: 'Oswald', sans-serif; font-size: 38px; color: #f59e0b; line-height: 1; margin-bottom: 15px; }
+    .bb-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; margin: auto 0; background: rgba(0,0,0,0.3); padding: 16px; border-radius: 8px; border: 1px solid rgba(245, 158, 11, 0.4); }
+    .bb-item { font-size: 14px; font-weight: 700; display: flex; align-items: center; gap: 8px; text-transform: uppercase; }
+    .bb-item i { color: #f59e0b; }
+    .bb-contact { background: #000; width: 100%; padding: 10px; border-radius: 6px; font-weight: 800; border-bottom: 3px solid #f59e0b; margin-top: 15px; }
+  </style>
+</head>
+<body>
+
+  <!-- EVENT SPLASH -->
+  <div id="event-splash" class="event-splash">
+    <div id="event-card" class="event-card"><div id="event-text" class="event-text">SIX!</div></div>
+  </div>
+
+  <!-- BETWEEN OVERS SCORECARD -->
+  <div id="over-bg" class="over-break-bg"></div>
+  <div id="over-container" class="over-break-container">
+    <div class="ob-scorecard">
+      <div class="ob-header">
+        <h2 id="ob-team-title" style="font-size: 22px; font-weight: 900; text-transform: uppercase; color: #ffffff;">THUNDERS</h2>
+        <span id="ob-score-title" style="font-size: 20px; font-weight: 900; color: #f59e0b;">0-0 (0.0 ov)</span>
+      </div>
+      <div style="font-size: 12px; font-weight: 900; color: #93c5fd; text-transform: uppercase; margin-bottom: 4px;">Currently Batting</div>
+      <table class="ob-table">
+        <thead><tr><th>Batter</th><th style="text-align:center;">R</th><th style="text-align:center;">B</th><th style="text-align:center;">4s</th><th style="text-align:center;">6s</th></tr></thead>
+        <tbody id="ob-active-batters"></tbody>
+      </table>
+      <div style="font-size: 12px; font-weight: 900; color: #93c5fd; text-transform: uppercase; margin: 10px 0 4px 0;">Bowling Figures</div>
+      <table class="ob-table">
+        <thead><tr><th>Bowler</th><th style="text-align:center;">O</th><th style="text-align:center;">M</th><th style="text-align:center;">R</th><th style="text-align:center;">W</th></tr></thead>
+        <tbody id="ob-bowlers"></tbody>
+      </table>
+    </div>
+    <div class="ob-sponsor">
+      <div style="background:#f59e0b; color:#000; font-size:11px; font-weight:900; letter-spacing:2px; padding:3px 12px; border-radius:20px; text-transform:uppercase;">Broadcast Partner</div>
+      <div class="bb-title">BATBUDDY SPORTS</div>
+      <div class="bb-sub">BAT REPAIRS & GEAR</div>
+      <div class="bb-grid">
+        <div class="bb-item"><i class="bi bi-hammer"></i> Handle Repairs</div>
+        <div class="bb-item"><i class="bi bi-tools"></i> Refurbish</div>
+        <div class="bb-item"><i class="bi bi-bandaid"></i> Toe & Edge Fix</div>
+        <div class="bb-item"><i class="bi bi-palette"></i> Custom Stickers</div>
+      </div>
+      <div class="bb-contact">📞 0447 726 388 | WOLLERT VIC</div>
+    </div>
+  </div>
+
+  <!-- ================= MAIN NETWORK LOWER THIRD ================= -->
+  <div class="network-bar-container">
+    
+    <div id="freehit-flag" class="net-fh-flag hidden">FREE HIT</div>
+    <div id="target-subbar" class="net-top-flag hidden">TARGET: <span id="bar-target">0</span> | NEED <span id="bar-needed">0</span> IN <span id="bar-rem-balls">0</span></div>
+
+    <!-- Batting Team -->
+    <div class="net-bat-block">
+      <img id="bat-logo" class="net-logo hidden">
+      <i id="bat-logo-fallback" class="bi bi-shield-shaded net-logo" style="font-size: 46px; text-align: center; line-height: 72px;"></i>
+      <div class="net-team-meta">
+        <div class="net-team-name" id="bat-team">THUNDERS</div>
+        <div class="net-team-overs"><span id="overs-left">0.0</span> OVR <span>P1</span></div>
+      </div>
+    </div>
+
+    <!-- Score -->
+    <div class="net-score-block">
+      <div class="net-score-text"><span id="runs">0</span>-<span id="wickets">0</span></div>
+    </div>
+
+    <!-- Batters -->
+    <div class="net-batters-block">
+      <div class="net-batter-row top">
+        <span class="net-ind" id="b1-ind">▶</span>
+        <span class="net-b-name" id="b1-name">STRIKER</span>
+        <span class="net-b-runs" id="b1-runs">0</span>
+        <span class="net-b-balls" id="b1-balls">0</span>
+      </div>
+      <div class="net-batter-row">
+        <span class="net-ind" id="b2-ind">▶</span>
+        <span class="net-b-name" id="b2-name">NON-STRIKER</span>
+        <span class="net-b-runs" id="b2-runs">0</span>
+        <span class="net-b-balls" id="b2-balls">0</span>
+      </div>
+    </div>
+
+    <!-- Run Rate -->
+    <div class="net-rr-block">
+      <div class="net-rr-label">RUN-RATE</div>
+      <div class="net-rr-val" id="crr-val">0.00</div>
+    </div>
+
+    <!-- Bowling Team Logo -->
+    <div class="net-bowl-team-block">
+      <span class="net-v-text">v <span id="bowl-team-short">TEAM</span></span>
+      <img id="bowl-logo" class="net-logo hidden" style="margin-right: 0;">
+      <i id="bowl-logo-fallback" class="bi bi-shield-shaded net-logo" style="font-size: 46px; text-align: center; line-height: 72px; margin-right: 0;"></i>
+    </div>
+
+    <!-- Bowler & Tracker -->
+    <div class="net-bowler-block">
+      <div class="net-bowler-top">
+        <span class="net-bowl-name" id="bowl-name">BOWLER</span>
+        <span class="net-bowl-figs" id="bowl-figs">0-0</span>
+        <span class="net-bowl-overs" id="bowl-overs">0.0</span>
+      </div>
+      <div class="net-tracker-row" id="over-tracker">
+        <!-- JS fills this with 6 boxes -->
+      </div>
+    </div>
+
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
+    import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCo80tL6v0zvoiUN0KfeitImUf5KF5TBXw",
+      authDomain: "thunders-scoreboard-ab3f5.firebaseapp.com",
+      databaseURL: "https://thunders-scoreboard-ab3f5-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "thunders-scoreboard-ab3f5",
+      storageBucket: "thunders-scoreboard-ab3f5.firebasestorage.app",
+      messagingSenderId: "902061785388",
+      appId: "1:902061785388:web:55ec1301cad2b259aaac89"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+    const scoreRef = ref(db, 'pro_match_data');
+
+    let lastSeenOver = -1;
+    let lastPlayedEventId = 0;
+
+    // Helper to abbreviate team names (e.g., MELBOURNE THUNDERS -> MT)
+    function abbreviate(name) {
+      if (!name) return "";
+      if (name.length <= 4) return name;
+      return name.split(' ').map(w => w[0]).join('').substring(0, 3);
+    }
+
+    onValue(scoreRef, (snapshot) => {
+      const d = snapshot.val();
+      if (!d) return;
+
+      // Score & Overs
+      const batName = d.battingTeam || "THUNDERS";
+      document.getElementById('bat-team').innerText = abbreviate(batName);
+      document.getElementById('bowl-team-short').innerText = abbreviate(d.bowlingTeam || "AWAY");
+      
+      document.getElementById('runs').innerText = d.runs || 0;
+      document.getElementById('wickets').innerText = d.wickets || 0;
+      const compOvers = d.overs || 0;
+      const currBalls = d.balls || 0;
+      document.getElementById('overs-left').innerText = `${compOvers}.${currBalls}`;
+
+      // CRR
+      const totalBallsBowled = (compOvers * 6) + currBalls;
+      const crr = totalBallsBowled > 0 ? (( (d.runs || 0) / totalBallsBowled ) * 6).toFixed(2) : "0.00";
+      document.getElementById('crr-val').innerText = crr;
+
+      // Batters
+      const strike = d.strike || 1;
+      document.getElementById('b1-name').innerText = (d.b1Name || "BATSMAN 1").split(" ").pop(); 
+      document.getElementById('b1-runs').innerText = d.b1Runs || 0;
+      document.getElementById('b1-balls').innerText = d.b1Balls || 0;
+
+      document.getElementById('b2-name').innerText = (d.b2Name || "BATSMAN 2").split(" ").pop();
+      document.getElementById('b2-runs').innerText = d.b2Runs || 0;
+      document.getElementById('b2-balls').innerText = d.b2Balls || 0;
+
+      if (strike === 1) {
+        document.getElementById('b1-ind').classList.remove('invisible');
+        document.getElementById('b2-ind').classList.add('invisible');
+      } else {
+        document.getElementById('b2-ind').classList.remove('invisible');
+        document.getElementById('b1-ind').classList.add('invisible');
+      }
+
+      // Bowler
+      document.getElementById('bowl-name').innerText = (d.bowlName || "BOWLER").split(" ").pop();
+      document.getElementById('bowl-figs').innerText = `${d.bowlW || 0}-${d.bowlR || 0}`;
+      document.getElementById('bowl-overs').innerText = `${Math.floor((d.bowlBalls||0)/6)}.${(d.bowlBalls||0)%6}`;
+
+      // Over Tracker (The 6 boxes)
+      const trackerContainer = document.getElementById('over-tracker');
+      trackerContainer.innerHTML = '';
+      const balls = d.currentOverBalls || [];
+      for (let i = 0; i < 6; i++) {
+        const box = document.createElement('div');
+        if (i < balls.length) {
+          const b = balls[i];
+          box.className = 'net-box';
+          if (b.type === 'dot') { box.innerText = '0'; }
+          else if (b.type === 'wicket') { box.innerText = 'W'; box.classList.add('wicket'); }
+          else if (b.type === 'four') { box.innerText = '4'; box.classList.add('four'); }
+          else if (b.type === 'six') { box.innerText = '6'; box.classList.add('six'); }
+          else { box.innerText = b.label !== undefined ? b.label : b.value; }
+        } else {
+          box.className = 'net-box empty';
+        }
+        trackerContainer.appendChild(box);
+      }
+
+      // Logos
+      const batLogo = document.getElementById('bat-logo');
+      const batFb = document.getElementById('bat-logo-fallback');
+      if (d.battingTeamLogo) { batLogo.src = d.battingTeamLogo; batLogo.classList.remove('hidden'); batFb.classList.add('hidden'); }
+      else { batLogo.classList.add('hidden'); batFb.classList.remove('hidden'); }
+
+      const bowlLogo = document.getElementById('bowl-logo');
+      const bowlFb = document.getElementById('bowl-logo-fallback');
+      if (d.bowlingTeamLogo) { bowlLogo.src = d.bowlingTeamLogo; bowlLogo.classList.remove('hidden'); bowlFb.classList.add('hidden'); }
+      else { bowlLogo.classList.add('hidden'); bowlFb.classList.remove('hidden'); }
+
+      // Modifiers (Free Hit / Target)
+      const fh = document.getElementById('freehit-flag');
+      if (d.isFreeHit) fh.classList.remove('hidden'); else fh.classList.add('hidden');
+
+      const tgtSub = document.getElementById('target-subbar');
+      if (d.innings === 2 && d.target) {
+        tgtSub.classList.remove('hidden');
+        document.getElementById('bar-target').innerText = d.target;
+        const totalBallsAllowed = (d.totalOvers || 20) * 6;
+        document.getElementById('bar-needed').innerText = Math.max(0, d.target - (d.runs || 0));
+        document.getElementById('bar-rem-balls').innerText = Math.max(0, totalBallsAllowed - totalBallsBowled);
+      } else { tgtSub.classList.add('hidden'); }
+
+      // Events & Overs
+      if (d.currentEvent && d.currentEvent.id !== lastPlayedEventId) {
+        lastPlayedEventId = d.currentEvent.id; playSplash(d.currentEvent.type, d.currentEvent.message);
+      }
+      if (compOvers > lastSeenOver && lastSeenOver !== -1 && currBalls === 0) { triggerOverBreak(d); }
+      lastSeenOver = compOvers;
+    });
+
+    function playSplash(type, msg) {
+      const splash = document.getElementById('event-splash');
+      const text = document.getElementById('event-text');
+      splash.className = 'event-splash splash-' + type; text.innerText = msg;
+      splash.classList.add('show'); setTimeout(() => splash.classList.remove('show'), 3200);
+    }
+
+    function triggerOverBreak(data) {
+      const container = document.getElementById('over-container');
+      const bg = document.getElementById('over-bg');
+      document.getElementById('ob-team-title').innerText = `${data.battingTeam || "TEAM"} INNINGS`;
+      document.getElementById('ob-score-title').innerText = `${data.runs}-${data.wickets} (${data.overs}.0 ov)`;
+
+      const actTbody = document.getElementById('ob-active-batters');
+      actTbody.innerHTML = `
+        <tr class="ob-active-row"><td><strong>▶ ${data.b1Name||'Batter 1'}</strong></td><td style="text-align:center;">${data.b1Runs||0}</td><td style="text-align:center; color:#94a3b8;">${data.b1Balls||0}</td><td style="text-align:center; color:#60a5fa;">${data.b1Fours||0}</td><td style="text-align:center; color:#f87171;">${data.b1Sixes||0}</td></tr>
+        <tr><td><strong>${data.b2Name||'Batter 2'}</strong></td><td style="text-align:center;">${data.b2Runs||0}</td><td style="text-align:center; color:#94a3b8;">${data.b2Balls||0}</td><td style="text-align:center; color:#60a5fa;">${data.b2Fours||0}</td><td style="text-align:center; color:#f87171;">${data.b2Sixes||0}</td></tr>
+      `;
+
+      const bowlTbody = document.getElementById('ob-bowlers');
+      bowlTbody.innerHTML = `
+        <tr><td><strong>${data.bowlName||'Bowler'}</strong></td><td style="text-align:center;">${data.bowlO||'0.0'}</td><td style="text-align:center;">${data.bowlM||0}</td><td style="text-align:center;">${data.bowlR||0}</td><td style="text-align:center; color:#f87171;">${data.bowlW||0}</td></tr>
+      `;
+
+      bg.classList.add('show'); container.classList.add('show');
+      setTimeout(() => { bg.classList.remove('show'); container.classList.remove('show'); }, 12000);
+    }
+  </script>
+</body>
+</html>
