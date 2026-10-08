@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Champions Broadcast Overlay</title>
+  <title>WCL Champions Broadcast Overlay - Larger Logos</title>
 
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,700;0,800;0,900;1,900&family=Oswald:wght@600;700&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
@@ -47,7 +47,6 @@
       align-items: stretch;
       position: relative;
       height: 74px;
-      /* Shadow removed per request */
       border-radius: 4px;
       background: transparent;
       transform-origin: bottom center;
@@ -55,7 +54,7 @@
 
     /* Slanted Logo Boxes (Left & Right) */
     .wcl-logo-box {
-      width: 82px;
+      width: 104px; /* Widened for larger logos */
       background: linear-gradient(135deg, #fef08a 0%, #d97706 100%);
       display: flex;
       align-items: center;
@@ -79,8 +78,8 @@
       margin-left: -10px;
     }
     .wcl-logo-img {
-      width: 48px;
-      height: 48px;
+      width: 62px; /* Increased size */
+      height: 62px; /* Increased size */
       object-fit: cover;
       border-radius: 50%;
       z-index: 3;
@@ -138,7 +137,7 @@
       letter-spacing: 0.5px;
     }
 
-    /* Player Cells - Headshots removed, widened for balance */
+    /* Player Cells */
     .wcl-player-cell {
       display: flex;
       align-items: center;
@@ -218,7 +217,7 @@
       letter-spacing: -0.5px;
     }
 
-    /* Target Equation Bar (2nd Innings) */
+    /* Target Equation Bar */
     .wcl-target-subbar {
       position: absolute;
       top: -26px;
@@ -256,7 +255,7 @@
       100% { opacity: 1; filter: brightness(1.2); }
     }
 
-    /* ================= EVENT SPLASH (FOUR / SIX / WICKET) ================= */
+    /* ================= EVENT SPLASH ================= */
     .event-splash {
       position: fixed;
       top: 40%;
@@ -295,7 +294,7 @@
     .splash-six .event-card { border-color: #dc2626; }
     .splash-wicket .event-card { border-color: #ef4444; background: #7f1d1d; }
 
-    /* ================= BETWEEN OVERS SCOREBOARD & BATBUDDY ================= */
+    /* ================= BETWEEN OVERS SCOREBOARD ================= */
     .over-break-bg {
       position: fixed;
       inset: 0;
@@ -325,7 +324,6 @@
       transform: translate(-50%, -50%);
       opacity: 1;
     }
-    /* Restyled to match WCL Navy theme */
     .ob-scorecard {
       flex: 1.35;
       background: rgba(9, 23, 50, 0.97);
@@ -437,7 +435,7 @@
     </div>
   </div>
 
-  <!-- BETWEEN OVERS SCORECARD & BATBUDDY POPUP (Restyled to Navy/Gold) -->
+  <!-- BETWEEN OVERS SCORECARD -->
   <div id="over-bg" class="over-break-bg"></div>
   <div id="over-container" class="over-break-container">
     <div class="ob-scorecard">
@@ -476,15 +474,14 @@
     <div id="freehit-flag" class="wcl-freehit-flag hidden">FREE HIT</div>
     <div id="target-subbar" class="wcl-target-subbar hidden">TARGET: <span id="bar-target">0</span> | NEED <span id="bar-needed">0</span> IN <span id="bar-rem-balls">0</span> B</div>
 
-    <!-- Left Logo (Batting Team) -->
+    <!-- Left Logo -->
     <div class="wcl-logo-box left">
       <img id="bat-logo" class="wcl-logo-img hidden">
-      <i id="bat-logo-fallback" class="bi bi-shield-shaded" style="font-size: 32px; color: #000; z-index:3;"></i>
+      <!-- Fallback icon size increased to match -->
+      <i id="bat-logo-fallback" class="bi bi-shield-shaded" style="font-size: 42px; color: #000; z-index:3;"></i>
     </div>
 
-    <!-- Center Navy Strip -->
     <div class="wcl-main-strip">
-      <!-- Team & Score -->
       <div class="wcl-team-score-box">
         <div class="wcl-team-info">
           <div class="wcl-team-name" id="bat-team">THUNDERS</div>
@@ -495,7 +492,6 @@
         </div>
       </div>
 
-      <!-- Batter 1 -->
       <div class="wcl-player-cell">
         <div class="wcl-player-meta">
           <div class="wcl-player-stats"><span id="b1-runs">0</span><span class="wcl-player-balls" id="b1-balls">(0)</span></div>
@@ -503,7 +499,6 @@
         </div>
       </div>
 
-      <!-- Batter 2 -->
       <div class="wcl-player-cell">
         <div class="wcl-player-meta">
           <div class="wcl-player-stats"><span id="b2-runs">0</span><span class="wcl-player-balls" id="b2-balls">(0)</span></div>
@@ -511,13 +506,11 @@
         </div>
       </div>
 
-      <!-- Angled Silver CRR Wedge -->
       <div class="wcl-crr-wedge">
         <div class="wcl-crr-label">CRR</div>
         <div class="wcl-crr-val" id="crr-val">0.00</div>
       </div>
 
-      <!-- Bowler -->
       <div class="wcl-player-cell">
         <div class="wcl-player-meta">
           <div class="wcl-player-stats" style="font-size: 18px;"><span id="bowl-figs">0-0</span> <span class="wcl-player-balls" id="bowl-overs">(0.0)</span></div>
@@ -526,14 +519,14 @@
       </div>
     </div>
 
-    <!-- Right Logo (Bowling Team) -->
+    <!-- Right Logo -->
     <div class="wcl-logo-box right">
       <img id="bowl-logo" class="wcl-logo-img hidden">
-      <i id="bowl-logo-fallback" class="bi bi-shield-shaded" style="font-size: 32px; color: #000; z-index:3;"></i>
+      <!-- Fallback icon size increased to match -->
+      <i id="bowl-logo-fallback" class="bi bi-shield-shaded" style="font-size: 42px; color: #000; z-index:3;"></i>
     </div>
   </div>
 
-  <!-- Firebase Listener -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
     import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
@@ -559,7 +552,6 @@
       const d = snapshot.val();
       if (!d) return;
 
-      // Score & Overs
       document.getElementById('bat-team').innerText = d.battingTeam || "THUNDERS";
       document.getElementById('runs').innerText = d.runs || 0;
       document.getElementById('wickets').innerText = d.wickets || 0;
@@ -567,12 +559,10 @@
       const currBalls = d.balls || 0;
       document.getElementById('overs').innerText = `${compOvers}.${currBalls}`;
 
-      // CRR Calculation
       const totalBallsBowled = (compOvers * 6) + currBalls;
       const crr = totalBallsBowled > 0 ? (( (d.runs || 0) / totalBallsBowled ) * 6).toFixed(2) : "0.00";
       document.getElementById('crr-val').innerText = crr;
 
-      // Batters & Striker Highlight
       const strike = d.strike || 1;
       const b1NameEl = document.getElementById('b1-name');
       const b2NameEl = document.getElementById('b2-name');
@@ -593,12 +583,10 @@
         b1NameEl.classList.remove('striker');
       }
 
-      // Bowler
       document.getElementById('bowl-name').innerText = (d.bowlName || "BOWLER").split(" ").pop();
       document.getElementById('bowl-figs').innerText = `${d.bowlW || 0}-${d.bowlR || 0}`;
       document.getElementById('bowl-overs').innerText = `(${Math.floor((d.bowlBalls||0)/6)}.${(d.bowlBalls||0)%6})`;
 
-      // Logos
       const batLogo = document.getElementById('bat-logo');
       const batFb = document.getElementById('bat-logo-fallback');
       if (d.battingTeamLogo) {
@@ -621,12 +609,10 @@
         bowlFb.classList.remove('hidden');
       }
 
-      // Free Hit
       const fh = document.getElementById('freehit-flag');
       if (d.isFreeHit) fh.classList.remove('hidden');
       else fh.classList.add('hidden');
 
-      // Target Header in 2nd Innings
       const tgtSub = document.getElementById('target-subbar');
       if (d.innings === 2 && d.target) {
         tgtSub.classList.remove('hidden');
@@ -640,13 +626,11 @@
         tgtSub.classList.add('hidden');
       }
 
-      // Boundary / Wicket Splashes
       if (d.currentEvent && d.currentEvent.id !== lastPlayedEventId) {
         lastPlayedEventId = d.currentEvent.id;
         playSplash(d.currentEvent.type, d.currentEvent.message);
       }
 
-      // Between Overs Trigger
       if (compOvers > lastSeenOver && lastSeenOver !== -1 && currBalls === 0) {
         triggerOverBreak(d);
       }
